@@ -1,0 +1,780 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Text Retrieval,Information Retrieval,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。Part 1笔记在此 这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。 主要概念：  关键词词频（Term Frequency，TF） 文档频率（Document Frequency，DF）与逆向文档频率（Inverse">
+<meta name="keywords" content="Text Retrieval,Information Retrieval">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Text Retrieval and Search Engines(2)">
+<meta property="og:url" content="https://anderscui.github.io/2017/07/09/text-retrieval-and-search-engines-part-2/index.html">
+<meta property="og:site_name" content="mathacker">
+<meta property="og:description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。Part 1笔记在此 这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。 主要概念：  关键词词频（Term Frequency，TF） 文档频率（Document Frequency，DF）与逆向文档频率（Inverse">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://anderscui.github.io/images/text-retrieval/problems-of-svsm.png">
+<meta property="og:image" content="https://anderscui.github.io/images/text-retrieval/add-tf-to-svsm.png">
+<meta property="og:image" content="https://anderscui.github.io/images/text-retrieval/idf.png">
+<meta property="og:image" content="https://anderscui.github.io/images/text-retrieval/vsm-after-tfidf.png">
+<meta property="og:updated_time" content="2021-07-25T16:31:30.099Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Text Retrieval and Search Engines(2)">
+<meta name="twitter:description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。Part 1笔记在此 这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。 主要概念：  关键词词频（Term Frequency，TF） 文档频率（Document Frequency，DF）与逆向文档频率（Inverse">
+<meta name="twitter:image" content="https://anderscui.github.io/images/text-retrieval/problems-of-svsm.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://anderscui.github.io/2017/07/09/text-retrieval-and-search-engines-part-2/">
+
+
+
+
+
+  <title>Text Retrieval and Search Engines(2) | mathacker</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mathacker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">no math, little hacker</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2017/07/09/text-retrieval-and-search-engines-part-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Anders Cui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Text Retrieval and Search Engines(2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-09T01:08:41+08:00">
+                2017-07-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Text-Retrieval/" itemprop="url" rel="index">
+                    <span itemprop="name">Text Retrieval</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Text-Retrieval/Information-Retrieval/" itemprop="url" rel="index">
+                    <span itemprop="name">Information Retrieval</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome" target="_blank" rel="noopener">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
+<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
+<p>主要概念：</p>
+<ul>
+<li>关键词词频（Term Frequency，TF）</li>
+<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
+<li>TF transformation</li>
+<li>Pivoted length normalization</li>
+<li>BM25</li>
+<li>倒排索引（Inverted Index）与posting</li>
+<li>Binary coding，unary coding，gamma-coding和d-gap</li>
+<li>Zipf法则</li>
+</ul>
+<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
+<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
+<ul>
+<li>d4匹配到了更多关键词，应获得更高的相似度</li>
+<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
+</ul>
+<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
+<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
+<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
+<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
+<p>现在重新计算上面的三个文档，会发现$f(q, d2) = 3$，$f(q, d3) = 3$，$f(q, d4) = 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
+<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
+<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
+<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
+<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
+<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
+<p>引入IDF后，文档的向量公式变为：</p>
+<p>$$d = (y_1, \cdots, y_N，y_i = c(W_i, d) * IDF(W_i)$$</p>
+<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
+<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Text-Retrieval/" rel="tag"># Text Retrieval</a>
+          
+            <a href="/tags/Information-Retrieval/" rel="tag"># Information Retrieval</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/04/text-retrieval-and-search-engines-part-1/" rel="next" title="Text Retrieval and Search Engines(1)">
+                <i class="fa fa-chevron-left"></i> Text Retrieval and Search Engines(1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/23/thomas-calculus-derivative/" rel="prev" title="Thomas' Calculus - 微分">
+                Thomas' Calculus - 微分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Anders Cui">
+          <p class="site-author-name" itemprop="name">Anders Cui</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  June 2017 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Anders Cui</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,771 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Programming,Rust,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1">
+
+
+
+
+
+
+<meta name="description" content="安装12# On Mac$ curl https://sh.rustup.rs -sSf | sh 运行此命令，按其中的提示安装即可。 升级与卸载123$ rustup update$ rustup self uninstall 确认1$ rustc --version 本地文档12# 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.$rus">
+<meta name="keywords" content="Programming,Rust">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hello, Rust">
+<meta property="og:url" content="https://anderscui.github.io/2017/09/24/hello-rust/index.html">
+<meta property="og:site_name" content="mathacker">
+<meta property="og:description" content="安装12# On Mac$ curl https://sh.rustup.rs -sSf | sh 运行此命令，按其中的提示安装即可。 升级与卸载123$ rustup update$ rustup self uninstall 确认1$ rustc --version 本地文档12# 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.$rus">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2021-07-25T16:31:30.095Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hello, Rust">
+<meta name="twitter:description" content="安装12# On Mac$ curl https://sh.rustup.rs -sSf | sh 运行此命令，按其中的提示安装即可。 升级与卸载123$ rustup update$ rustup self uninstall 确认1$ rustc --version 本地文档12# 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.$rus">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://anderscui.github.io/2017/09/24/hello-rust/">
+
+
+
+
+
+  <title>Hello, Rust | mathacker</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mathacker</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">no math, little hacker</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2017/09/24/hello-rust/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Anders Cui">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hello, Rust</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-24T23:06:09+08:00">
+                2017-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
+<p>运行此命令，按其中的提示安装即可。</p>
+<h2 id="升级与卸载"><a href="#升级与卸载" class="headerlink" title="升级与卸载"></a>升级与卸载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ rustup update</span><br><span class="line"></span><br><span class="line">$ rustup self uninstall</span><br></pre></td></tr></table></figure>
+<h2 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rustc --version</span><br></pre></td></tr></table></figure>
+<h2 id="本地文档"><a href="#本地文档" class="headerlink" title="本地文档"></a>本地文档</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.</span><br><span class="line">$rustup doc</span><br></pre></td></tr></table></figure>
+<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello, World!"></a>Hello, World!</h1><p>假设把代码放在某个目录下，cd到它，创建一个<code>main.rs</code>文件（rs是Rust文件的扩展名）：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Hello, world!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，编译再运行之：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rustc main.rs</span><br><span class="line">$ ./main</span><br></pre></td></tr></table></figure>
+<h2 id="Rust程序的结构"><a href="#Rust程序的结构" class="headerlink" title="Rust程序的结构"></a>Rust程序的结构</h2><p><code>fn</code>定义一个函数，而<code>main</code>同时是特别的<strong>入口函数</strong>，与<code>C</code>和<code>C#</code>之类语言类似。Rust中的函数需要花括号包含其函数体。</p>
+<p>第二行<code>println!(&quot;Hello, world!&quot;);</code>，输出一行文本到屏幕。这里看起来有点特别的是<code>println!</code>，带有<code>!</code>在Rust中意味着调用宏而非函数。行末的<code>;</code>表示一个表达式的结束，<strong>大多数</strong>Rust代码行以<code>;</code>结束。</p>
+<h1 id="编译和执行的分离"><a href="#编译和执行的分离" class="headerlink" title="编译和执行的分离"></a>编译和执行的分离</h1><p>作为静态语言，Rust程序执行之前需要先行编译，这类似于<code>gcc</code>或<code>clang</code>。</p>
+<p>对于简单的程序，可如上使用<code>rustc</code>，对于更为复杂的程序，你可能需要<code>Cargo</code>这个工具。</p>
+<h1 id="Cargo"><a href="#Cargo" class="headerlink" title="Cargo"></a>Cargo</h1><p><code>Cargo</code>是Rust的构建系统（Build System）和包管理器（Package Manager）。它可以生成代码、下载依赖库，生成库代码。</p>
+<p><code>Cargo</code>随Rust一起安装。</p>
+<h2 id="以Cargo创建一个项目"><a href="#以Cargo创建一个项目" class="headerlink" title="以Cargo创建一个项目"></a>以Cargo创建一个项目</h2><p>使用命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cargo new hello_cargo --bin</span><br></pre></td></tr></table></figure>
+<p>创建一个项目，<code>--bin</code>表示所创建者为可执行文件（binaries）。<code>Cargo</code>生成了两个文件：</p>
+<ul>
+<li>Cargo.toml（TOML格式的配置文件）</li>
+<li>src/main.rs（与上面手工创建的一样）</li>
+</ul>
+<p>Cargo.toml内容如下：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">"hello_cargo"</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">"0.1.0"</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">"andersc &lt;andersc@mail.com&gt;"</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br></pre></td></tr></table></figure>
+<p><code>[dependencies]</code>列出了依赖的库，这些依赖在Rust中称为<code>crate</code>。Cargo创建了初始的目录结构，也是建议将代码放在src下，其它文件放在顶级目录。</p>
+<h2 id="Building-and-Running-a-Cargo-Project"><a href="#Building-and-Running-a-Cargo-Project" class="headerlink" title="Building and Running a Cargo Project"></a>Building and Running a Cargo Project</h2><p>使用如下命令编译并运行程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cargo build</span><br><span class="line">$ ./target/debug/hello_cargo</span><br></pre></td></tr></table></figure>
+<p>首次执行<code>cargo build</code>时，它会创建文件<code>Cargo.lock</code>，用于跟踪应用的依赖。一般不需要手工改动之。作为一种更快捷的方式，可以用<code>cargo run</code>来编译并运行程序。</p>
+<h2 id="发布程序"><a href="#发布程序" class="headerlink" title="发布程序"></a>发布程序</h2><p>上面可见，编译的程序放在了<code>debug</code>下，如果要正式发布，则应使用<code>cargo build --release</code>选项，这会优化所生成的程序，代价是编译时间更长。</p>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
+<li>Sublime 3：<a href="https://github.com/rust-lang/sublime-rust" target="_blank" rel="noopener">Sublime Rust</a></li>
+<li><a href="https://intellij-rust.github.io/" target="_blank" rel="noopener">IntelliJ Rust</a></li>
+</ul>
+<h1 id="Guessing-Game"><a href="#Guessing-Game" class="headerlink" title="Guessing Game"></a>Guessing Game</h1><p>通过一个真实的程序来演示几个Rust的常见概念，如<code>let</code>， <code>match</code>，方法，关联函数，使用外部库等。</p>
+<p>猜数游戏是一个经典的编程初学者的问题。</p>
+<h2 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cargo new guessing_game --bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> guessing_game</span></span><br></pre></td></tr></table></figure>
+<h2 id="感受一下"><a href="#感受一下" class="headerlink" title="感受一下"></a>感受一下</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Guess the number!"</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Please input your guess."</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> guess = <span class="built_in">String</span>::new();</span><br><span class="line">    io::stdin().read_line(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">               .expect(<span class="string">"Failed to read line"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"You guessed: &#123;&#125;"</span>, guess);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面，<code>use</code>不用多说；let创建一个<strong>变量</strong>，不过在Rust中变量默认是不可修改的，如果希望修改，则需要使用<strong>mut</strong>；String:new()就是所谓关联函数（associated function），相当于其它语言中的<strong>静态方法</strong>。</p>
+<p><code>stdin</code>是io的关联函数；read_line函数读取用户输入，将值赋给一个变量，<code>&amp;</code>表示参数为<strong>引用（reference）</strong>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Programming/" rel="tag"># Programming</a>
+          
+            <a href="/tags/Rust/" rel="tag"># Rust</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/24/happiness/" rel="next" title="《幸福课》笔记">
+                <i class="fa fa-chevron-left"></i> 《幸福课》笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/01/thomas-calculus-multiple-integrals/" rel="prev" title="Thomas' Calculus - 重积分">
+                Thomas' Calculus - 重积分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Anders Cui">
+          <p class="site-author-name" itemprop="name">Anders Cui</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#升级与卸载"><span class="nav-number">1.1.</span> <span class="nav-text">升级与卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确认"><span class="nav-number">1.2.</span> <span class="nav-text">确认</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地文档"><span class="nav-number">1.3.</span> <span class="nav-text">本地文档</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello-World"><span class="nav-number">2.</span> <span class="nav-text">Hello, World!</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rust程序的结构"><span class="nav-number">2.1.</span> <span class="nav-text">Rust程序的结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译和执行的分离"><span class="nav-number">3.</span> <span class="nav-text">编译和执行的分离</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cargo"><span class="nav-number">4.</span> <span class="nav-text">Cargo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#以Cargo创建一个项目"><span class="nav-number">4.1.</span> <span class="nav-text">以Cargo创建一个项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Building-and-Running-a-Cargo-Project"><span class="nav-number">4.2.</span> <span class="nav-text">Building and Running a Cargo Project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布程序"><span class="nav-number">4.3.</span> <span class="nav-text">发布程序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">5.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Guessing-Game"><span class="nav-number">6.</span> <span class="nav-text">Guessing Game</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#建立项目"><span class="nav-number">6.1.</span> <span class="nav-text">建立项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感受一下"><span class="nav-number">6.2.</span> <span class="nav-text">感受一下</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  June 2017 - 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Anders Cui</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
