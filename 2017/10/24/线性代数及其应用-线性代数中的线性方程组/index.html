@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="原书链接：线性代数及其应用 0.1 前言完成微积分的学生学习起来更易接受。 本身特点 提前介绍主要概念 矩阵乘法的现代观点：定义和证明中使用矩阵的“列”，而非“元素”，核心课题是将矩阵与向量之乘积$Ax$视为关于$A$的列的一个线性组合。这种现代方法简化了很多论述，并将向量空间和线性系统的研究联系在了一起。 线性变换：贯穿整本书，增强了本书的几何趣味。 特征值和动力系统：特征值来源并应用于离散动力">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性代数及其应用-线性代数中的线性方程组">
+<meta property="og:url" content="https://anderscui.github.io/2017/10/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/index.html">
+<meta property="og:site_name" content="mathacker">
+<meta property="og:description" content="原书链接：线性代数及其应用 0.1 前言完成微积分的学生学习起来更易接受。 本身特点 提前介绍主要概念 矩阵乘法的现代观点：定义和证明中使用矩阵的“列”，而非“元素”，核心课题是将矩阵与向量之乘积$Ax$视为关于$A$的列的一个线性组合。这种现代方法简化了很多论述，并将向量空间和线性系统的研究联系在了一起。 线性变换：贯穿整本书，增强了本书的几何趣味。 特征值和动力系统：特征值来源并应用于离散动力">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-23T16:51:43.000Z">
+<meta property="article:modified_time" content="2025-06-21T23:01:37.758Z">
+<meta property="article:author" content="Anders Cui">
+<meta property="article:tag" content="线性代数">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anderscui.github.io/2017/10/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anderscui.github.io/2017/10/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/","path":"2017/10/24/线性代数及其应用-线性代数中的线性方程组/","title":"线性代数及其应用-线性代数中的线性方程组"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>线性代数及其应用-线性代数中的线性方程组 | mathacker</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mathacker</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">no math, little hacker</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-1-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0.1 前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E8%BA%AB%E7%89%B9%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">本身特点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0-2-%E7%BB%99%E5%AD%A6%E7%94%9F%E7%9A%84%E6%B3%A8%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">0.2 给学生的注释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E8%AE%A1%E7%AE%97%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="nav-number">2.1.</span> <span class="nav-text">数值计算的注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Study-Guide"><span class="nav-number">2.2.</span> <span class="nav-text">Study Guide</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">第一章 线性代数中的线性方程组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84"><span class="nav-number">3.1.</span> <span class="nav-text">1.1 线性方程组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E7%9F%A9%E9%98%B5%E8%AE%B0%E5%8F%B7"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.1.1 矩阵记号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E7%9A%84%E8%A7%A3%E6%B3%95"><span class="nav-number">3.1.2.</span> <span class="nav-text">1.1.2 线性方程组的解法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-%E5%AD%98%E5%9C%A8%E4%B8%8E%E5%94%AF%E4%B8%80%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">3.1.3.</span> <span class="nav-text">1.1.3 存在与唯一性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-%E8%A7%A3%E6%96%B9%E7%A8%8B%E7%BB%84%E4%B8%8E%E6%95%B0%E5%80%BC%E8%AE%A1%E7%AE%97"><span class="nav-number">3.1.4.</span> <span class="nav-text">1.1.4 解方程组与数值计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%A1%8C%E5%8C%96%E7%AE%80%E4%B8%8E%E9%98%B6%E6%A2%AF%E5%9E%8B%E7%9F%A9%E9%98%B5"><span class="nav-number">3.2.</span> <span class="nav-text">1.2 行化简与阶梯型矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E4%B8%BB%E5%85%83%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.2.1.</span> <span class="nav-text">1.2.1 主元位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E8%A1%8C%E5%8C%96%E7%AE%80%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.2.</span> <span class="nav-text">1.2.2 行化简算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-3-%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E7%9A%84%E8%A7%A3"><span class="nav-number">3.2.3.</span> <span class="nav-text">1.2.3 线性方程组的解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-4-%E5%9B%9E%E4%BB%A3"><span class="nav-number">3.2.4.</span> <span class="nav-text">1.2.4 回代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-5-%E5%AD%98%E5%9C%A8%E4%B8%8E%E5%94%AF%E4%B8%80%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">3.2.5.</span> <span class="nav-text">1.2.5 存在与唯一性问题</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Anders Cui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2017/10/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Anders Cui">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="线性代数及其应用-线性代数中的线性方程组 | mathacker">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线性代数及其应用-线性代数中的线性方程组
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-10-24 00:51:43" itemprop="dateCreated datePublished" datetime="2017-10-24T00:51:43+08:00">2017-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-06-22 07:01:37" itemprop="dateModified" datetime="2025-06-22T07:01:37+08:00">2025-06-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>原书链接：<a href="https://book.douban.com/subject/1425950/">线性代数及其应用</a></p>
+<h1 id="0-1-前言"><a href="#0-1-前言" class="headerlink" title="0.1 前言"></a>0.1 前言</h1><p>完成微积分的学生学习起来更易接受。</p>
+<h2 id="本身特点"><a href="#本身特点" class="headerlink" title="本身特点"></a>本身特点</h2><ul>
+<li>提前介绍主要概念</li>
+<li>矩阵乘法的现代观点：定义和证明中使用矩阵的“列”，而非“元素”，核心课题是<strong>将矩阵与向量之乘积$Ax$视为关于$A$的列的一个线性组合</strong>。这种现代方法简化了很多论述，并将向量空间和线性系统的研究联系在了一起。</li>
+<li>线性变换：贯穿整本书，增强了本书的几何趣味。</li>
+<li>特征值和动力系统：特征值来源并应用于离散动力系统和连续动力系统。</li>
+<li>正交性和最小二乘法：与普通入门教材相比，本书对这些主题的讨论更为全面。</li>
+</ul>
+<h1 id="0-2-给学生的注释"><a href="#0-2-给学生的注释" class="headerlink" title="0.2 给学生的注释"></a>0.2 给学生的注释</h1><p>独立完成尽可能多的习题，过早查看答案，会误以为已经理解了尚未理解的概念。</p>
+<p><strong>线性代数是一种语言</strong>，用学习外语的方法<strong>每天学习这种语言</strong>。</p>
+<h2 id="数值计算的注解"><a href="#数值计算的注解" class="headerlink" title="数值计算的注解"></a>数值计算的注解</h2><p>关注一下这部分内容，因为现实中的应用通常会涉及一定误差下的计算，这部分可帮助你理解计算中潜在的困难。</p>
+<h2 id="Study-Guide"><a href="#Study-Guide" class="headerlink" title="Study Guide"></a>Study Guide</h2><p>善用之。</p>
+<h1 id="第一章-线性代数中的线性方程组"><a href="#第一章-线性代数中的线性方程组" class="headerlink" title="第一章 线性代数中的线性方程组"></a>第一章 线性代数中的线性方程组</h1><p>1949年夏末，哈佛大学教授列昂惕夫（Leontief）使用当时最大的计算机之一Mark II计算包含500个未知数的500个方程的方程组。由于运算量“过大”，他只好将问题简化为包含42个未知数的42个方程的方程组。他后来获得了诺贝尔经济学奖，他在哈佛的工作标志着<strong>应用计算机分析大规模数学模型的开始</strong>。</p>
+<p>线性代数在科学的各个领域有极为广泛的应用。</p>
+<p><strong>线性方程组是线性代数的核心</strong>，本章以它来引入线性代数的许多重要概念。先介绍求解线性方程组的一个系统方法；再说明线性方程组等价于一个向量方程与矩阵方程，其后引出线性组合、线性表示与线性变换等概念。</p>
+<h2 id="1-1-线性方程组"><a href="#1-1-线性方程组" class="headerlink" title="1.1 线性方程组"></a>1.1 线性方程组</h2><p>本章先是讨论求解线性方程组的一个系统方法。早在初中数学里，我们就学过了线性方程组的求解方法，当时实际上已经提到了解法的一般过程，核心部分是<strong>消元</strong>，因为只有消元才能将方程转化为可直接求解的一元方程。本章讨论的系统方法也是循着这一思路。</p>
+<p>包含未知数$x_1, x_2, \cdots, x_n$的一个<strong>线性方程</strong>是形如</p>
+<p>$$a_1x_1 + a_2x_2 + \cdots + a_nx_n &#x3D; b$$</p>
+<p>的方程，其中$b$与诸系数是实数或复数，通常为已知数。</p>
+<p>而<strong>线性方程组</strong>是由一个或几个包含相同变量$x_1, x_2, \cdots, x_n$的线性方程组成的。</p>
+<p>方程组的一个<strong>解</strong>是一组数$(s_1, s_2, \cdots, s_n)$，解满足方程组的每一个方程。方程组所有可能的解的集合称为其<strong>解集</strong>。两个方程组称为等价的，若它们有相同的解集。</p>
+<p>最简单的线性方程是<strong>二元一次方程</strong>，在几何上它对应于一条直线，它的解与直线上的点一一对应。而两个二元一次方程构成方程组的解集，即对应于两条直线的交点。两条直线可能会相交、平行或重合，这意味着该类方程组的解集也有三种情形：</p>
+<ol>
+<li>唯一解</li>
+<li>无穷多解</li>
+<li>无解</li>
+</ol>
+<p>我们说一个线性方程组是<strong>相容的</strong>，若它有一个或无穷多个解（即有解）；否则称它为<strong>不相容的</strong>（即无解）。</p>
+<h3 id="1-1-1-矩阵记号"><a href="#1-1-1-矩阵记号" class="headerlink" title="1.1.1 矩阵记号"></a>1.1.1 矩阵记号</h3><p>给定一个线性方程组，可以想见，该方程组解集的情况取决于系数和等式右端的常数，与未知数的具体记号无关，所以可以用一个<strong>矩阵</strong>（矩形阵列）来表示方程组，如</p>
+<p>$$\begin{split}<br>	x_1 - 2x_2 + x_3 &#x3D; 0<br> 	\<br> 	2x_2 - 8x_3 &#x3D; 8<br> 	\<br> 	-4x_1 + 5x_2 + 9x_3 &#x3D; -9<br>  \end{split}$$</p>
+<p>矩阵</p>
+<p>$$\begin{bmatrix}<br>      1 &amp; -2 &amp; 1  \[0.3em]<br>      0 &amp; 2  &amp; -8 \[0.3em]<br>      -4 &amp; 5 &amp; 9<br>  \end{bmatrix}$$</p>
+<p>称为方程组的<strong>系数矩阵</strong>，而加上方程组右端常数列的</p>
+<p>$$\begin{bmatrix}<br>      1 &amp; -2 &amp; 1 &amp; 0 \[0.3em]<br>      0 &amp; 2  &amp; -8 &amp; 8 \[0.3em]<br>      -4 &amp; 5 &amp; 9 &amp; 9<br>  \end{bmatrix}$$</p>
+<p>称为其<strong>增广矩阵</strong>。</p>
+<p>矩阵的定义引出其<strong>维数</strong>的概念，表示其行列数。上述增广矩阵的维数是3行4列，一般矩阵称$m \times n$矩阵。</p>
+<h3 id="1-1-2-线性方程组的解法"><a href="#1-1-2-线性方程组的解法" class="headerlink" title="1.1.2 线性方程组的解法"></a>1.1.2 线性方程组的解法</h3><p>基本思路是<strong>把方程组用一个更容易的等价方程组代替</strong>，类似于我们熟悉的<strong>消元法</strong>。</p>
+<p>化简方程组有三种<strong>基本变换</strong>（即<strong>行初等变换</strong>）：</p>
+<ul>
+<li>倍加</li>
+<li>对换</li>
+<li>倍乘（一行的所以元素乘以同一个非零数）</li>
+</ul>
+<p>容易证明，一个方程组的增广矩阵经过若干次行初等变换后，新方程组与原方程组解集相同。而且，这些<strong>行变换是可逆的</strong>。</p>
+<h3 id="1-1-3-存在与唯一性问题"><a href="#1-1-3-存在与唯一性问题" class="headerlink" title="1.1.3 存在与唯一性问题"></a>1.1.3 存在与唯一性问题</h3><p>前面提及，线性方程组的解集有三种可能，可归为如下两个基本问题：</p>
+<ol>
+<li>方程组是否相容，即它是否有解？</li>
+<li>若它有解，解是否唯一？</li>
+</ol>
+<p>通过行变换法，我们可以借助化简了的增广矩阵判断出方程组是否有解，进一步得出其解是否唯一。</p>
+<h3 id="1-1-4-解方程组与数值计算"><a href="#1-1-4-解方程组与数值计算" class="headerlink" title="1.1.4 解方程组与数值计算"></a>1.1.4 解方程组与数值计算</h3><p>计算机中的浮点数表示难免出现舍入误差，这种不精确性有时需要引起注意。</p>
+<h2 id="1-2-行化简与阶梯型矩阵"><a href="#1-2-行化简与阶梯型矩阵" class="headerlink" title="1.2 行化简与阶梯型矩阵"></a>1.2 行化简与阶梯型矩阵</h2><p>将1.1中的方法精确化后，可以得到<strong>行化简算法</strong>，可以解任意线性方程组，而且容易编程实现。这样就可以解决1.1中提出的存在与唯一性问题。该算法适用于任意矩阵。</p>
+<p>矩阵中的<strong>非零行&#x2F;列</strong>指矩阵中至少包含一个非零元素的行&#x2F;列，非零行的<strong>先导元素</strong>指该行中最左边的非零元素。由此引出两类矩阵：</p>
+<p><strong>定义</strong>：一个矩阵称为<strong>阶梯形</strong>（或<strong>行阶梯形</strong>），若它有以下三个性质：</p>
+<ol>
+<li>每一非零行在零行之上；</li>
+<li>每一行的先导元素所在的列位于前一行先导元素的右面；</li>
+<li>某一先导元素所在列下方元素都是零。</li>
+</ol>
+<p>若一个阶梯形矩阵还满足以下性质，则称它为<strong>简化阶梯形</strong>：</p>
+<ol start="4">
+<li>每一非零行的先导元素是1；</li>
+<li>每一先导元素1是该元素所在列的唯一非零元素。</li>
+</ol>
+<p>若一个矩阵具有阶梯形（简化阶梯形），它就称为阶梯形（简化阶梯形）矩阵。一个矩阵可以行化简为阶梯形矩阵，不同的方法可能得到不同的阶梯形，但一个矩阵只能化为唯一的简化阶梯形矩阵。</p>
+<p><strong>定理1：每个矩阵行等价于唯一的简化阶梯形矩阵</strong>。</p>
+<h3 id="1-2-1-主元位置"><a href="#1-2-1-主元位置" class="headerlink" title="1.2.1 主元位置"></a>1.2.1 主元位置</h3><p>矩阵化为阶梯形后，进一步化为简化阶梯形时，先导元素的位置并不改变，而简化阶梯形是唯一的，故<strong>一个矩阵的所有阶梯形的先导元素在相同的位置上</strong>。这些先导元素对应于简化阶梯形的先导1。</p>
+<p>定义：矩阵中的<strong>主元位置</strong>是对应于其阶梯形中先导元素的位置，含有主元位置的列称为<strong>主元列</strong>。</p>
+<p>将矩阵化为阶梯形就可以确定出主元位置，该过程可手工计算完成，由此可抽象出一个通用的<strong>行化简算法</strong>。</p>
+<h3 id="1-2-2-行化简算法"><a href="#1-2-2-行化简算法" class="headerlink" title="1.2.2 行化简算法"></a>1.2.2 行化简算法</h3><p>该算法分为5步，1-4步化矩阵为阶梯形，自左至右，称为<strong>向前步骤</strong>，第5步化阶梯形为简化阶梯形，自右至左，称为<strong>向后步骤</strong>。</p>
+<p><strong>数值计算的注解</strong>：第2步选择主元时，一般选择一列中绝对值最大的元素作为主元，此方法称为<strong>部分主元法</strong>，可减少舍入误差。</p>
+<h3 id="1-2-3-线性方程组的解"><a href="#1-2-3-线性方程组的解" class="headerlink" title="1.2.3 线性方程组的解"></a>1.2.3 线性方程组的解</h3><p>行化简算法应用于方程组的增广矩阵时，可以得出线性方程组解集的一种显式方法。比如，一个方程组化简之后如下：</p>
+<p>$$\begin{split}<br>	x_1 - 5x_3 &#x3D; 1<br> 	\<br> 	x_2 + x_3 &#x3D; 4<br> 	\<br> 	0 &#x3D; 0<br>  \end{split}$$</p>
+<p>其相应的增广矩阵也得到了化简，对应于主元列的变量$x_1$和$x_2$称为<strong>基本变量</strong>，$x_3$则称为<strong>自由变量</strong>。</p>
+<p>若方程组是相容的，其解集可显式表示出来。如果有自由变量，则用其表示基本变量。由于件化阶梯形中，每个基本变量仅包含在一行（一个方程）中，这是容易表示的。上面的方程组解集可表示为：</p>
+<p>$$\begin{cases}<br>    x_1 &#x3D; 1 + 5x_3 \<br>    x_2 &#x3D; 4 - x_3  \<br>    x_3是自由变量<br>  \end{cases}<br>$$</p>
+<p>所谓自由变量是指它可以取任意的值。自由变量的值确定之后，基本变量的值也随之确定下来。这种解集表示称为<strong>通解</strong>，因为它给出了方程组所有解的显式表示。此种表示亦称为解集的<strong>参数表示</strong>，其中自由变量作为参数。</p>
+<p>若方程组是相容的，且具有自由变量，那么其<strong>解集具有多种参数表示</strong>，一般约定为使用自由变量作为参数来表示。</p>
+<h3 id="1-2-4-回代"><a href="#1-2-4-回代" class="headerlink" title="1.2.4 回代"></a>1.2.4 回代</h3><p>计算机程序在解线性方程组时，通常使用<strong>回代法</strong>求解，即在阶梯形基础上回代，而非求出简化阶梯形后再求解。一个浮算（flop）就是两个浮点数的一次运算，一般地行化简算法的向前步骤比向后步骤需要更多运算。使用Matlab的<code>flops</code>可以计算某次计算中所需要的浮算次数。</p>
+<p>手工计算时求出简化阶梯形更不易出错。</p>
+<h3 id="1-2-5-存在与唯一性问题"><a href="#1-2-5-存在与唯一性问题" class="headerlink" title="1.2.5 存在与唯一性问题"></a>1.2.5 存在与唯一性问题</h3><p>虽然非简化阶梯形不能直接解出线性方程组，但已足以回答关于方程组的两个基本问题，也就是如下的定理。</p>
+<p><strong>定理2</strong>：存在与唯一性定理</p>
+<p>线性方程组相容的充要条件是增广矩阵的最右列不是主元列。若方程组相容，当其没有自由变量，有唯一解；否则有无穷多解。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" rel="tag"># 线性代数</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/05/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%85%AB%E8%AE%B2/" rel="prev" title="《数学分析八讲》笔记">
+                  <i class="fa fa-angle-left"></i> 《数学分析八讲》笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/10/python-iterables/" rel="next" title="Python中的可迭代类型">
+                  Python中的可迭代类型 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Anders Cui</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

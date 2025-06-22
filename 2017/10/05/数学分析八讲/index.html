@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="数学分析八讲 原书链接，作者辛钦。 前言非数学专业的工程师、经济学家等，一般会先行学习较为简单的微积分，到了某个时候发现需要更为牢固的数学基础。如果找一本《微积分学教程》来看，事实证明效果不佳。学习者要么无法安排足够的时间去学习，要么还没有足够好的数学基础，无法从研究中区分出哪些是原则的内容，哪些是较为微末的细节。 要满足这类学生的需求，所需其实有限。我的秘诀是：从一开始就拒绝充分详细地讲授哪怕只">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《数学分析八讲》笔记">
+<meta property="og:url" content="https://anderscui.github.io/2017/10/05/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%85%AB%E8%AE%B2/index.html">
+<meta property="og:site_name" content="mathacker">
+<meta property="og:description" content="数学分析八讲 原书链接，作者辛钦。 前言非数学专业的工程师、经济学家等，一般会先行学习较为简单的微积分，到了某个时候发现需要更为牢固的数学基础。如果找一本《微积分学教程》来看，事实证明效果不佳。学习者要么无法安排足够的时间去学习，要么还没有足够好的数学基础，无法从研究中区分出哪些是原则的内容，哪些是较为微末的细节。 要满足这类学生的需求，所需其实有限。我的秘诀是：从一开始就拒绝充分详细地讲授哪怕只">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-10-04T18:28:28.000Z">
+<meta property="article:modified_time" content="2025-06-21T23:01:37.757Z">
+<meta property="article:author" content="Anders Cui">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="数学分析">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anderscui.github.io/2017/10/05/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%85%AB%E8%AE%B2/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anderscui.github.io/2017/10/05/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%85%AB%E8%AE%B2/","path":"2017/10/05/数学分析八讲/","title":"《数学分析八讲》笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>《数学分析八讲》笔记 | mathacker</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mathacker</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">no math, little hacker</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E8%AE%B2-%E8%BF%9E%E7%BB%AD%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">第一讲 连续统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%BF%85%E9%A1%BB%E4%BB%8E%E7%A0%94%E7%A9%B6%E8%BF%9E%E7%BB%AD%E7%BB%9F%E5%BC%80%E5%A7%8B%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">为什么数学分析必须从研究连续统开始？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E6%9C%89%E5%BB%BA%E7%AB%8B%E5%AE%8C%E6%95%B4%E7%9A%84%E5%AE%9E%E6%95%B0%E7%90%86%E8%AE%BA%E6%98%AF%E4%B8%8D%E8%83%BD%E7%A0%94%E7%A9%B6%E8%BF%9E%E7%BB%AD%E7%BB%9F%E7%9A%84%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">为什么没有建立完整的实数理论是不能研究连续统的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E6%95%B0%E6%95%B0%E4%B8%8E%E6%9E%81%E9%99%90"><span class="nav-number">2.2.1.</span> <span class="nav-text">代数数与极限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A0%E7%90%86%E6%95%B0%E7%9A%84%E6%9E%84%E9%80%A0"><span class="nav-number">2.3.</span> <span class="nav-text">无理数的构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%BB%9F%E7%90%86%E8%AE%BA"><span class="nav-number">2.4.</span> <span class="nav-text">连续统理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F"><span class="nav-number">2.4.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97"><span class="nav-number">2.4.2.</span> <span class="nav-text">运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E7%BB%9F%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%80%A7"><span class="nav-number">2.4.3.</span> <span class="nav-text">连续统的连续性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%BC%95%E7%90%86"><span class="nav-number">2.5.</span> <span class="nav-text">基本引理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%8D%95%E8%B0%83%E5%BA%8F%E5%88%97%E7%9A%84%E5%BC%95%E7%90%86"><span class="nav-number">2.5.1.</span> <span class="nav-text">关于单调序列的引理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E8%AE%B2-%E6%9E%81%E9%99%90"><span class="nav-number">3.</span> <span class="nav-text">第二讲 极限</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Anders Cui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2017/10/05/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%85%AB%E8%AE%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Anders Cui">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="《数学分析八讲》笔记 | mathacker">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《数学分析八讲》笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-10-05 02:28:28" itemprop="dateCreated datePublished" datetime="2017-10-05T02:28:28+08:00">2017-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-06-22 07:01:37" itemprop="dateModified" datetime="2025-06-22T07:01:37+08:00">2025-06-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><a href="https://book.douban.com/subject/4825571/">数学分析八讲 原书链接</a>，作者辛钦。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>非数学专业的工程师、经济学家等，一般会先行学习较为简单的微积分，到了某个时候发现需要更为牢固的数学基础。如果找一本《微积分学教程》来看，事实证明效果不佳。学习者要么无法安排足够的时间去学习，要么还没有足够好的数学基础，无法从研究中区分出哪些是原则的内容，哪些是较为微末的细节。</p>
+<p>要满足这类学生的需求，所需其实有限。我的秘诀是：从一开始就拒绝充分详细地讲授哪怕只是阐述本课程牟一章的想法，而只限于讲授那些<strong>具有原则性的内容</strong>。我讲的更多地是关于目的和趋势、问题和方法、基本的分析概念之间的以及它们与应用之间的<strong>关系</strong>，而不是个别的定理与证明。但在有着主导作用和原则意义的概念或方法上，我则不吝时间，力求用各种手段，通过各种表述和直观形象等，尽可能明白而有效地把这些基本内容教给我的学生。有了这个基础，<strong>他们每一个人在需要更深入地研究数学分析的某一章节时，就能够独立地找到他所需的材料，然后进行研究，也就是说，可以自立地区分主要和次要、本质和非本质</strong>。</p>
+<h1 id="第一讲-连续统"><a href="#第一讲-连续统" class="headerlink" title="第一讲 连续统"></a>第一讲 连续统</h1><h2 id="为什么数学分析必须从研究连续统开始？"><a href="#为什么数学分析必须从研究连续统开始？" class="headerlink" title="为什么数学分析必须从研究连续统开始？"></a>为什么数学分析必须从研究连续统开始？</h2><blockquote>
+<p>如果对于变量$x$的每一个值，变量$y$都有唯一确定的值与之对应，那么变量$y$称为变量$x$的函数。</p>
+</blockquote>
+<p>借助于这句话，我们可以定义<strong>最重要的、最首要的数学分析概念</strong>——<strong>函数关系</strong>。在此概念中，已经奠定了借助数学工具来把握自然现象和技术过程的完整思想的萌芽。由于其重要性，我们需要给该定义完全的明确性，其中的每一个字都不应有引起一点怀疑的阴影。</p>
+<p>变量$x$的每一个值，构成了函数的<strong>定义域</strong>（$x$称为<strong>自变量</strong>，$y$称为<strong>因变量</strong>）。而”值“具体是什么？它应该是数，那么定义域应当是一个<strong>数集</strong>。这里先排除掉虚数（其中的分析涉及<strong>复变函数</strong>），假设自变量与因变量皆为<strong>实数</strong>。</p>
+<p>函数的定义域既取决于该函数的性质，也取决于特定的问题。前者给出自然定义域，后者给出更为特殊的定义域。</p>
+<p>数学分析中，最常见的$x$集合是<strong>区间</strong>，区间或是有界的，或是无界的（半直线或直线）。无论如何，对于数学分析中的函数而言，最根本的数集是<strong>实数集</strong>。这个集合在数学中称为<strong>连续统</strong>（或线性连续统）。因其根本，所有认真而科学地编写的数学分析教程中，连续统都是第一个研究对象。</p>
+<h2 id="为什么没有建立完整的实数理论是不能研究连续统的？"><a href="#为什么没有建立完整的实数理论是不能研究连续统的？" class="headerlink" title="为什么没有建立完整的实数理论是不能研究连续统的？"></a>为什么没有建立完整的实数理论是不能研究连续统的？</h2><p>那么连续统是什么样的？存在什么样的实数？如何我们才能相信已经了解了所有实数？</p>
+<p>在所有的数中，我们最先接触到有理数，它可以表示可公度线段的长度，不管是整数值还是分数值，它是相当直观的。但有的线段长度无法用有理数表示，最经典的就是$\sqrt{2}$。这样，我们需要承认<strong>非有理数</strong>的存在，或更直接的<strong>无理数</strong>，如果不承认，某些线段的长度就无法表示。</p>
+<p>有了无理数，就是引入了新数，新数需要确定出它与旧数的关系，至少有二：它与一个有理数的大小关系；它与有理数的运算表示，并且运算结果会产生其它新数，如$1 + \sqrt{2}$。</p>
+<p>$\sqrt{2}$之后，不可避免地要考虑所有形如$r^{1&#x2F;n}$的数，其中$r$是任意正有理数，$n$是$\geq 2$的整数。</p>
+<p>继续这个过程，我们称形如$P(x) &#x3D; 0$的方程的所有实根为<strong>代数数</strong>，其中的$P(x)$为带整系数的任意多项式，并把所有代数数引入到我们的新数集。特别地，任何有理数$r &#x3D; \frac{p}{q}$可作为方程$qx - p &#x3D; 0$的根包含进代数数的集合中。</p>
+<p>代数数是我们数集的一个扩展，我们可以给出法则使其可以排序，以及进行代数运算。看起来已经是一个相当不错的扩展了。但是<strong>在分析之中，仅限于代数数是不够的</strong>。</p>
+<h3 id="代数数与极限"><a href="#代数数与极限" class="headerlink" title="代数数与极限"></a>代数数与极限</h3><p>数学分析的第一步就要对初等代数运算添加基本且重要的分析运算——<strong>极限过程</strong>。极限不止是概念上的，还有具体而现实的意义，而且还要支持代数运算和分析运算。</p>
+<p>如果任何代数数序列的极限都是代数数，那么我们是可以说，代数数集合就是<strong>连续统</strong>（关键在于，它能满足于我们的需要）。我们取单位圆，并且作出其内接正多边形，无限增加其边数，那么这些周长都可以用代数数表示。这个代数数序列的极限为圆周长（即$2\pi$）。这个极限必须承认是存在的，否则就等于是否定了圆周率。</p>
+<p>另一方面，则可以证明这个极限不是代数数。这也说明，数学分析中仅考虑代数数是不够的。事实上，$\pi$这样的数称为<strong>超越数</strong>。我们的数集需要包含代数数与超越数。另一个重要的超越数是$e$。</p>
+<p>那么，对于超越数我们能了解什么？现在只知道某些特殊的极限值是超越数，如$\pi$和$e$。是否可以说，我们的连续统包括所有的代数数，加上”根据需要，再添加某些特别的超越数“呢？这种定义的问题是：</p>
+<ul>
+<li>该集合不是一个确定性的集合，随时有可能需要添加新数</li>
+<li>该定义不像有理数和代数数那样具有一致的定义，也不够优雅</li>
+<li>该定义无法保证，对于新引入的数，可以一致地满足代数运算与极限运算（如代数数那样），在某些情况下，还需要引入其它数，这说明连续统还没有包含所有的实数</li>
+</ul>
+<p>现在可以看到，对于连续统，我们不能仅限于”按照需要“引入几个新数，而是要给出<strong>建立实数的一般性理论</strong>，该理论适用于所有的实数。</p>
+<h2 id="无理数的构造"><a href="#无理数的构造" class="headerlink" title="无理数的构造"></a>无理数的构造</h2><p>存在几种不同的连续统理论，它们在处理各自问题时的<strong>思路是完全一样的</strong>。在论证时，不需要囿于某一特定的理论，可以组合或交替使用。</p>
+<p><strong>所有这些理论都把有理数作为最初的数据</strong>，然后<strong>用统一的构造原则得到所有实数的集合</strong>。各种理论都基于统一思想，即：<strong>在构造新数时，基本解析极限过程起首要、主导的作用</strong>，所遇到的种种方法都可以归结为它。例如，$\sqrt{2}$的值可视为一个经过适当选择而得的有理数序列的极限。</p>
+<p>构造连续统的三种方法是：</p>
+<ul>
+<li>戴德金分割方法</li>
+<li>康托尔的基本列方法</li>
+<li>魏尔斯特拉斯从十进小数表示出发的方法</li>
+</ul>
+<p>本书采用戴德金分割法，因其在各种教材中被广泛的采纳。</p>
+<p>在引入无理数之前，我们再仔细地观察以$R$（一般用$R$表示实数）表示的有理数集。首先是它的<strong>稠密性</strong>，即任何两个有理数$r_1$和$r_2$之间总可以找到第三个有理数，最简单的例子是两者的平均数。作为推论，我们可以得出，在$r_1$和$r_2$之间始终存在有理数的无穷集合。</p>
+<p>现在，考察定义$\sqrt{2}$时的情况，该数不在有理数中。那么，如果<strong>仅考虑正有理数</strong>的话，任意给定有理数$r$，要么$r^2 &lt; 2$，要么$r^2 &gt; 2$。据此，正有理数可分为两类：A类，其中的数$r_1$满足$r_1^2 &lt; 2$，B类，其中的数$r_2$满足$r_2^2 &lt; 2$，因$r_1, r_2$皆为正数，故有$r_1 &lt; r_2$。这说明<strong>A类中的每个数都小于B类中的每个数</strong>。然后我们把零和所有负数归到A类，那么上述结论不变。这时我们得到有理数集的一个<strong>分割</strong>。</p>
+<blockquote>
+<p>若将$R$分为两个非空的类（A，B），且A类中的每一个数都小于B类，就称之为<strong>分割</strong>。</p>
+</blockquote>
+<p>我们可以用更简单的方法得到分割。如把所有小于等于5的数归为A类，大于5的归为B类。如果把有理数对应到数轴上的点，那么这种分割是非常直观的。</p>
+<p>现在我们有两个分割的例子，即由$\sqrt{2}$和$5$构造的。它们只是有位置的差别，还是有本质的区别？对于我们构造实数这一目的来说，它们是很不一样的。原因是，第二个分割中，$5$将有理数分割为两类，所有其它的数，或大于或小于它，而它自身也属于有理数，这种数称为<strong>分割的界限</strong>；而第一个分割不存在这样的界限。</p>
+<p>PS：界限，是指其本身是有理数，同时小于它的有理数属于一类，大于大的有理数属于另一类。是故$5$是界限，而$\sqrt{2}$所定义的分割没有界限（证明见P6）。</p>
+<p>这样有理数集$R$的所有分割分为两种类型：有界限的和无界限的。此外，界限还有其它性质：</p>
+<ul>
+<li>一个分割不可能有两个界限</li>
+<li>若界限存在，则其要么是$A$类最大数，要么是$B$类最小数</li>
+<li>每一个有理数$r_0$都是两个不同分割的界限，其一的$A$类是$r \leq r_0$，其二的$A$类是$r &lt; r_0$</li>
+</ul>
+<p>由$\sqrt{2}$的例子可以看出，这样的数是存在的（单位正方形的对角线长度），而且如果不添加这样的数，那么数集就没有其<strong>连续性</strong>和<strong>致密性</strong>。因此，我们可考虑依据<strong>分割的界限</strong>来定义新数，即<strong>无理数</strong>。</p>
+<p>对于有理数集$R$的每一个没有界限的分割，我们都定义一个新的无理数与之对应，并定义此无理数即分割的界限。根据这个统一的原则，我们就确定了整个无理数的集合。连同已知的有理数集，它们构成了所有实数的几何，即<strong>连续统</strong>。</p>
+<h2 id="连续统理论"><a href="#连续统理论" class="headerlink" title="连续统理论"></a>连续统理论</h2><p>上面由分割，可以构造新的无理数，或者说所有的无理数，但这一原则只是连续统理论的开始，还有大量其它工作要做：</p>
+<ul>
+<li>对连续统<strong>排序</strong>，确定两个实数的大小关系</li>
+<li>对实数定义运算，比如$1 + \sqrt{2}$的值是什么</li>
+<li>新运算具有有理数域中我们所熟知的全部性质，如加法的交换律</li>
+<li>确认我们定义的连续统确实已经适应了所有实际和直观表示之需要</li>
+</ul>
+<p>以下将讨论实数的各个性质，须知有理数和无理数都对应到两个分割，有理数是分割的界限且为最大&#x2F;小数，无理数则不是界限，其分类亦无最大&#x2F;小数。</p>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><p>利用上面提及的实数与分割关系可以证得（详见P8），两个实数各自决定的分割也决定了它们之间的大小关系。</p>
+<h3 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h3><p>在P8-9，书中以实数加法运算为例说明了如何为连续统添加运算，以及这些运算仍然满足旧有的运算律。</p>
+<h3 id="连续统的连续性"><a href="#连续统的连续性" class="headerlink" title="连续统的连续性"></a>连续统的连续性</h3><p>至此所谈及的分割都是对于有理数集的分割，这些分割有的是不存在界限的，如$\sqrt{2}$，看起来就像是有理数之间夹杂着一些不属于有理数的数，那么以数轴的角度看，有理数集是<strong>不连续的</strong>。这种不连续性也是我们扩展有理数集的原因。</p>
+<p>引入无理数并且定义了实数的排序后，也可以定义连续统的分割。如果每一个连续统的分割都有一个实数作为界限（证明见P10），那么我们可以说连续统本身是连续的，这样就弥补了有理数集的不足，而数学分析的讨论就可以继续下去了。</p>
+<h2 id="基本引理"><a href="#基本引理" class="headerlink" title="基本引理"></a>基本引理</h2><p>以分割建立起来的连续统为我们带来了数学分析的逻辑基础。理论上来说，接下来的所有研究都可以直接回溯到分割的定义去解决问题，但实际上很多时候，构造分割是繁琐的过程。数学家们引入了几个辅助命题（引理），这些引理在很多情况下比分割更为方便，一旦证明了这些引理，就可以把它们和分割定义一起作为后续研究的工具。</p>
+<h3 id="关于单调序列的引理"><a href="#关于单调序列的引理" class="headerlink" title="关于单调序列的引理"></a>关于单调序列的引理</h3><p><strong>引理1</strong>：任何单调有界序列都有极限。</p>
+<h1 id="第二讲-极限"><a href="#第二讲-极限" class="headerlink" title="第二讲 极限"></a>第二讲 极限</h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+              <a href="/tags/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/" rel="tag"># 数学分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/04/%E6%8E%A7%E5%88%B6%E5%8A%9B%E5%B9%BB%E8%B1%A1/" rel="prev" title="控制力幻象">
+                  <i class="fa fa-angle-left"></i> 控制力幻象
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/10/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/" rel="next" title="线性代数及其应用-线性代数中的线性方程组">
+                  线性代数及其应用-线性代数中的线性方程组 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Anders Cui</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

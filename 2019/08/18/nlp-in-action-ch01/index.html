@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="NLP实战Chatbot Recurrent Pipeline Parse: tokenizer, NER, extract info., reduce dim Analyze: spelling, grammar, sentiment, humanness, CNN, GAN Generate: search, templates, FSM, RNN… Execute: generate &amp;am">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nlp-in-action-ch01">
+<meta property="og:url" content="https://anderscui.github.io/2019/08/18/nlp-in-action-ch01/index.html">
+<meta property="og:site_name" content="mathacker">
+<meta property="og:description" content="NLP实战Chatbot Recurrent Pipeline Parse: tokenizer, NER, extract info., reduce dim Analyze: spelling, grammar, sentiment, humanness, CNN, GAN Generate: search, templates, FSM, RNN… Execute: generate &amp;am">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-08-17T18:46:54.000Z">
+<meta property="article:modified_time" content="2025-06-21T23:01:37.751Z">
+<meta property="article:author" content="Anders Cui">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anderscui.github.io/2019/08/18/nlp-in-action-ch01/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anderscui.github.io/2019/08/18/nlp-in-action-ch01/","path":"2019/08/18/nlp-in-action-ch01/","title":"nlp-in-action-ch01"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nlp-in-action-ch01 | mathacker</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mathacker</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">no math, little hacker</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NLP%E5%AE%9E%E6%88%98"><span class="nav-number">1.</span> <span class="nav-text">NLP实战</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chatbot-Recurrent-Pipeline"><span class="nav-number">1.1.</span> <span class="nav-text">Chatbot Recurrent Pipeline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F"><span class="nav-number">1.2.</span> <span class="nav-text">序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86-%E5%96%84%E8%B0%88%E7%9A%84%E6%9C%BA%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">第一部分 善谈的机器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch01-NLP%E6%A6%82%E8%BF%B0"><span class="nav-number">3.</span> <span class="nav-text">Ch01 NLP概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch02-%E6%9E%84%E5%BB%BA%E8%AF%8D%E6%B1%87%E8%A1%A8%EF%BC%88Tokenizer%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">Ch02 构建词汇表（Tokenizer）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch03-%E5%85%B3%E4%BA%8E%E8%AF%8D%E7%9A%84%E6%95%B0%E5%AD%A6%EF%BC%88TF-IDF%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">Ch03 关于词的数学（TF-IDF）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch04-%E8%AF%8D%E9%A2%91%E8%95%B4%E5%90%AB%E7%9A%84%E6%84%8F%E4%B9%89%EF%BC%88Semantic-Analysis%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">Ch04 词频蕴含的意义（Semantic Analysis）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="nav-number">7.</span> <span class="nav-text">第二部分 深度学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch05-%E5%88%9D%E8%AF%86%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%EF%BC%89"><span class="nav-number">8.</span> <span class="nav-text">Ch05 初识神经网络（感知机与反向传播）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch06-%E4%BB%A5%E8%AF%8D%E5%90%91%E9%87%8F%E6%8E%A8%E7%90%86%EF%BC%88Word2Vec%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">Ch06 以词向量推理（Word2Vec）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch07-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88CNN%EF%BC%89"><span class="nav-number">10.</span> <span class="nav-text">Ch07 卷积神经网络（CNN）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch08-%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%EF%BC%88RNN%EF%BC%89"><span class="nav-number">11.</span> <span class="nav-text">Ch08 循环神经网络（RNN）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch09-LSTM"><span class="nav-number">12.</span> <span class="nav-text">Ch09 LSTM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch10-Seq-to-seq%E6%A8%A1%E5%9E%8B"><span class="nav-number">13.</span> <span class="nav-text">Ch10 Seq-to-seq模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86-%E6%9D%A5%E5%88%B0%E7%8E%B0%E5%AE%9E%E4%B8%96%E7%95%8C"><span class="nav-number">14.</span> <span class="nav-text">第三部分 来到现实世界</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch11-%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96%EF%BC%88NER%E4%B8%8E%E9%97%AE%E9%A2%98%E5%9B%9E%E7%AD%94%EF%BC%89"><span class="nav-number">15.</span> <span class="nav-text">Ch11 信息提取（NER与问题回答）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch12-%E5%AF%B9%E8%AF%9D%E5%BC%95%E6%93%8E"><span class="nav-number">16.</span> <span class="nav-text">Ch12 对话引擎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ch13-Scaling-up"><span class="nav-number">17.</span> <span class="nav-text">Ch13 Scaling up</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Anders Cui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2019/08/18/nlp-in-action-ch01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Anders Cui">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nlp-in-action-ch01 | mathacker">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nlp-in-action-ch01
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-18 02:46:54" itemprop="dateCreated datePublished" datetime="2019-08-18T02:46:54+08:00">2019-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-06-22 07:01:37" itemprop="dateModified" datetime="2025-06-22T07:01:37+08:00">2025-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="NLP实战"><a href="#NLP实战" class="headerlink" title="NLP实战"></a>NLP实战</h1><h2 id="Chatbot-Recurrent-Pipeline"><a href="#Chatbot-Recurrent-Pipeline" class="headerlink" title="Chatbot Recurrent Pipeline"></a>Chatbot Recurrent Pipeline</h2><ol>
+<li>Parse: tokenizer, NER, extract info., reduce dim</li>
+<li>Analyze: spelling, grammar, sentiment, humanness, CNN, GAN</li>
+<li>Generate: search, templates, FSM, RNN…</li>
+<li>Execute: generate &amp; classify…</li>
+</ol>
+<h2 id="序"><a href="#序" class="headerlink" title="序"></a>序</h2><p>2013年之后，NLP和聊天机器人的应用变得日益广泛，如愈来愈智能的Google Search、智能手机的自动完成功能。Gmail的<code>Smart Reply</code>令作者印象深刻。</p>
+<p>从经典的马尔科夫链（词频、ngrams、条件概率等），可以实现一些颇为有用的功能，如Peter Norvig的<a href="https://norvig.com/spell-correct.html">spelling corrector</a>。</p>
+<p>PS：Peter的文章2016年有更新，或许会有新的启发，文章主要涉及传统的基于统计的语言模型。</p>
+<p>接下来是<strong>隐语义分析（Latent Semantic Analysis, LSA）</strong>，大致是持续跟踪那些共现的词，从而可将这些词归为<strong>topic</strong>。LSA将句子或文档的意思压缩为一个向量。</p>
+<p><strong>gensim</strong>库实现了<code>Word2vec</code>词向量，可将</p>
+<h1 id="第一部分-善谈的机器"><a href="#第一部分-善谈的机器" class="headerlink" title="第一部分 善谈的机器"></a>第一部分 善谈的机器</h1><p>1-4章</p>
+<h1 id="Ch01-NLP概述"><a href="#Ch01-NLP概述" class="headerlink" title="Ch01 NLP概述"></a>Ch01 NLP概述</h1><h1 id="Ch02-构建词汇表（Tokenizer）"><a href="#Ch02-构建词汇表（Tokenizer）" class="headerlink" title="Ch02 构建词汇表（Tokenizer）"></a>Ch02 构建词汇表（Tokenizer）</h1><h1 id="Ch03-关于词的数学（TF-IDF）"><a href="#Ch03-关于词的数学（TF-IDF）" class="headerlink" title="Ch03 关于词的数学（TF-IDF）"></a>Ch03 关于词的数学（TF-IDF）</h1><h1 id="Ch04-词频蕴含的意义（Semantic-Analysis）"><a href="#Ch04-词频蕴含的意义（Semantic-Analysis）" class="headerlink" title="Ch04 词频蕴含的意义（Semantic Analysis）"></a>Ch04 词频蕴含的意义（Semantic Analysis）</h1><h1 id="第二部分-深度学习"><a href="#第二部分-深度学习" class="headerlink" title="第二部分 深度学习"></a>第二部分 深度学习</h1><p>5-10章</p>
+<h1 id="Ch05-初识神经网络（感知机与反向传播）"><a href="#Ch05-初识神经网络（感知机与反向传播）" class="headerlink" title="Ch05 初识神经网络（感知机与反向传播）"></a>Ch05 初识神经网络（感知机与反向传播）</h1><h1 id="Ch06-以词向量推理（Word2Vec）"><a href="#Ch06-以词向量推理（Word2Vec）" class="headerlink" title="Ch06 以词向量推理（Word2Vec）"></a>Ch06 以词向量推理（Word2Vec）</h1><h1 id="Ch07-卷积神经网络（CNN）"><a href="#Ch07-卷积神经网络（CNN）" class="headerlink" title="Ch07 卷积神经网络（CNN）"></a>Ch07 卷积神经网络（CNN）</h1><h1 id="Ch08-循环神经网络（RNN）"><a href="#Ch08-循环神经网络（RNN）" class="headerlink" title="Ch08 循环神经网络（RNN）"></a>Ch08 循环神经网络（RNN）</h1><h1 id="Ch09-LSTM"><a href="#Ch09-LSTM" class="headerlink" title="Ch09 LSTM"></a>Ch09 LSTM</h1><h1 id="Ch10-Seq-to-seq模型"><a href="#Ch10-Seq-to-seq模型" class="headerlink" title="Ch10 Seq-to-seq模型"></a>Ch10 Seq-to-seq模型</h1><h1 id="第三部分-来到现实世界"><a href="#第三部分-来到现实世界" class="headerlink" title="第三部分 来到现实世界"></a>第三部分 来到现实世界</h1><p>11-13章</p>
+<h1 id="Ch11-信息提取（NER与问题回答）"><a href="#Ch11-信息提取（NER与问题回答）" class="headerlink" title="Ch11 信息提取（NER与问题回答）"></a>Ch11 信息提取（NER与问题回答）</h1><h1 id="Ch12-对话引擎"><a href="#Ch12-对话引擎" class="headerlink" title="Ch12 对话引擎"></a>Ch12 对话引擎</h1><h1 id="Ch13-Scaling-up"><a href="#Ch13-Scaling-up" class="headerlink" title="Ch13 Scaling up"></a>Ch13 Scaling up</h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/15/spacy/" rel="prev" title="spacy">
+                  <i class="fa fa-angle-left"></i> spacy
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/02/%E7%9D%A1%E5%89%8D%E6%95%85%E4%BA%8B%E4%B8%80%E5%88%99/" rel="next" title="睡前故事一则">
+                  睡前故事一则 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Anders Cui</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="平面向量和极坐标函数- Vectors in the Plane and Polar Functions  当一个物体在$xy$平面上漫游时，参数方程$y &#x3D; f(t)$和$y &#x3D; g(t)$可用来作为物体的运动和路径模型。这一章将了解参数方程的向量方式，用它来描述运动物体的轨迹，并计算其速度和加速度。 向量函数的一个主要作用是分析空间运动，行星运动最好用极坐标描述（由雅各布·">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Thomas&#39; Calculus - 平面与空间中的向量">
+<meta property="og:url" content="https://anderscui.github.io/2017/09/13/thomas-calculus-vectors-in-the-plane-and-space/index.html">
+<meta property="og:site_name" content="mathacker">
+<meta property="og:description" content="平面向量和极坐标函数- Vectors in the Plane and Polar Functions  当一个物体在$xy$平面上漫游时，参数方程$y &#x3D; f(t)$和$y &#x3D; g(t)$可用来作为物体的运动和路径模型。这一章将了解参数方程的向量方式，用它来描述运动物体的轨迹，并计算其速度和加速度。 向量函数的一个主要作用是分析空间运动，行星运动最好用极坐标描述（由雅各布·">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-09-12T17:37:09.000Z">
+<meta property="article:modified_time" content="2025-06-21T23:01:37.755Z">
+<meta property="article:author" content="Anders Cui">
+<meta property="article:tag" content="Maths">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anderscui.github.io/2017/09/13/thomas-calculus-vectors-in-the-plane-and-space/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anderscui.github.io/2017/09/13/thomas-calculus-vectors-in-the-plane-and-space/","path":"2017/09/13/thomas-calculus-vectors-in-the-plane-and-space/","title":"Thomas' Calculus - 平面与空间中的向量"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Thomas' Calculus - 平面与空间中的向量 | mathacker</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">mathacker</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">no math, little hacker</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B3%E9%9D%A2%E5%90%91%E9%87%8F%E5%92%8C%E6%9E%81%E5%9D%90%E6%A0%87%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">平面向量和极坐标函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E9%9D%A2%E5%90%91%E9%87%8F"><span class="nav-number">1.1.</span> <span class="nav-text">平面向量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%87%8F%E5%BD%A2%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">分量形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%B6%E5%90%91%E9%87%8F%E4%B8%8E%E5%8D%95%E4%BD%8D%E5%90%91%E9%87%8F"><span class="nav-number">1.1.2.</span> <span class="nav-text">零向量与单位向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E7%9A%84%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97"><span class="nav-number">1.1.3.</span> <span class="nav-text">向量的代数运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%8D%95%E4%BD%8D%E5%90%91%E9%87%8F"><span class="nav-number">1.1.4.</span> <span class="nav-text">标准单位向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E7%BA%BF%E5%92%8C%E6%B3%95%E7%BA%BF"><span class="nav-number">1.1.5.</span> <span class="nav-text">切线和法线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E7%A7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">点积</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%A4%B9%E8%A7%92"><span class="nav-number">1.2.1.</span> <span class="nav-text">向量夹角</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E7%A7%AF%E6%B3%95%E5%88%99"><span class="nav-number">1.2.2.</span> <span class="nav-text">点积法则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%EF%BC%88%E6%AD%A3%E4%BA%A4%EF%BC%89%E5%90%91%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">垂直（正交）向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E6%8A%95%E5%BD%B1"><span class="nav-number">1.2.4.</span> <span class="nav-text">向量投影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%8A%E4%B8%80%E4%B8%AA%E5%90%91%E9%87%8F%E5%86%99%E6%88%90%E6%AD%A3%E4%BA%A4%E5%90%91%E9%87%8F%E4%B9%8B%E5%92%8C"><span class="nav-number">1.2.5.</span> <span class="nav-text">把一个向量写成正交向量之和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.2.6.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%80%BC%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">向量值函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E9%9D%A2%E6%9B%B2%E7%BA%BF"><span class="nav-number">1.3.1.</span> <span class="nav-text">平面曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E9%99%90%E4%B8%8E%E8%BF%9E%E7%BB%AD"><span class="nav-number">1.3.2.</span> <span class="nav-text">极限与连续</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">导数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E5%87%BD%E6%95%B0%E5%9C%A8%E8%BF%90%E5%8A%A8%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">1.3.4.</span> <span class="nav-text">向量函数在运动中的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%AF%E5%88%86"><span class="nav-number">1.3.5.</span> <span class="nav-text">积分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%8A%9B%E5%B0%84%E4%BD%93%E8%BF%90%E5%8A%A8%E5%BB%BA%E6%A8%A1"><span class="nav-number">1.4.</span> <span class="nav-text">对抛射体运动建模</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%9D%90%E6%A0%87%E5%92%8C%E5%9B%BE%E5%BD%A2"><span class="nav-number">1.5.</span> <span class="nav-text">极坐标和图形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.5.1.</span> <span class="nav-text">极坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%81%E5%9B%BE%E5%BD%A2"><span class="nav-number">1.5.2.</span> <span class="nav-text">极图形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%86%85%E5%AE%B9"><span class="nav-number">1.5.3.</span> <span class="nav-text">其他内容</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E4%B8%AD%E7%9A%84%E5%90%91%E9%87%8F%E5%92%8C%E8%BF%90%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">空间中的向量和运动</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Anders Cui</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2017/09/13/thomas-calculus-vectors-in-the-plane-and-space/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Anders Cui">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Thomas&#39; Calculus - 平面与空间中的向量 | mathacker">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Thomas' Calculus - 平面与空间中的向量
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-09-13 01:37:09" itemprop="dateCreated datePublished" datetime="2017-09-13T01:37:09+08:00">2017-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-06-22 07:01:37" itemprop="dateModified" datetime="2025-06-22T07:01:37+08:00">2025-06-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="平面向量和极坐标函数"><a href="#平面向量和极坐标函数" class="headerlink" title="平面向量和极坐标函数"></a>平面向量和极坐标函数</h1><pre><code>- Vectors in the Plane and Polar Functions
+</code></pre>
+<p>当一个物体在$xy$平面上漫游时，<strong>参数方程</strong>$y &#x3D; f(t)$和$y &#x3D; g(t)$可用来作为物体的运动和路径模型。这一章将了解<strong>参数方程的向量方式</strong>，用它来描述运动物体的轨迹，并计算其速度和加速度。</p>
+<p>向量函数的一个主要作用是分析空间运动，行星运动最好用<strong>极坐标</strong>描述（由雅各布·伯努利首先发表），因为我们也将了解如何在这一新坐标系下分析曲线、导数和积分。</p>
+<h2 id="平面向量"><a href="#平面向量" class="headerlink" title="平面向量"></a>平面向量</h2><pre><code>- Vectors in the Plane
+</code></pre>
+<p>我们测量时用到的量，分为两类，一是<strong>标量</strong>（Scalar），或称纯量，表示单纯的数值，如长度、质量与速率等；二是<strong>向量</strong>（Vector），或称矢量（因带有箭头而颇为形象），兼有大小与方向，如位移、速度与力等。</p>
+<h3 id="分量形式"><a href="#分量形式" class="headerlink" title="分量形式"></a>分量形式</h3><p>向量用<strong>有向线段</strong>表示，箭头所向表示方向，长度指定大小。有向线段用$\overrightarrow{AB}$这样的形式表示，A、B分别为起点和终点；其长度用$|\overrightarrow{AB}|$表示。</p>
+<p>如果两条有向线段长度相等且方向相同，则它们是<strong>相等</strong>的。更进一步，我们认为它们表示<strong>同一向量</strong>。（类似于，两个标量相等，则它们表示同一个量）</p>
+<p>在笛卡尔坐标系中，两点确定出一条有向线段，从而它的长度与方向（即斜率）可以计算，因此可以确定两个向量是否相等。</p>
+<p>与向量$v$相等的有向线段中，起点位于原点的那个是唯一的，称为$v$的<strong>标准位置</strong>。</p>
+<p>定义：<strong>向量的分量形式</strong></p>
+<p>如果平面上的向量$v$的标准位置终点在$(v_1, v_2)$，那么$v$的分量形式是：</p>
+<p>$$v &#x3D; &lt;v_1, v_2&gt;$$</p>
+<p>如此，平面上的向量与实数的<strong>有序对</strong>是一一对应的。这里$v_1$和$v_2$称为$v$的<strong>分量</strong>。向量$&lt;v_1, v_2&gt;$称为点$(v_1, v_2)$的<strong>位置向量</strong>。</p>
+<p>若向量$v &#x3D; &lt;v_1, v_2&gt;$用有向线段$\overrightarrow{PQ}$，P、Q坐标分别是$(x_1, y_1)$、$(x_2, y_2)$，则$v$的分量是：</p>
+<p>$$v &#x3D; &lt;x_2 - x_1, y_2 - y_1&gt;$$</p>
+<p>向量$\overrightarrow{PQ}$的长度或大小为：</p>
+<p>$$|v| &#x3D; \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$</p>
+<p>以上，都是中学数学解析几何的内容。</p>
+<h3 id="零向量与单位向量"><a href="#零向量与单位向量" class="headerlink" title="零向量与单位向量"></a>零向量与单位向量</h3><p><strong>零向量</strong>是$0 &#x3D; &lt;0, 0&gt;$，长度为零，方向则不确定。</p>
+<p>任何长度为1的向量$v$是<strong>单位向量</strong>。若$v$与正$x$轴夹角为$\theta$，则$v$的分量可表示为：</p>
+<p>$$v &#x3D; &lt;\cos \theta, \sin \theta&gt;$$</p>
+<p>$\theta$从$0$变化到$2\pi$时，单位向量取遍所有可能的方向。</p>
+<h3 id="向量的代数运算"><a href="#向量的代数运算" class="headerlink" title="向量的代数运算"></a>向量的代数运算</h3><p>向量的两个主要运算是加法与数乘。</p>
+<p>定义：<strong>向量加法与数乘</strong></p>
+<p>设$u &#x3D; &lt;u_1, u_2&gt;, v &#x3D; &lt;v_1, v_2&gt;$，$k$是实数</p>
+<ul>
+<li>加法：$u + v &#x3D; &lt;u_1 + v_1, u_2 + v_2&gt;$</li>
+<li>数乘：$ku &#x3D; &lt;ku_1, ku_2&gt;$</li>
+</ul>
+<p>向量加法在几何上可使用<strong>三角形法则</strong>或<strong>平行四边形法则</strong>，一种非常直观的理解是物理中的<strong>位移</strong>概念。</p>
+<p>至于数乘，若$k$为正，则$ku$的方向与$u$同；若$k$为负，则$ku$的方向与$u$反。另一方面，$|ku| &#x3D; |k| \cdot |u|$。特别地，$(-1)u &#x3D; -u$。</p>
+<p>定义：<strong>向量的差</strong></p>
+<p>$$u - v &#x3D; u + (-u) &#x3D; &lt;u_1 - v_1, u_1 - u_2&gt;$$</p>
+<p>注意到$(u - v) + v &#x3D; u$，故向量加法与减法类似于数的加减法，减法可看作加法的逆运算。</p>
+<h3 id="标准单位向量"><a href="#标准单位向量" class="headerlink" title="标准单位向量"></a>标准单位向量</h3><p>任何平面向量$v &#x3D; &lt;a, b&gt;$都可以写成<strong>标准单位向量</strong></p>
+<p>$$i &#x3D; &lt;1, 0&gt;, j &#x3D; &lt;0, 1&gt;$$</p>
+<p>的<strong>线性组合</strong>：$v &#x3D; a&lt;1, 0&gt; + b&lt;0, 1&gt; &#x3D; ai + bj$。$a$和$b$分别称为<strong>水平分量&#x2F;i分量</strong>和<strong>垂直分量&#x2F;j分量</strong>。</p>
+<p>例：一个向量可以表示为与其同方向单位向量的数乘，求$v &#x3D; 3i - 4j$的此种表示。</p>
+<p>解：$|v| &#x3D; 5$，那么$\frac{v}{|v|}$即为与其同方向的单位向量，令其乘以$|v|$即可得到原向量。结果是$v &#x3D; 5(\frac{3}{5}i - \frac{4}{5}j)$。</p>
+<p>$\frac{v}{|v|}$是与$v$同方向的单位向量，也称为$v$的<strong>方向</strong>。</p>
+<h3 id="切线和法线"><a href="#切线和法线" class="headerlink" title="切线和法线"></a>切线和法线</h3><p>一个向量是一条曲线在一个点$P$的<strong>切向量</strong>或<strong>法向量</strong>，如果它分别平行或垂直于曲线在该点的切线。切线斜率可由导数计算，而法线斜率则是导数的负倒数。</p>
+<p>例：在曲线路径上，速度是切向量，如果物体受到法向量方向上的力，速度会发生变化。</p>
+<h2 id="点积"><a href="#点积" class="headerlink" title="点积"></a>点积</h2><pre><code>- Dot Products
+</code></pre>
+<p>本节将了解如何通过向量分量计算两个向量的夹角，其关键是称为<strong>点积</strong>的表达式，点积亦称为<strong>数量积</strong>。之后还会介绍如何求解一个向量在另一个向量上的<strong>投影</strong>。</p>
+<p>中学物理中，力的分解将一个向量分解为两个方向上的分量。特别地，如果要求力$F$在$v$的方向上的大小，改大小可以表示为$|F|\cos \theta$，这里的$\theta$是两向量的夹角。</p>
+<h3 id="向量夹角"><a href="#向量夹角" class="headerlink" title="向量夹角"></a>向量夹角</h3><p>如果两向量$u, v$起点重合，它们形成大小为$\theta$的角，这个角称为两者的<strong>夹角</strong>。</p>
+<p>定理：<strong>两向量的夹角</strong></p>
+<p>两个<strong>非零向量</strong>$u &#x3D; &lt;u_1, u_2&gt;$和$v &#x3D; &lt;v_1, v_2&gt;$的夹角由如下公式给出：</p>
+<p>$$\theta &#x3D; cos^{-1} \frac{u_1 v_1 + u_2 v_2}{|u| |v|}$$</p>
+<p>式中的分子部分称为向量的<strong>点积</strong>或<strong>内积</strong>，即各分量乘积之和，记为$u \cdot v$。故上述公式又可表示为：</p>
+<p>$$\theta &#x3D; cos^{-1} \frac{u \cdot v}{|u| |v|}$$</p>
+<p>此定理可由三角形的<strong>余弦定理</strong>证明。该等式又可变形为：</p>
+<p>$$u \cdot v &#x3D; |u| |v| \cos \theta$$</p>
+<h3 id="点积法则"><a href="#点积法则" class="headerlink" title="点积法则"></a>点积法则</h3><p>依实数性质，点积遵循若干运算法则，如交换律、分配律等，特别地有：$u \cdot u &#x3D; |u|^2$</p>
+<h3 id="垂直（正交）向量"><a href="#垂直（正交）向量" class="headerlink" title="垂直（正交）向量"></a>垂直（正交）向量</h3><p>若两个非零向量$u, v$夹角为$\pi&#x2F;2$，那么它们是<strong>垂直的</strong>或<strong>正交的</strong>。此时由夹角定理可知，$u \cdot v &#x3D; 0$，反之亦成立。</p>
+<p>由于零向量可以是任意方向的，故零向量垂直于任意向量。这样的规定也符合上段的结论。</p>
+<h3 id="向量投影"><a href="#向量投影" class="headerlink" title="向量投影"></a>向量投影</h3><p>向量$u, v$起点重合，从$u$终点引垂线，由起点与垂足确定的向量称为$u$在$v$上的<strong>投影</strong>，记为$proj_vu$。其计算公式为：</p>
+<p>$$proj_vu &#x3D; (|u|\cos \theta ) \frac{v}{|v|} &#x3D; (\frac{u \cdot v}{|v|^2}) v$$</p>
+<p>其中$|u|\cos \theta$称为**$u$在$v$方向上的数值分量**。</p>
+<h3 id="把一个向量写成正交向量之和"><a href="#把一个向量写成正交向量之和" class="headerlink" title="把一个向量写成正交向量之和"></a>把一个向量写成正交向量之和</h3><p>由向量投影的定义，$v$与$u - proj_vu$是正交的，而且它们的和等于$u$，这样就得到了将$u$分解的方法：</p>
+<p>$$u &#x3D; proj_vu + (u - proj_vu)$$</p>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>柯西-施瓦茨不等式：$|u \cdot v| \leq |u| |v|$，当两向量平行时等号成立。</p>
+<p>垂直于向量的直线：向量$v &#x3D; ai + bj$垂直于直线$ax + by &#x3D; c$。</p>
+<p>平行于向量的直线：向量$v &#x3D; ai + bj$平行于直线$bx - ay &#x3D; c$。</p>
+<h2 id="向量值函数"><a href="#向量值函数" class="headerlink" title="向量值函数"></a>向量值函数</h2><pre><code>- Vector-Valued Functions
+</code></pre>
+<p>本节将以向量来研究平面上运动物体的路径、速度与加速度，其中有许多微分和积分概念从数值函数推广到了向量值函数。</p>
+<h3 id="平面曲线"><a href="#平面曲线" class="headerlink" title="平面曲线"></a>平面曲线</h3><p>当一个质点历经<strong>时间区间</strong>$I$在平面运动时，质点的坐标可看作定义在区间上的函数</p>
+<p>$$x &#x3D; f(t), y &#x3D; g(t), t \in I$$</p>
+<p>注：这又回到开始时接触到的<strong>参数方程</strong>。之所以选用参数方程而不是一般的$(x, y)$方程，是因为在诸如运动这类问题中，时间是更自然的自变量，而选择了时间作自变量，那么$(x, y)$也就自然地分开表示了。如果不用时间，那么何者为$x$，何者为$y$？它们的关系如何表示？</p>
+<p>点$(x, y) &#x3D; (f(t), g(t))$形成平面上的曲线，称为质点的<strong>路径</strong>。在时刻$t$的<strong>位置</strong>$P(f(t), g(t))$的向量</p>
+<p>$$r(t) &#x3D; \overrightarrow{OP} &#x3D; &lt;f(t), g(t)&gt; &#x3D; f(t) \text{i} + g(t)\text{j}$$</p>
+<p>称为质点的<strong>位置向量</strong>。因此$f, g$称为位置向量的<strong>分量函数</strong>。于是质点的路径是经由时间区间$I$由$r$描绘的曲线。</p>
+<p>$r(t)$定义在实变量上，函数值为向量，这就是所谓的<strong>向量值函数</strong>。相对地，一般实数值函数称为<strong>标量函数</strong>。</p>
+<p>例：$r(t) &#x3D; (t\cos t)i + (t\sin t)j, t \geq 0$表示一条螺线。</p>
+<h3 id="极限与连续"><a href="#极限与连续" class="headerlink" title="极限与连续"></a>极限与连续</h3><p>定义：<strong>向量值函数极限</strong></p>
+<p>若$r$的两分量函数在某点皆有极限，那么$r$也有极限：</p>
+<p>$$\lim_{t \to c} r(t) &#x3D; \lim_{t \to c} f(t)i + \lim_{t \to c} g(t)j$$</p>
+<p>定义：<strong>连续性</strong></p>
+<p>若$\lim_{t \to c} r(t) &#x3D; r(c)$，则$r$在$c$连续。</p>
+<p>由极限定义可知，$r$在$c$连续，当且仅当$f$和$g$在$c$连续。</p>
+<h3 id="导数"><a href="#导数" class="headerlink" title="导数"></a>导数</h3><p>定义：<strong>向量值函数在一点的导数</strong></p>
+<p>向量函数$r &#x3D; fi + gj$在$t$有导数，若$f$和$g$在$t$有导数。导数是：</p>
+<p>$$r’(t) &#x3D; \frac{dr}{dt} &#x3D; \frac{df}{dt}i + \frac{dg}{dt}j$$</p>
+<p>注：目前可见，上述定义都是标量函数相应概念的自然推广。</p>
+<p>若$r$在定义域内每个点都是可微的，那么说$r$是可微的。若$dr&#x2F;dt$是连续的且从不为0（注意这里是零向量），那么说$r$描绘的曲线是光滑的（这意味着$f$和$g$有连续一阶导数且不同时为零）。</p>
+<p>向量$dr&#x2F;dt$存在且不为零时，$dr&#x2F;dt$是曲线在该点的<strong>切向量</strong>，以此可求出曲线的<strong>切线</strong>。</p>
+<p>向量值函数的导数是按分量计算的，而分量函数皆是一般的标量函数，因此向量值函数的导数继承了很多标量函数的性质，比较特别的是如下两个：</p>
+<ul>
+<li>点积法则：$\frac{d}{dt}[u(t) \cdot v(t)] &#x3D; u’(t) \cdot v(t) + v’(t) \cdot u(t)$</li>
+<li>链式法则：$\frac{d}{dt}[u(f(t)] &#x3D; f’(t) u’(f(t))$</li>
+<li>标量乘积法则：$\frac{d}{dt}[f(t)u(t)] &#x3D; f’(t)u(t) + f(t)u’(t)$</li>
+</ul>
+<p>注意其中标量函数与向量值函数交错的地方。</p>
+<h3 id="向量函数在运动中的应用"><a href="#向量函数在运动中的应用" class="headerlink" title="向量函数在运动中的应用"></a>向量函数在运动中的应用</h3><p>在将质点的运动路径以向量表示后，速度、加速度等也随之确定下来了。</p>
+<p>定义：<strong>速度、速率、加速度、运动的方向</strong></p>
+<p>若$r$是沿光滑平面曲线运动的质点的位置向量，则在时刻$t$，</p>
+<ol>
+<li>$v(t) &#x3D; \frac{dr}{dt}$是质点的<strong>速度向量</strong>，与曲线相切</li>
+<li>$|v(t)|$是速度的大小，即速率</li>
+<li>$a(t) &#x3D; \frac{dv}{dt}$，速度的导数，或位置向量的二阶导数，称为<strong>加速度向量</strong></li>
+<li>$\frac{v}{|v|}$，一个单位向量，是<strong>运动的方向</strong>。</li>
+</ol>
+<p>速度可以写成$|v|(\frac{v}{|v|})$，此即速率与方向之乘积。</p>
+<p>至此可以看到，表示运动的函数向量化以后，相应的各个量都能容易地转为向量。</p>
+<h3 id="积分"><a href="#积分" class="headerlink" title="积分"></a>积分</h3><p>定义：<strong>不定积分</strong></p>
+<p>$r$对$t$的不定积分是$r$的所有反导数的几何，用$\int r(t)dt$表示，若$R$是任一反导数，则有</p>
+<p>$$\int r(t)dt &#x3D; R(t) + C$$</p>
+<p>定义：<strong>定积分</strong></p>
+<p>$$\int_{a}^{b} r(t)dt &#x3D; (\int_{a}^{b} f(t)dt)i + (\int_{a}^{b} g(t)dt)j$$</p>
+<p>可以说：积分之分量等于分量之积分。</p>
+<p>注：微积分基本定理也适用于向量值函数（见习题9.3 43）：</p>
+<ul>
+<li>$$\frac{d}{dt}\int_{a}^{t}r(q)dq &#x3D; r(t)$$</li>
+<li>$$\int_{a}^{b}r(t)dt &#x3D; R(b) - R(a)$$</li>
+</ul>
+<h2 id="对抛射体运动建模"><a href="#对抛射体运动建模" class="headerlink" title="对抛射体运动建模"></a>对抛射体运动建模</h2><pre><code>- Modeling Projectile Motion
+</code></pre>
+<p>暂从略。</p>
+<h2 id="极坐标和图形"><a href="#极坐标和图形" class="headerlink" title="极坐标和图形"></a>极坐标和图形</h2><pre><code>- Polar Coordinates and Graphs
+</code></pre>
+<h3 id="极坐标系"><a href="#极坐标系" class="headerlink" title="极坐标系"></a>极坐标系</h3><p>中学解析几何已经学习过极坐标系，它包含一个<strong>极点</strong>和一条<strong>极轴</strong>，这样平面上任一点都可以指定一个极坐标$(r, \theta)$。</p>
+<p>$\theta$与三角学中的情形一样，有正负之分。同时一个给定点的角不是唯一的，因为不同的角可以重合；而且$r$也有正负之分，如果$r$为负，表示其方向与一般定义的方向相反。故$(2, 7\pi&#x2F;6)$与$(-2, \pi&#x2F;6)$表示同一个点。</p>
+<h3 id="极图形"><a href="#极图形" class="headerlink" title="极图形"></a>极图形</h3><ul>
+<li>$r &#x3D; a$，表示圆心在极点，半径为$|a|$的圆；</li>
+<li>$\theta &#x3D; \alpha$，表示过极点的一条直线。</li>
+</ul>
+<h3 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h3><p>暂从略。</p>
+<h1 id="空间中的向量和运动"><a href="#空间中的向量和运动" class="headerlink" title="空间中的向量和运动"></a>空间中的向量和运动</h1><pre><code>- Vectors and Motion in Space
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Maths/" rel="tag"># Maths</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/09/05/thomas-calculus-infinite-series/" rel="prev" title="Thomas&#39; Calculus - 无穷级数">
+                  <i class="fa fa-angle-left"></i> Thomas' Calculus - 无穷级数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/09/18/thomas-calculus-multivariable-functions/" rel="next" title="Thomas&#39; Calculus - 多元函数及其微积分">
+                  Thomas' Calculus - 多元函数及其微积分 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Anders Cui</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
