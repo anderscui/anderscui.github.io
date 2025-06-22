@@ -27,9 +27,10 @@
 <meta property="og:description" content="架构spaCy的核心数据结构是Doc和Vocab。Doc对象持有token序列及其标注（annotation）信息，Vocab对象则持有一个查找表（look-up table），从而可在文档间共享信息。集中管理字符串、词向量与词法属性，避免了反复copy数据。 文本标注也是类似，Doc持有数据，Span和Token只是它的视图。Doc由Tokenizer构建，之后通过pipeline原地修改（mo">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2019-08-15T14:52:38.000Z">
-<meta property="article:modified_time" content="2025-06-21T23:01:37.752Z">
+<meta property="article:modified_time" content="2025-06-22T12:28:58.821Z">
 <meta property="article:author" content="Anders Cui">
-<meta property="article:tag" content="NLP, Spacy">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Spacy">
 <meta name="twitter:card" content="summary">
 
 
@@ -107,7 +108,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
         </a>
@@ -177,12 +178,12 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -250,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-06-22 07:01:37" itemprop="dateModified" datetime="2025-06-22T07:01:37+08:00">2025-06-22</time>
+      <time title="Modified: 2025-06-22 20:28:58" itemprop="dateModified" datetime="2025-06-22T20:28:58+08:00">2025-06-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -304,7 +305,8 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/NLP-Spacy/" rel="tag"># NLP, Spacy</a>
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+              <a href="/tags/Spacy/" rel="tag"># Spacy</a>
           </div>
 
         

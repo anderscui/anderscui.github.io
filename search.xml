@@ -6,6 +6,12 @@
     <content><![CDATA[<p>这本书从文学性上来讲，只能说勉强还行，但是其中金智英的经历实在太真实了，可以说让人触目惊心，将这些遭遇放在中国也毫无违和感。女性生活的整个经历，从成长、教育到职场、婚姻和育儿，充满了大量的男性难以想象的问题：性别刻板印象、性别歧视、性别规训、机会平等等等。其中的性别规训尤为突出，正如福柯所说的，性别规训是一种弥漫于整个社会的、像毛细血管似的“微观权力“。它的触手渗透到社会的方方面面，对人们的日常生活的每个细节都不放过。金智英的多数遭遇，也正符合第二波女权主义提出的”the personal is political“，因为身边的人”好像也都是这么做的“。</p>
 <p>与其说金智英是得了育儿抑郁，不如说是她在压抑之下无法正常发声，只能通过变换的形象代替自己发声吧。</p>
 ]]></content>
+      <categories>
+        <category>女性主义</category>
+      </categories>
+      <tags>
+        <tag>女性主义</tag>
+      </tags>
   </entry>
   <entry>
     <title>非典型孤独（atypical）</title>
@@ -25,9 +31,13 @@
 <p>自闭症光谱有三个主要项目：自闭症、亚斯伯格综合征、待分类的广泛性发展障碍。自闭症在光谱核心位置，而阿斯伯格综合征在手册（第5版）中被移除。</p>
 <hr>
 ]]></content>
+      <categories>
+        <category>Psychology</category>
+        <category>Movie</category>
+      </categories>
       <tags>
+        <tag>Psychology</tag>
         <tag>Movie</tag>
-        <tag>电影</tag>
       </tags>
   </entry>
   <entry>
@@ -91,10 +101,31 @@
 
 ]]></content>
       <categories>
-        <category>FP, Racket</category>
+        <category>FP</category>
+        <category>Racket</category>
       </categories>
       <tags>
-        <tag>FP, Racket</tag>
+        <tag>FP</tag>
+        <tag>Racket</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>effective-go</title>
+    <url>/2021/03/14/effective-go/</url>
+    <content><![CDATA[<h1 id="Effective-Go"><a href="#Effective-Go" class="headerlink" title="Effective Go"></a>Effective Go</h1><p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
+<h1 id="Errors"><a href="#Errors" class="headerlink" title="Errors"></a>Errors</h1><p><code>error</code> 的信息可以通过前缀来增加信息，如 <code>image: unknown format</code>。</p>
+<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p>向调用者报告错误通常的方法是返回一个 <code>error</code>，但有时候一个错误发生，意味着严重的或很难预料到的错误（比如本应是无限循环，却退出了），此时退出程序也许更为合适，这是 <code>panic</code> 的用场。</p>
+<p>通常来说，应避免使用 <code>panic</code>，但凡程序还有救的话。一些特殊情况是，程序启动时无法连接到主数据库，那么继续执行下去也无意义，此时可以 <code>panic</code>。</p>
+<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>在 <code>panic</code> 调用后（包括自定义 <code>panic</code>，以及 slice 索引越界等运行时错误），当前函数执行立即结束，开始释放 goroutines，执行 defferred 函数。如果释放过程到了程序的 top level 代码，程序就终止了。</p>
+<p>但还是可以通过 <code>recover</code> 来重新获得 goroutine 的掌控，继续执行程序。</p>
+<p><code>recover</code> 停止上述释放过程，返回 <code>panic</code> 的参数，<code>recover</code> 只能用于 deferred 函数。</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -113,24 +144,7 @@
 
 <h2 id="Locking-shared-resources"><a href="#Locking-shared-resources" class="headerlink" title="Locking shared resources"></a>Locking shared resources</h2>]]></content>
       <categories>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>effective-go</title>
-    <url>/2021/03/14/effective-go/</url>
-    <content><![CDATA[<h1 id="Effective-Go"><a href="#Effective-Go" class="headerlink" title="Effective Go"></a>Effective Go</h1><p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
-<h1 id="Errors"><a href="#Errors" class="headerlink" title="Errors"></a>Errors</h1><p><code>error</code> 的信息可以通过前缀来增加信息，如 <code>image: unknown format</code>。</p>
-<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p>向调用者报告错误通常的方法是返回一个 <code>error</code>，但有时候一个错误发生，意味着严重的或很难预料到的错误（比如本应是无限循环，却退出了），此时退出程序也许更为合适，这是 <code>panic</code> 的用场。</p>
-<p>通常来说，应避免使用 <code>panic</code>，但凡程序还有救的话。一些特殊情况是，程序启动时无法连接到主数据库，那么继续执行下去也无意义，此时可以 <code>panic</code>。</p>
-<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>在 <code>panic</code> 调用后（包括自定义 <code>panic</code>，以及 slice 索引越界等运行时错误），当前函数执行立即结束，开始释放 goroutines，执行 defferred 函数。如果释放过程到了程序的 top level 代码，程序就终止了。</p>
-<p>但还是可以通过 <code>recover</code> 来重新获得 goroutine 的掌控，继续执行程序。</p>
-<p><code>recover</code> 停止上述释放过程，返回 <code>panic</code> 的参数，<code>recover</code> 只能用于 deferred 函数。</p>
-]]></content>
-      <categories>
+        <category>Programming</category>
         <category>Go</category>
       </categories>
       <tags>
@@ -158,9 +172,37 @@
 ]]></content>
       <categories>
         <category>NLP</category>
+        <category>Data Analysis</category>
       </categories>
       <tags>
-        <tag>NLP, Exploratory Data Analysis</tag>
+        <tag>NLP</tag>
+        <tag>Data Analysis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>golang-organization</title>
+    <url>/2021/03/14/golang-organization/</url>
+    <content><![CDATA[<h1 id="Go-程序的代码组织"><a href="#Go-程序的代码组织" class="headerlink" title="Go 程序的代码组织"></a>Go 程序的代码组织</h1><p>参考：<br><a href="https://golang.org/doc/code">How to Write Go Code</a><br><a href="https://stackoverflow.com/questions/55442878/organize-local-code-in-packages-using-go-modules/57314494#57314494">Organize Local Code</a><br><a href="https://github.com/golang-standards/project-layout">Common Project Layout</a><br><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
+<h1 id="代码组织（Code-organization）"><a href="#代码组织（Code-organization）" class="headerlink" title="代码组织（Code organization）"></a>代码组织（Code organization）</h1><p>Go 程序以 <code>package</code> 组织。<code>package</code> 是一组在同一目录下的源代码文件集合。</p>
+<p>一个代码库包含一个或多个 <code>module</code>。<code>module</code> 是一组相关的 Go <code>package</code>。Go 代码通常仅包含一个 <code>module</code>，名为 <code>go.mod</code> 的文件声明了 module 路径。</p>
+<p><code>go.mod</code> 在代码库根目录，其定义的 module 包含了该目录下所有的 package。</p>
+<p>module 的路径可作为 import 的前缀，同时也说明了 <code>go</code> 命令如何定位并下载之。引用路径是字符串值，package 的引用路径是 module 的子目录，比如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">github.com/google/go-cmp/cmp</span><br></pre></td></tr></table></figure>
+
+<p>但标准库中的 package 不需要 module 路径前缀。</p>
+<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>每个源文件可以包含自己的 <code>init</code> 函数，以进行必要之设置。<code>init</code> 在所属 package 内的所有变量初始化之后（这又在所有引用的 package eval 之后）执行。</p>
+<p><code>init</code> 可用于在程序真正执行之前验证和修复程序状态，也可进行配置、初始化变量等等。</p>
+<p>所有的 <code>init</code> 函数会被编译器发现，并在 <code>main</code> 函数之前调用之。</p>
+<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>对于简单的程序，repository 下只有一个 <code>module</code>，通过 <code>go.mod</code> 选择一个名称，如果想少打点字，使用 local name，而非完整路径。</p>
+<p>在项目内添加不同的目录，其中含有的代码的部分即是 package，这样让代码组织更清晰。package 下可以继续嵌套。</p>
+<p>如果要引用本地其它 repository 的 package，使用 <code>replace</code>。如果要发布代码，使用完整路径。</p>
+<h1 id="Don’t-Panic"><a href="#Don’t-Panic" class="headerlink" title="Don’t Panic"></a>Don’t Panic</h1>]]></content>
+      <categories>
+        <category>Programming</category>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
       </tags>
   </entry>
   <entry>
@@ -203,6 +245,7 @@
 <p>至此，一个“完整的” app 搭建完毕。</p>
 ]]></content>
       <categories>
+        <category>Programming</category>
         <category>Go</category>
       </categories>
       <tags>
@@ -210,28 +253,94 @@
       </tags>
   </entry>
   <entry>
-    <title>golang-organization</title>
-    <url>/2021/03/14/golang-organization/</url>
-    <content><![CDATA[<h1 id="Go-程序的代码组织"><a href="#Go-程序的代码组织" class="headerlink" title="Go 程序的代码组织"></a>Go 程序的代码组织</h1><p>参考：<br><a href="https://golang.org/doc/code">How to Write Go Code</a><br><a href="https://stackoverflow.com/questions/55442878/organize-local-code-in-packages-using-go-modules/57314494#57314494">Organize Local Code</a><br><a href="https://github.com/golang-standards/project-layout">Common Project Layout</a><br><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
-<h1 id="代码组织（Code-organization）"><a href="#代码组织（Code-organization）" class="headerlink" title="代码组织（Code organization）"></a>代码组织（Code organization）</h1><p>Go 程序以 <code>package</code> 组织。<code>package</code> 是一组在同一目录下的源代码文件集合。</p>
-<p>一个代码库包含一个或多个 <code>module</code>。<code>module</code> 是一组相关的 Go <code>package</code>。Go 代码通常仅包含一个 <code>module</code>，名为 <code>go.mod</code> 的文件声明了 module 路径。</p>
-<p><code>go.mod</code> 在代码库根目录，其定义的 module 包含了该目录下所有的 package。</p>
-<p>module 的路径可作为 import 的前缀，同时也说明了 <code>go</code> 命令如何定位并下载之。引用路径是字符串值，package 的引用路径是 module 的子目录，比如：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">github.com/google/go-cmp/cmp</span><br></pre></td></tr></table></figure>
+    <title>Hello, Rust</title>
+    <url>/2017/09/24/hello-rust/</url>
+    <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
 
-<p>但标准库中的 package 不需要 module 路径前缀。</p>
-<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>每个源文件可以包含自己的 <code>init</code> 函数，以进行必要之设置。<code>init</code> 在所属 package 内的所有变量初始化之后（这又在所有引用的 package eval 之后）执行。</p>
-<p><code>init</code> 可用于在程序真正执行之前验证和修复程序状态，也可进行配置、初始化变量等等。</p>
-<p>所有的 <code>init</code> 函数会被编译器发现，并在 <code>main</code> 函数之前调用之。</p>
-<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>对于简单的程序，repository 下只有一个 <code>module</code>，通过 <code>go.mod</code> 选择一个名称，如果想少打点字，使用 local name，而非完整路径。</p>
-<p>在项目内添加不同的目录，其中含有的代码的部分即是 package，这样让代码组织更清晰。package 下可以继续嵌套。</p>
-<p>如果要引用本地其它 repository 的 package，使用 <code>replace</code>。如果要发布代码，使用完整路径。</p>
-<h1 id="Don’t-Panic"><a href="#Don’t-Panic" class="headerlink" title="Don’t Panic"></a>Don’t Panic</h1>]]></content>
+<p>运行此命令，按其中的提示安装即可。</p>
+<span id="more"></span>
+
+<h2 id="升级与卸载"><a href="#升级与卸载" class="headerlink" title="升级与卸载"></a>升级与卸载</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustup update</span><br><span class="line"></span><br><span class="line">$ rustup self uninstall</span><br></pre></td></tr></table></figure>
+
+<h2 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="本地文档"><a href="#本地文档" class="headerlink" title="本地文档"></a>本地文档</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.</span><br><span class="line">$rustup doc</span><br></pre></td></tr></table></figure>
+
+<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello, World!"></a>Hello, World!</h1><p>假设把代码放在某个目录下，cd到它，创建一个<code>main.rs</code>文件（rs是Rust文件的扩展名）：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，编译再运行之：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc main.rs</span><br><span class="line">$ ./main</span><br></pre></td></tr></table></figure>
+
+<h2 id="Rust程序的结构"><a href="#Rust程序的结构" class="headerlink" title="Rust程序的结构"></a>Rust程序的结构</h2><p><code>fn</code>定义一个函数，而<code>main</code>同时是特别的<strong>入口函数</strong>，与<code>C</code>和<code>C#</code>之类语言类似。Rust中的函数需要花括号包含其函数体。</p>
+<p>第二行<code>println!(&quot;Hello, world!&quot;);</code>，输出一行文本到屏幕。这里看起来有点特别的是<code>println!</code>，带有<code>!</code>在Rust中意味着调用宏而非函数。行末的<code>;</code>表示一个表达式的结束，<strong>大多数</strong>Rust代码行以<code>;</code>结束。</p>
+<h1 id="编译和执行的分离"><a href="#编译和执行的分离" class="headerlink" title="编译和执行的分离"></a>编译和执行的分离</h1><p>作为静态语言，Rust程序执行之前需要先行编译，这类似于<code>gcc</code>或<code>clang</code>。</p>
+<p>对于简单的程序，可如上使用<code>rustc</code>，对于更为复杂的程序，你可能需要<code>Cargo</code>这个工具。</p>
+<h1 id="Cargo"><a href="#Cargo" class="headerlink" title="Cargo"></a>Cargo</h1><p><code>Cargo</code>是Rust的构建系统（Build System）和包管理器（Package Manager）。它可以生成代码、下载依赖库，生成库代码。</p>
+<p><code>Cargo</code>随Rust一起安装。</p>
+<h2 id="以Cargo创建一个项目"><a href="#以Cargo创建一个项目" class="headerlink" title="以Cargo创建一个项目"></a>以Cargo创建一个项目</h2><p>使用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo new hello_cargo --bin</span><br></pre></td></tr></table></figure>
+
+<p>创建一个项目，<code>--bin</code>表示所创建者为可执行文件（binaries）。<code>Cargo</code>生成了两个文件：</p>
+<ul>
+<li>Cargo.toml（TOML格式的配置文件）</li>
+<li>src&#x2F;main.rs（与上面手工创建的一样）</li>
+</ul>
+<p>Cargo.toml内容如下：</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;hello_cargo&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">&quot;andersc &lt;andersc@mail.com&gt;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>[dependencies]</code>列出了依赖的库，这些依赖在Rust中称为<code>crate</code>。Cargo创建了初始的目录结构，也是建议将代码放在src下，其它文件放在顶级目录。</p>
+<h2 id="Building-and-Running-a-Cargo-Project"><a href="#Building-and-Running-a-Cargo-Project" class="headerlink" title="Building and Running a Cargo Project"></a>Building and Running a Cargo Project</h2><p>使用如下命令编译并运行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo build</span><br><span class="line">$ ./target/debug/hello_cargo</span><br></pre></td></tr></table></figure>
+
+<p>首次执行<code>cargo build</code>时，它会创建文件<code>Cargo.lock</code>，用于跟踪应用的依赖。一般不需要手工改动之。作为一种更快捷的方式，可以用<code>cargo run</code>来编译并运行程序。</p>
+<h2 id="发布程序"><a href="#发布程序" class="headerlink" title="发布程序"></a>发布程序</h2><p>上面可见，编译的程序放在了<code>debug</code>下，如果要正式发布，则应使用<code>cargo build --release</code>选项，这会优化所生成的程序，代价是编译时间更长。</p>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
+<li>Sublime 3：<a href="https://github.com/rust-lang/sublime-rust">Sublime Rust</a></li>
+<li><a href="https://intellij-rust.github.io/">IntelliJ Rust</a></li>
+</ul>
+<h1 id="Guessing-Game"><a href="#Guessing-Game" class="headerlink" title="Guessing Game"></a>Guessing Game</h1><p>通过一个真实的程序来演示几个Rust的常见概念，如<code>let</code>， <code>match</code>，方法，关联函数，使用外部库等。</p>
+<p>猜数游戏是一个经典的编程初学者的问题。</p>
+<h2 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cargo new guessing_game --bin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> guessing_game</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="感受一下"><a href="#感受一下" class="headerlink" title="感受一下"></a>感受一下</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Guess the number!&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Please input your guess.&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">guess</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    io::<span class="title function_ invoke__">stdin</span>().<span class="title function_ invoke__">read_line</span>(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">               .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Failed to read line&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;You guessed: &#123;&#125;&quot;</span>, guess);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面，<code>use</code>不用多说；let创建一个<strong>变量</strong>，不过在Rust中变量默认是不可修改的，如果希望修改，则需要使用<strong>mut</strong>；String:new()就是所谓关联函数（associated function），相当于其它语言中的<strong>静态方法</strong>。</p>
+<p><code>stdin</code>是io的关联函数；read_line函数读取用户输入，将值赋给一个变量，<code>&amp;</code>表示参数为<strong>引用（reference）</strong>。</p>
+]]></content>
       <categories>
-        <category>Go</category>
+        <category>Programming</category>
+        <category>Rust</category>
       </categories>
       <tags>
-        <tag>Go</tag>
+        <tag>Programming</tag>
+        <tag>Rust</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo的安装与配置</title>
+    <url>/2017/06/27/hexo-so/</url>
+    <content><![CDATA[<p>可能是npm的问题，也可能是Hexo的问题，总之：</p>
+<ul>
+<li>Error: Cannot find module ‘.&#x2F;build&#x2F;Release&#x2F;DTraceProviderBindings’频繁出现</li>
+<li>将网站从一个目录移动到另一个目录也颇需要一番周折</li>
+</ul>
+<p>可参考的两篇文章：</p>
+<ul>
+<li><p><a href="http://www.ixirong.com/2016/08/30/solve-hexo-not-found-problem/">mac osx 下 hexo DTraceProviderBindings 错误</a></p>
+</li>
+<li><p><a href="https://absentm.github.io/2016/08/31/The-note-of-how-to-rebuild-hexo-next-blogs-when-switch-to-another-PC-or-reinstall-system/">The note of how to rebuild hexo+next blogs when switch to another PC or reinstall system</a></p>
+</li>
+</ul>
+<p>PS：不熟悉Node.js，每次安装都莫名担心会失败。。。</p>
+<p>PPS：测试git commit效果。</p>
+<p>PPPS：测试Github Pages更新。</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -496,93 +605,13 @@
 <h1 id="拖延与不拖延"><a href="#拖延与不拖延" class="headerlink" title="拖延与不拖延"></a>拖延与不拖延</h1><p>拖延与另一个我，或真实的我。</p>
 <h1 id="敏感与内向"><a href="#敏感与内向" class="headerlink" title="敏感与内向"></a>敏感与内向</h1><h1 id="爱与孤独"><a href="#爱与孤独" class="headerlink" title="爱与孤独"></a>爱与孤独</h1><h1 id="空虚和意义感"><a href="#空虚和意义感" class="headerlink" title="空虚和意义感"></a>空虚和意义感</h1><p>存在即意义。</p>
 <h1 id="结束与开始"><a href="#结束与开始" class="headerlink" title="结束与开始"></a>结束与开始</h1>]]></content>
+      <categories>
+        <category>Psychology</category>
+        <category>幸福心理学</category>
+      </categories>
       <tags>
-        <tag>心理学</tag>
+        <tag>Psychology</tag>
         <tag>幸福心理学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello, Rust</title>
-    <url>/2017/09/24/hello-rust/</url>
-    <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
-
-<p>运行此命令，按其中的提示安装即可。</p>
-<span id="more"></span>
-
-<h2 id="升级与卸载"><a href="#升级与卸载" class="headerlink" title="升级与卸载"></a>升级与卸载</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustup update</span><br><span class="line"></span><br><span class="line">$ rustup self uninstall</span><br></pre></td></tr></table></figure>
-
-<h2 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc --version</span><br></pre></td></tr></table></figure>
-
-<h2 id="本地文档"><a href="#本地文档" class="headerlink" title="本地文档"></a>本地文档</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.</span><br><span class="line">$rustup doc</span><br></pre></td></tr></table></figure>
-
-<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello, World!"></a>Hello, World!</h1><p>假设把代码放在某个目录下，cd到它，创建一个<code>main.rs</code>文件（rs是Rust文件的扩展名）：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后，编译再运行之：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc main.rs</span><br><span class="line">$ ./main</span><br></pre></td></tr></table></figure>
-
-<h2 id="Rust程序的结构"><a href="#Rust程序的结构" class="headerlink" title="Rust程序的结构"></a>Rust程序的结构</h2><p><code>fn</code>定义一个函数，而<code>main</code>同时是特别的<strong>入口函数</strong>，与<code>C</code>和<code>C#</code>之类语言类似。Rust中的函数需要花括号包含其函数体。</p>
-<p>第二行<code>println!(&quot;Hello, world!&quot;);</code>，输出一行文本到屏幕。这里看起来有点特别的是<code>println!</code>，带有<code>!</code>在Rust中意味着调用宏而非函数。行末的<code>;</code>表示一个表达式的结束，<strong>大多数</strong>Rust代码行以<code>;</code>结束。</p>
-<h1 id="编译和执行的分离"><a href="#编译和执行的分离" class="headerlink" title="编译和执行的分离"></a>编译和执行的分离</h1><p>作为静态语言，Rust程序执行之前需要先行编译，这类似于<code>gcc</code>或<code>clang</code>。</p>
-<p>对于简单的程序，可如上使用<code>rustc</code>，对于更为复杂的程序，你可能需要<code>Cargo</code>这个工具。</p>
-<h1 id="Cargo"><a href="#Cargo" class="headerlink" title="Cargo"></a>Cargo</h1><p><code>Cargo</code>是Rust的构建系统（Build System）和包管理器（Package Manager）。它可以生成代码、下载依赖库，生成库代码。</p>
-<p><code>Cargo</code>随Rust一起安装。</p>
-<h2 id="以Cargo创建一个项目"><a href="#以Cargo创建一个项目" class="headerlink" title="以Cargo创建一个项目"></a>以Cargo创建一个项目</h2><p>使用命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo new hello_cargo --bin</span><br></pre></td></tr></table></figure>
-
-<p>创建一个项目，<code>--bin</code>表示所创建者为可执行文件（binaries）。<code>Cargo</code>生成了两个文件：</p>
-<ul>
-<li>Cargo.toml（TOML格式的配置文件）</li>
-<li>src&#x2F;main.rs（与上面手工创建的一样）</li>
-</ul>
-<p>Cargo.toml内容如下：</p>
-<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;hello_cargo&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">&quot;andersc &lt;andersc@mail.com&gt;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br></pre></td></tr></table></figure>
-
-<p><code>[dependencies]</code>列出了依赖的库，这些依赖在Rust中称为<code>crate</code>。Cargo创建了初始的目录结构，也是建议将代码放在src下，其它文件放在顶级目录。</p>
-<h2 id="Building-and-Running-a-Cargo-Project"><a href="#Building-and-Running-a-Cargo-Project" class="headerlink" title="Building and Running a Cargo Project"></a>Building and Running a Cargo Project</h2><p>使用如下命令编译并运行程序：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo build</span><br><span class="line">$ ./target/debug/hello_cargo</span><br></pre></td></tr></table></figure>
-
-<p>首次执行<code>cargo build</code>时，它会创建文件<code>Cargo.lock</code>，用于跟踪应用的依赖。一般不需要手工改动之。作为一种更快捷的方式，可以用<code>cargo run</code>来编译并运行程序。</p>
-<h2 id="发布程序"><a href="#发布程序" class="headerlink" title="发布程序"></a>发布程序</h2><p>上面可见，编译的程序放在了<code>debug</code>下，如果要正式发布，则应使用<code>cargo build --release</code>选项，这会优化所生成的程序，代价是编译时间更长。</p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
-<li>Sublime 3：<a href="https://github.com/rust-lang/sublime-rust">Sublime Rust</a></li>
-<li><a href="https://intellij-rust.github.io/">IntelliJ Rust</a></li>
-</ul>
-<h1 id="Guessing-Game"><a href="#Guessing-Game" class="headerlink" title="Guessing Game"></a>Guessing Game</h1><p>通过一个真实的程序来演示几个Rust的常见概念，如<code>let</code>， <code>match</code>，方法，关联函数，使用外部库等。</p>
-<p>猜数游戏是一个经典的编程初学者的问题。</p>
-<h2 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cargo new guessing_game --bin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> guessing_game</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="感受一下"><a href="#感受一下" class="headerlink" title="感受一下"></a>感受一下</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Guess the number!&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Please input your guess.&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">guess</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    io::<span class="title function_ invoke__">stdin</span>().<span class="title function_ invoke__">read_line</span>(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">               .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Failed to read line&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;You guessed: &#123;&#125;&quot;</span>, guess);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里面，<code>use</code>不用多说；let创建一个<strong>变量</strong>，不过在Rust中变量默认是不可修改的，如果希望修改，则需要使用<strong>mut</strong>；String:new()就是所谓关联函数（associated function），相当于其它语言中的<strong>静态方法</strong>。</p>
-<p><code>stdin</code>是io的关联函数；read_line函数读取用户输入，将值赋给一个变量，<code>&amp;</code>表示参数为<strong>引用（reference）</strong>。</p>
-]]></content>
-      <tags>
-        <tag>Programming</tag>
-        <tag>Rust</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo的安装与配置</title>
-    <url>/2017/06/27/hexo-so/</url>
-    <content><![CDATA[<p>可能是npm的问题，也可能是Hexo的问题，总之：</p>
-<ul>
-<li>Error: Cannot find module ‘.&#x2F;build&#x2F;Release&#x2F;DTraceProviderBindings’频繁出现</li>
-<li>将网站从一个目录移动到另一个目录也颇需要一番周折</li>
-</ul>
-<p>可参考的两篇文章：</p>
-<ul>
-<li><p><a href="http://www.ixirong.com/2016/08/30/solve-hexo-not-found-problem/">mac osx 下 hexo DTraceProviderBindings 错误</a></p>
-</li>
-<li><p><a href="https://absentm.github.io/2016/08/31/The-note-of-how-to-rebuild-hexo-next-blogs-when-switch-to-another-PC-or-reinstall-system/">The note of how to rebuild hexo+next blogs when switch to another PC or reinstall system</a></p>
-</li>
-</ul>
-<p>PS：不熟悉Node.js，每次安装都莫名担心会失败。。。</p>
-<p>PPS：测试git commit效果。</p>
-<p>PPPS：测试Github Pages更新。</p>
-]]></content>
-      <tags>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -904,6 +933,12 @@
 <li>trailer: loc of the cross ref table and …</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>IO</category>
+      </categories>
+      <tags>
+        <tag>IO</tag>
+      </tags>
   </entry>
   <entry>
     <title>practical-nlp-text-repr</title>
@@ -939,8 +974,12 @@
 <li>或期待一种完美的状态，在此状态下，甚至不需要意志力，自己”应该“知道想做什么（而且是100%地知道）</li>
 </ol>
 ]]></content>
+      <categories>
+        <category>Psychology</category>
+        <category>Procrastination</category>
+      </categories>
       <tags>
-        <tag>Life</tag>
+        <tag>Psychology</tag>
         <tag>Procrastination</tag>
       </tags>
   </entry>
@@ -995,6 +1034,7 @@
 ]]></content>
       <categories>
         <category>Programming</category>
+        <category>Python</category>
       </categories>
       <tags>
         <tag>Python</tag>
@@ -1103,6 +1143,7 @@
 ]]></content>
       <categories>
         <category>Programming</category>
+        <category>Python</category>
       </categories>
       <tags>
         <tag>Python</tag>
@@ -1140,7 +1181,8 @@
         <category>NLP</category>
       </categories>
       <tags>
-        <tag>NLP, Spacy</tag>
+        <tag>NLP</tag>
+        <tag>Spacy</tag>
       </tags>
   </entry>
   <entry>
@@ -1292,58 +1334,8 @@
 <p>后续的课程会介绍不这么简单的VSM：）</p>
 ]]></content>
       <categories>
+        <category>NLP</category>
         <category>Text Retrieval</category>
-        <category>Information Retrieval</category>
-      </categories>
-      <tags>
-        <tag>Text Retrieval</tag>
-        <tag>Information Retrieval</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Text Retrieval and Search Engines(2)</title>
-    <url>/2017/07/09/text-retrieval-and-search-engines-part-2/</url>
-    <content><![CDATA[<p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
-<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
-<p>主要概念：</p>
-<ul>
-<li>关键词词频（Term Frequency，TF）</li>
-<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
-<li>TF transformation</li>
-<li>Pivoted length normalization</li>
-<li>BM25</li>
-<li>倒排索引（Inverted Index）与posting</li>
-<li>Binary coding，unary coding，gamma-coding和d-gap</li>
-<li>Zipf法则</li>
-</ul>
-<span id="more"></span>
-
-<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
-<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
-<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
-<ul>
-<li>d4匹配到了更多关键词，应获得更高的相似度</li>
-<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
-</ul>
-<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
-<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
-<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
-<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
-<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
-<p>现在重新计算上面的三个文档，会发现$f(q, d2) &#x3D; 3$，$f(q, d3) &#x3D; 3$，$f(q, d4) &#x3D; 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
-<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
-<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
-<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
-<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
-<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
-<p>引入IDF后，文档的向量公式变为：</p>
-<p>$$d &#x3D; (y_1, \cdots, y_N，y_i &#x3D; c(W_i, d) * IDF(W_i)$$</p>
-<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
-<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
-]]></content>
-      <categories>
-        <category>Text Retrieval</category>
-        <category>Information Retrieval</category>
       </categories>
       <tags>
         <tag>Text Retrieval</tag>
@@ -1422,6 +1414,56 @@
       </categories>
       <tags>
         <tag>政治学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Text Retrieval and Search Engines(2)</title>
+    <url>/2017/07/09/text-retrieval-and-search-engines-part-2/</url>
+    <content><![CDATA[<p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
+<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
+<p>主要概念：</p>
+<ul>
+<li>关键词词频（Term Frequency，TF）</li>
+<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
+<li>TF transformation</li>
+<li>Pivoted length normalization</li>
+<li>BM25</li>
+<li>倒排索引（Inverted Index）与posting</li>
+<li>Binary coding，unary coding，gamma-coding和d-gap</li>
+<li>Zipf法则</li>
+</ul>
+<span id="more"></span>
+
+<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
+<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
+<ul>
+<li>d4匹配到了更多关键词，应获得更高的相似度</li>
+<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
+</ul>
+<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
+<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
+<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
+<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
+<p>现在重新计算上面的三个文档，会发现$f(q, d2) &#x3D; 3$，$f(q, d3) &#x3D; 3$，$f(q, d4) &#x3D; 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
+<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
+<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
+<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
+<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
+<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
+<p>引入IDF后，文档的向量公式变为：</p>
+<p>$$d &#x3D; (y_1, \cdots, y_N，y_i &#x3D; c(W_i, d) * IDF(W_i)$$</p>
+<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
+<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
+]]></content>
+      <categories>
+        <category>NLP</category>
+        <category>Text Retrieval</category>
+      </categories>
+      <tags>
+        <tag>Text Retrieval</tag>
+        <tag>Information Retrieval</tag>
       </tags>
   </entry>
   <entry>
@@ -1622,6 +1664,12 @@
 <p>但从斯特雷奇开始，当然也是从弗洛伊德开始，隐藏的秘密，尤其是黑暗的秘密，就变成了传记作家的标靶、读者的所好。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>塔奇曼的作品以历史为主题，所获的不是普利策历史奖，而是普利策非虚构文学奖。她对自己的定位也是“历史作家”而不是“历史学家”。这这本书的第一篇里，塔奇曼从不同角度讲述了一个好的历史作家所需的“技艺”。</p>
 ]]></content>
+      <categories>
+        <category>History</category>
+      </categories>
+      <tags>
+        <tag>History</tag>
+      </tags>
   </entry>
   <entry>
     <title>大龄男青年相亲故事一则</title>
@@ -1715,6 +1763,12 @@
 <li>从根本上反对传统知识结构中的两分主义（dualism），提倡多元模式</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>女性主义</category>
+      </categories>
+      <tags>
+        <tag>女性主义</tag>
+      </tags>
   </entry>
   <entry>
     <title>小狗钱钱</title>
@@ -1861,6 +1915,9 @@
 <p>不要为失去的东西而忧伤，而要对拥有它的时光心存感激。</p>
 </blockquote>
 ]]></content>
+      <tags>
+        <tag>理财</tag>
+      </tags>
   </entry>
   <entry>
     <title>控制力幻象</title>
@@ -2014,8 +2071,11 @@
 <p>佛祖说：”阿难陀，你看，这灵鹫山多美！“</p>
 <p>纵使落日稍纵即逝，也无法消减它那刻的美。</p>
 <h1 id="道理，终究是远的，切记。"><a href="#道理，终究是远的，切记。" class="headerlink" title="道理，终究是远的，切记。"></a>道理，终究是远的，切记。</h1>]]></content>
+      <categories>
+        <category>Psychology</category>
+      </categories>
       <tags>
-        <tag>心理学</tag>
+        <tag>Psychology</tag>
       </tags>
   </entry>
   <entry>
@@ -2089,6 +2149,10 @@
 <h2 id="基本引理"><a href="#基本引理" class="headerlink" title="基本引理"></a>基本引理</h2><p>以分割建立起来的连续统为我们带来了数学分析的逻辑基础。理论上来说，接下来的所有研究都可以直接回溯到分割的定义去解决问题，但实际上很多时候，构造分割是繁琐的过程。数学家们引入了几个辅助命题（引理），这些引理在很多情况下比分割更为方便，一旦证明了这些引理，就可以把它们和分割定义一起作为后续研究的工具。</p>
 <h3 id="关于单调序列的引理"><a href="#关于单调序列的引理" class="headerlink" title="关于单调序列的引理"></a>关于单调序列的引理</h3><p><strong>引理1</strong>：任何单调有界序列都有极限。</p>
 <h1 id="第二讲-极限"><a href="#第二讲-极限" class="headerlink" title="第二讲 极限"></a>第二讲 极限</h1>]]></content>
+      <categories>
+        <category>数学</category>
+        <category>数学分析</category>
+      </categories>
       <tags>
         <tag>数学</tag>
         <tag>数学分析</tag>
@@ -2260,7 +2324,12 @@
 <p><strong>定理2</strong>：存在与唯一性定理</p>
 <p>线性方程组相容的充要条件是增广矩阵的最右列不是主元列。若方程组相容，当其没有自由变量，有唯一解；否则有无穷多解。</p>
 ]]></content>
+      <categories>
+        <category>数学</category>
+        <category>线性代数</category>
+      </categories>
       <tags>
+        <tag>数学</tag>
         <tag>线性代数</tag>
       </tags>
   </entry>
