@@ -31,28 +31,6 @@
       </tags>
   </entry>
   <entry>
-    <title>concurrency-in-go</title>
-    <url>/2021/03/22/concurrency-in-go/</url>
-    <content><![CDATA[<h1 id="Concurrency-in-Go"><a href="#Concurrency-in-Go" class="headerlink" title="Concurrency in Go"></a>Concurrency in Go</h1><p>参考：《Go in Action》第六章</p>
-<ul>
-<li>使用 <code>goroutine</code> 运行代码</li>
-<li>检测和修复 race condition</li>
-<li>在 channel 之间共享数据</li>
-</ul>
-<p>Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。</p>
-<p>并发同步源于 CSP 范式，CSP 是一个消息传输模型。它通过在 goroutine 之间的数据通信来同步数据，而非 lock。在 Go 中，消息传输的核心数据类型是 <code>channel</code>。</p>
-<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>OS 调度线程，使之执行于物理处理器上，Go 运行时调度 goroutines，使之执行于逻辑处理器上。每个逻辑处理器则独立地绑定在单个 OS 线程上。</p>
-<h2 id="Goroutines"><a href="#Goroutines" class="headerlink" title="Goroutines"></a>Goroutines</h2><h2 id="Race-Condition"><a href="#Race-Condition" class="headerlink" title="Race Condition"></a>Race Condition</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
-
-<h2 id="Locking-shared-resources"><a href="#Locking-shared-resources" class="headerlink" title="Locking shared resources"></a>Locking shared resources</h2>]]></content>
-      <categories>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>beautiful-racket-part-1</title>
     <url>/2020/10/03/beautiful-racket-part-1/</url>
     <content><![CDATA[<h1 id="Foreword-by-Matthew-Flatt"><a href="#Foreword-by-Matthew-Flatt" class="headerlink" title="Foreword by Matthew Flatt"></a>Foreword by Matthew Flatt</h1><p>让我们回顾1993年时的事情：</p>
@@ -63,7 +41,9 @@
 </ul>
 <p>此类技术，眼下已经属于理所应当，而彼时却会引发争论。当然，这些变化不是在一夜之间发生的。部分原因是，硬件性能和软件的scale的变化，改变了编程语言的可能性与tradeoff。部分原因是，越来越多的人尝试不同技术，然后不愿再回去了。</p>
 <p>本书的核心是语言的可扩展性，对 Racket 来说是其中的 Macro。那么，如果宏真地这么好，为什么不是每个人都已在使用？如同 GC，宏看起来很酷，但也引入了太多 overhead（不是程序执行上，而是程序理解上）。类似于一等函数，宏在代码中引入了另一维度。</p>
-<p>PS：应该不类似于与 GC，因为GC实际上是大大减轻了程序员的心智负担。</p>
+<p>PS：应该不类似于 GC，因为GC实际上是大大减轻了程序员的心智负担。</p>
+<span id="more"></span>
+
 <h1 id="Make-a-language-in-one-hour-stacker"><a href="#Make-a-language-in-one-hour-stacker" class="headerlink" title="Make a language in one hour: stacker"></a>Make a language in one hour: stacker</h1><h2 id="Why-Make-Languages"><a href="#Why-Make-Languages" class="headerlink" title="Why Make Languages"></a>Why Make Languages</h2><h3 id="What-is-a-programming-language"><a href="#What-is-a-programming-language" class="headerlink" title="What is a programming language?"></a>What is a programming language?</h3><p>不管是编写一般的程序，还是特殊的 compiler 与 interpreter，它们都遵循一个统一的模式：</p>
 <ul>
 <li>take some input -&gt; put it into a processing device -&gt; get a result</li>
@@ -118,6 +98,28 @@
       </tags>
   </entry>
   <entry>
+    <title>concurrency-in-go</title>
+    <url>/2021/03/22/concurrency-in-go/</url>
+    <content><![CDATA[<h1 id="Concurrency-in-Go"><a href="#Concurrency-in-Go" class="headerlink" title="Concurrency in Go"></a>Concurrency in Go</h1><p>参考：《Go in Action》第六章</p>
+<ul>
+<li>使用 <code>goroutine</code> 运行代码</li>
+<li>检测和修复 race condition</li>
+<li>在 channel 之间共享数据</li>
+</ul>
+<p>Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。</p>
+<p>并发同步源于 CSP 范式，CSP 是一个消息传输模型。它通过在 goroutine 之间的数据通信来同步数据，而非 lock。在 Go 中，消息传输的核心数据类型是 <code>channel</code>。</p>
+<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>OS 调度线程，使之执行于物理处理器上，Go 运行时调度 goroutines，使之执行于逻辑处理器上。每个逻辑处理器则独立地绑定在单个 OS 线程上。</p>
+<h2 id="Goroutines"><a href="#Goroutines" class="headerlink" title="Goroutines"></a>Goroutines</h2><h2 id="Race-Condition"><a href="#Race-Condition" class="headerlink" title="Race Condition"></a>Race Condition</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
+
+<h2 id="Locking-shared-resources"><a href="#Locking-shared-resources" class="headerlink" title="Locking shared resources"></a>Locking shared resources</h2>]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>effective-go</title>
     <url>/2021/03/14/effective-go/</url>
     <content><![CDATA[<h1 id="Effective-Go"><a href="#Effective-Go" class="headerlink" title="Effective Go"></a>Effective Go</h1><p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
@@ -162,31 +164,6 @@
       </tags>
   </entry>
   <entry>
-    <title>golang-organization</title>
-    <url>/2021/03/14/golang-organization/</url>
-    <content><![CDATA[<h1 id="Go-程序的代码组织"><a href="#Go-程序的代码组织" class="headerlink" title="Go 程序的代码组织"></a>Go 程序的代码组织</h1><p>参考：<br><a href="https://golang.org/doc/code">How to Write Go Code</a><br><a href="https://stackoverflow.com/questions/55442878/organize-local-code-in-packages-using-go-modules/57314494#57314494">Organize Local Code</a><br><a href="https://github.com/golang-standards/project-layout">Common Project Layout</a><br><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
-<h1 id="代码组织（Code-organization）"><a href="#代码组织（Code-organization）" class="headerlink" title="代码组织（Code organization）"></a>代码组织（Code organization）</h1><p>Go 程序以 <code>package</code> 组织。<code>package</code> 是一组在同一目录下的源代码文件集合。</p>
-<p>一个代码库包含一个或多个 <code>module</code>。<code>module</code> 是一组相关的 Go <code>package</code>。Go 代码通常仅包含一个 <code>module</code>，名为 <code>go.mod</code> 的文件声明了 module 路径。</p>
-<p><code>go.mod</code> 在代码库根目录，其定义的 module 包含了该目录下所有的 package。</p>
-<p>module 的路径可作为 import 的前缀，同时也说明了 <code>go</code> 命令如何定位并下载之。引用路径是字符串值，package 的引用路径是 module 的子目录，比如：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">github.com/google/go-cmp/cmp</span><br></pre></td></tr></table></figure>
-
-<p>但标准库中的 package 不需要 module 路径前缀。</p>
-<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>每个源文件可以包含自己的 <code>init</code> 函数，以进行必要之设置。<code>init</code> 在所属 package 内的所有变量初始化之后（这又在所有引用的 package eval 之后）执行。</p>
-<p><code>init</code> 可用于在程序真正执行之前验证和修复程序状态，也可进行配置、初始化变量等等。</p>
-<p>所有的 <code>init</code> 函数会被编译器发现，并在 <code>main</code> 函数之前调用之。</p>
-<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>对于简单的程序，repository 下只有一个 <code>module</code>，通过 <code>go.mod</code> 选择一个名称，如果想少打点字，使用 local name，而非完整路径。</p>
-<p>在项目内添加不同的目录，其中含有的代码的部分即是 package，这样让代码组织更清晰。package 下可以继续嵌套。</p>
-<p>如果要引用本地其它 repository 的 package，使用 <code>replace</code>。如果要发布代码，使用完整路径。</p>
-<h1 id="Don’t-Panic"><a href="#Don’t-Panic" class="headerlink" title="Don’t Panic"></a>Don’t Panic</h1>]]></content>
-      <categories>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>golang-packages</title>
     <url>/2021/03/14/golang-packages/</url>
     <content><![CDATA[<h1 id="Go-语言中的-Modules-与-Packages"><a href="#Go-语言中的-Modules-与-Packages" class="headerlink" title="Go 语言中的 Modules 与 Packages"></a>Go 语言中的 Modules 与 Packages</h1><h1 id="创建一个简单-app"><a href="#创建一个简单-app" class="headerlink" title="创建一个简单 app"></a>创建一个简单 app</h1><p><a href="https://golang.org/doc/tutorial/getting-started">参考：golang-getting-started</a></p>
@@ -195,6 +172,8 @@
 <h2 id="依赖追踪（dependency-tracking）"><a href="#依赖追踪（dependency-tracking）" class="headerlink" title="依赖追踪（dependency tracking）"></a>依赖追踪（dependency tracking）</h2><p>如果代码需要引入其它模块（module），在 Go 中使用当前项目的 module 来管理。当前的 module 由 <code>go.mod</code> 文件定义。<code>go.mod</code> 包含在代码库中，与代码同在。</p>
 <p>要在当前项目中其中依赖追踪，需运行 <code>go mod init</code> 命令。</p>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init andersc.com/hello</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内容</span></span><br><span class="line">module andersc.com/hello</span><br><span class="line"><span class="keyword">go</span> <span class="number">1.15</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
 
 <h2 id="编辑代码"><a href="#编辑代码" class="headerlink" title="编辑代码"></a>编辑代码</h2><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;rsc.io/quote&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(quote.Go())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -231,6 +210,31 @@
       </tags>
   </entry>
   <entry>
+    <title>golang-organization</title>
+    <url>/2021/03/14/golang-organization/</url>
+    <content><![CDATA[<h1 id="Go-程序的代码组织"><a href="#Go-程序的代码组织" class="headerlink" title="Go 程序的代码组织"></a>Go 程序的代码组织</h1><p>参考：<br><a href="https://golang.org/doc/code">How to Write Go Code</a><br><a href="https://stackoverflow.com/questions/55442878/organize-local-code-in-packages-using-go-modules/57314494#57314494">Organize Local Code</a><br><a href="https://github.com/golang-standards/project-layout">Common Project Layout</a><br><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
+<h1 id="代码组织（Code-organization）"><a href="#代码组织（Code-organization）" class="headerlink" title="代码组织（Code organization）"></a>代码组织（Code organization）</h1><p>Go 程序以 <code>package</code> 组织。<code>package</code> 是一组在同一目录下的源代码文件集合。</p>
+<p>一个代码库包含一个或多个 <code>module</code>。<code>module</code> 是一组相关的 Go <code>package</code>。Go 代码通常仅包含一个 <code>module</code>，名为 <code>go.mod</code> 的文件声明了 module 路径。</p>
+<p><code>go.mod</code> 在代码库根目录，其定义的 module 包含了该目录下所有的 package。</p>
+<p>module 的路径可作为 import 的前缀，同时也说明了 <code>go</code> 命令如何定位并下载之。引用路径是字符串值，package 的引用路径是 module 的子目录，比如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">github.com/google/go-cmp/cmp</span><br></pre></td></tr></table></figure>
+
+<p>但标准库中的 package 不需要 module 路径前缀。</p>
+<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>每个源文件可以包含自己的 <code>init</code> 函数，以进行必要之设置。<code>init</code> 在所属 package 内的所有变量初始化之后（这又在所有引用的 package eval 之后）执行。</p>
+<p><code>init</code> 可用于在程序真正执行之前验证和修复程序状态，也可进行配置、初始化变量等等。</p>
+<p>所有的 <code>init</code> 函数会被编译器发现，并在 <code>main</code> 函数之前调用之。</p>
+<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>对于简单的程序，repository 下只有一个 <code>module</code>，通过 <code>go.mod</code> 选择一个名称，如果想少打点字，使用 local name，而非完整路径。</p>
+<p>在项目内添加不同的目录，其中含有的代码的部分即是 package，这样让代码组织更清晰。package 下可以继续嵌套。</p>
+<p>如果要引用本地其它 repository 的 package，使用 <code>replace</code>。如果要发布代码，使用完整路径。</p>
+<h1 id="Don’t-Panic"><a href="#Don’t-Panic" class="headerlink" title="Don’t Panic"></a>Don’t Panic</h1>]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《幸福课》笔记</title>
     <url>/2017/09/24/happiness/</url>
     <content><![CDATA[<p><a href="https://book.douban.com/subject/27050457/">原书信息</a></p>
@@ -243,7 +247,9 @@
 <blockquote>
 <p>如果是这样，那这本书就是为你写的。</p>
 </blockquote>
-<p>如果你也感到焦虑，因焦虑而焦虑；总感觉时间不够用，但内心却深知，自己并没有利用好时间；不允许自己闲下来；</p>
+<p>如果你也感到焦虑，因焦虑而焦虑；总感觉时间不够用，但内心却深知，自己并没有利用好时间；不允许自己闲下来。</p>
+<span id="more"></span>
+
 <h1 id="自序"><a href="#自序" class="headerlink" title="自序"></a>自序</h1><p><del>&gt; 追求幸福如登山，登顶只是瞬间的事，而攀爬的过程却艰辛而漫长。</del></p>
 <p><del>你也许爬过一座山，却未必爬过他人在爬的山，或者未走过他在走的那条路，仅能给出一点建议而已。</del></p>
 <blockquote>
@@ -501,6 +507,8 @@
     <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
 
 <p>运行此命令，按其中的提示安装即可。</p>
+<span id="more"></span>
+
 <h2 id="升级与卸载"><a href="#升级与卸载" class="headerlink" title="升级与卸载"></a>升级与卸载</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustup update</span><br><span class="line"></span><br><span class="line">$ rustup self uninstall</span><br></pre></td></tr></table></figure>
 
 <h2 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc --version</span><br></pre></td></tr></table></figure>
@@ -588,6 +596,8 @@
 <p>原始证据与”二手“资料</p>
 <p>“历史学家能否理解和接近过去的生活？他们写下的故事是否是’真实的故事’？历史的意义会是什么？”</p>
 <p>“为何要研究历史，历史何以重要”的三个理由。（认识到以不同方式行事的可能性：避免想当然，比如对于同性恋的看法。）</p>
+<span id="more"></span>
+
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>历史学科的三种著作：实践入门指南；哲学考察；研究方法的辩论文。</p>
 <p>“书中所写，代表了我在<strong>历史是什么、如何研究历史、历史为了什么</strong>等方面的看法”。</p>
 <h2 id="本书三部分：描述在过去历史是什么。"><a href="#本书三部分：描述在过去历史是什么。" class="headerlink" title="本书三部分：描述在过去历史是什么。"></a>本书三部分：描述在过去历史是什么。</h2><p>（自过去至今历史是什么；如何用手头的资料进行（处理、解释）历史工作；历史与真相）</p>
@@ -862,6 +872,8 @@
 <p>Also, the Carousel Object System.</p>
 <h1 id="PDFs-inside-out"><a href="#PDFs-inside-out" class="headerlink" title="PDFs inside-out"></a>PDFs inside-out</h1><p>from a de facto to an ISO standard.</p>
 <h2 id="why-and-how"><a href="#why-and-how" class="headerlink" title="why and how?"></a>why and how?</h2><p>1985年，Adobe 引入了 PostScript Page Description Language。同年，Adobe 也开发了 Adobe Illustrator。这两款产品引发了桌面 publishing 的革命。但 Adobe 的创建者们感觉还缺少了点什么。</p>
+<span id="more"></span>
+
 <p>1991年，John Warnock 写了 Carmelot Paper，在其中写道：</p>
 <p>一个特别的问题是，大多数程序可以打印至不同的打印机，但没有一种通用的方式来通信和查看这些打印信息。行业所亟需的是在不同的机器配置、OS、网络之间的通用通信机制。</p>
 <p>作为这个文章的结果，一个新项目启动了，<code>Carousel</code> 是初始代号，之后修改为 <code>Acrobat</code>。新文档格式原称为 IPS，很快就改为 PDF（Potable Document Format）。</p>
@@ -994,6 +1006,8 @@
     <content><![CDATA[<p>本文主要整理自《Fluent Python》的第14章。</p>
 <p>**迭代（iteration）**在数据处理中不可或缺的。当数据在内存中放不下时，我们需要偷一下懒（lazily），每次按需取一个数据项，这就是所谓的迭代器（iterator）模式。</p>
 <p>Python 2.2（2001）添加了<code>yield</code>关键字，用以构造<strong>生成器（generator）</strong>，生成器可达成迭代器的效果。而且，在Python社区中，生成器与迭代器同义。</p>
+<span id="more"></span>
+
 <p>Python中的每个集合（collection）都是<strong>可迭代的（iterable）</strong>。迭代器在内部用于：</p>
 <ul>
 <li>for 循环</li>
@@ -1150,6 +1164,8 @@
 <li>Bit Vector：位向量</li>
 <li>Dot Product：点积</li>
 </ul>
+<span id="more"></span>
+
 <h1 id="1、文本检索基本概念"><a href="#1、文本检索基本概念" class="headerlink" title="1、文本检索基本概念"></a>1、文本检索基本概念</h1><p>第一部分将涵盖上图中1-5部分的内容。</p>
 <h2 id="1-1-自然语言内容的分析"><a href="#1-1-自然语言内容的分析" class="headerlink" title="1.1 自然语言内容的分析"></a>1.1 自然语言内容的分析</h2><p>这无疑是处理任何文本数据的第一步，本节包含三个小主题：</p>
 <ul>
@@ -1285,7 +1301,57 @@
       </tags>
   </entry>
   <entry>
-    <title>what-is-populism</title>
+    <title>Text Retrieval and Search Engines(2)</title>
+    <url>/2017/07/09/text-retrieval-and-search-engines-part-2/</url>
+    <content><![CDATA[<p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
+<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
+<p>主要概念：</p>
+<ul>
+<li>关键词词频（Term Frequency，TF）</li>
+<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
+<li>TF transformation</li>
+<li>Pivoted length normalization</li>
+<li>BM25</li>
+<li>倒排索引（Inverted Index）与posting</li>
+<li>Binary coding，unary coding，gamma-coding和d-gap</li>
+<li>Zipf法则</li>
+</ul>
+<span id="more"></span>
+
+<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
+<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
+<ul>
+<li>d4匹配到了更多关键词，应获得更高的相似度</li>
+<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
+</ul>
+<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
+<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
+<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
+<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
+<p>现在重新计算上面的三个文档，会发现$f(q, d2) &#x3D; 3$，$f(q, d3) &#x3D; 3$，$f(q, d4) &#x3D; 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
+<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
+<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
+<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
+<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
+<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
+<p>引入IDF后，文档的向量公式变为：</p>
+<p>$$d &#x3D; (y_1, \cdots, y_N，y_i &#x3D; c(W_i, d) * IDF(W_i)$$</p>
+<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
+<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
+]]></content>
+      <categories>
+        <category>Text Retrieval</category>
+        <category>Information Retrieval</category>
+      </categories>
+      <tags>
+        <tag>Text Retrieval</tag>
+        <tag>Information Retrieval</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>什么是民粹主义</title>
     <url>/2020/10/31/what-is-populism/</url>
     <content><![CDATA[<h1 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h1><blockquote>
 <p>政治是由各种团体进行集体决策的一个过程，也是各种团体或个人为了各自的领域所结成的特定关系，尤指对于社会群体的统治，例如统治一个国家，亦指对于一国内外事务之监督与管制。狭义来说，这个词多用来指政府、政党等治理国家的行为。</p>
@@ -1295,6 +1361,8 @@
 </blockquote>
 <p>”政治是由各种团体进行集体决策的一个过程“，团体有不同的构成，决策有不同的方式。但不管怎样，在现代社会，每个人都无法逃脱政治，即使你不关心它，它仍然以某种方式影响到你。</p>
 <p>”团体“的划分，有时我们会自己归类，比如无产、中产，但社会的看不见的手则将每个人都归类了，比如”精英“和”大众“。</p>
+<span id="more"></span>
+
 <h2 id="精英主义与民粹主义"><a href="#精英主义与民粹主义" class="headerlink" title="精英主义与民粹主义"></a>精英主义与民粹主义</h2><p>精英主义（Elitism）是从现实主义出发来理解和阐释政治与社会的结构及其发展的一种理论，认为应该由少数具备知识、财富与地位的社会精英，来进行政治决策，主导社会走向。精英主义的反义词为民粹主义（大众主义）。 </p>
 <blockquote>
 <p>以大众主义者的角度而言，常认为精英主义者是蔑视大众的。精英主义甚至被认为是一种对普通大众的蔑视、嘲笑，甚至仇视；而精英主义者认为大众是一个无知、盲动而又自命不凡的群体，“奴隶”、“野蛮人”、“乌合之众”、“群畜”等名词是精英主义下的产物。 </p>
@@ -1357,54 +1425,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Text Retrieval and Search Engines(2)</title>
-    <url>/2017/07/09/text-retrieval-and-search-engines-part-2/</url>
-    <content><![CDATA[<p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
-<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
-<p>主要概念：</p>
-<ul>
-<li>关键词词频（Term Frequency，TF）</li>
-<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
-<li>TF transformation</li>
-<li>Pivoted length normalization</li>
-<li>BM25</li>
-<li>倒排索引（Inverted Index）与posting</li>
-<li>Binary coding，unary coding，gamma-coding和d-gap</li>
-<li>Zipf法则</li>
-</ul>
-<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
-<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
-<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
-<ul>
-<li>d4匹配到了更多关键词，应获得更高的相似度</li>
-<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
-</ul>
-<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
-<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
-<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
-<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
-<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
-<p>现在重新计算上面的三个文档，会发现$f(q, d2) &#x3D; 3$，$f(q, d3) &#x3D; 3$，$f(q, d4) &#x3D; 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
-<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
-<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
-<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
-<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
-<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
-<p>引入IDF后，文档的向量公式变为：</p>
-<p>$$d &#x3D; (y_1, \cdots, y_N，y_i &#x3D; c(W_i, d) * IDF(W_i)$$</p>
-<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
-<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
-]]></content>
-      <categories>
-        <category>Text Retrieval</category>
-        <category>Information Retrieval</category>
-      </categories>
-      <tags>
-        <tag>Text Retrieval</tag>
-        <tag>Information Retrieval</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于书评写作</title>
     <url>/2021/07/27/%E4%B9%A6%E8%AF%84%E5%86%99%E4%BD%9C/</url>
     <content><![CDATA[<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>本文主要整理了关于书评写作的几篇文章的内容，这些文章是：</p>
@@ -1424,6 +1444,8 @@
 <li>When：文章主题所属的时代、季节等</li>
 <li>How：如何写？（体裁、简述&#x2F;详述、直白&#x2F;委婉、布局等）</li>
 </ul>
+<span id="more"></span>
+
 <h1 id="写作步骤（文1）"><a href="#写作步骤（文1）" class="headerlink" title="写作步骤（文1）"></a>写作步骤（文1）</h1><h2 id="1、明确目标"><a href="#1、明确目标" class="headerlink" title="1、明确目标"></a>1、明确目标</h2><p>写任何文章之前都需要明确目标是什么，书评也不例外。书评通常是对某本书发表自己的见解，其中可能包含了（或明或暗地）是否建议读者去阅读。</p>
 <h2 id="2、站在读者角度"><a href="#2、站在读者角度" class="headerlink" title="2、站在读者角度"></a>2、站在读者角度</h2><p>先考虑读者可能是谁，然后考虑两个关键词：信息与态度（想读与不想读）。</p>
 <h2 id="3、头脑风暴，确定要表达的内容"><a href="#3、头脑风暴，确定要表达的内容" class="headerlink" title="3、头脑风暴，确定要表达的内容"></a>3、头脑风暴，确定要表达的内容</h2><p>边阅读边写笔记，将书中有价值的内容罗列出来，从而在写作书评有迹可循。</p>
@@ -1498,6 +1520,8 @@
 <p>这一点，连同我为《太平洋事务》写的第一篇稿子所得的40美元稿费（我用来买了一台留声机和《蝴蝶夫人》选段《晴朗的一天》的唱片），让我觉得，我的职业生涯已经开始。</p>
 <p>我一直认为，让一个人背负深刻烙印的是他步入成熟的那些年，而不是他出生的那一年。所以，我认为我自己是19世纪30年代的孩子。我有信仰，我猜二十几岁的人都会有（在我那代人中确实是这样）。我信仰正义和理性最终会获得胜利。</p>
 <p>对于这些选文凑在一起是否提供了某种历史哲学的问题，我回答起来一直都甚为小心，因为我害怕各种哲学。它们隐藏着历史学家试图操控事实以充实自己理论体系的危险，导致历史强于意识形态，弱于“事实是如何发生的”。我不敢保证，一个长期写作历史的人不会遵行某种原理和准则。我想，后面的这些文章展现的是历史的一种偶然和循环，一种人类行为，就像平静的河水在无穷无尽的各种田野中流过，时代和人的好与坏交织共存，横流和逆流交替来回，任何一种简单的归纳都无法涵盖。至于应该怎样，我相信，事实应该早于论点；相信编年叙述（chronological narrative）是骨架和血液，它让历史更接近于“事实是如何发生的”，更易于恰当地理解原因和作用；我还相信，历史应该以当时的所知所识来叙述，而不是带着事后诸葛亮的视角，否则结论不足为信。虽然我没有做原创性声明，但这些原则都是我自己在多年的技艺习练和职业实践中发现的。</p>
+<span id="more"></span>
+
 <h1 id="上篇-历史技艺"><a href="#上篇-历史技艺" class="headerlink" title="上篇 历史技艺"></a>上篇 历史技艺</h1><h2 id="寻找历史"><a href="#寻找历史" class="headerlink" title="寻找历史"></a>寻找历史</h2><p>后来我的兴趣越来越倾向于历史文学方向，而不是纯历史。</p>
 <p>（在大学），有意思的是，对我帮助最大的三门课中，有两门都是文学，不是历史。</p>
 <p>（关于论文），我希望你是真正强烈地关心其中的“潜在意象”，而不是因为你所在的院系认为这是一个原创度很高的题目。</p>
@@ -1600,6 +1624,25 @@
 ]]></content>
   </entry>
   <entry>
+    <title>大龄男青年相亲故事一则</title>
+    <url>/2020/07/04/%E5%A4%A7%E9%BE%84%E7%94%B7%E9%9D%92%E5%B9%B4%E7%9B%B8%E4%BA%B2%E6%95%85%E4%BA%8B%E4%B8%80%E5%88%99/</url>
+    <content><![CDATA[<p>村中有一个大龄单身男青年，相亲屡次失败，一家人为此都很是拿急。说起来，失败的原因不是因为太穷，或者太矮、太土，只是因为他的嘴实在有些大。</p>
+<p>一天，村里一位大姐来家里耍，聊起了相亲的事儿，便问：“你和那些闺女一般都拉些什么？”他说，就是家常啊，不知道为什么就是不行。一次典型的聊天可能是这样的：</p>
+<blockquote>
+<p>女：你属什么？<br>男：属马。<br>女：你喜欢吃什么？<br>男：吃瓜（地瓜）。<br>女：那你喜欢看什么？<br>男：看花。</p>
+</blockquote>
+<p>大姐听了，沉吟了一会儿说：“这样，以后你就这么说：我属虎、喜欢吃红薯、喜欢看竹。”</p>
+<p>很快，下一次相亲机会来了，在女方家里。男青年按大姐的指点一一作答，没有什么破绽，大家都挺满意的。女方留男青年在家吃午饭，吃饺子。不巧的是，家里醋没了，吃饺子可不能没有醋啊，男青年主动提出去打醋。</p>
+<p>过了一会儿，男青年端着一碗醋回来了，奇怪的是只有小半碗儿。那个闺女问起原因，男青年说：“本来是打了满满的一碗，都洒咯。”</p>
+]]></content>
+      <categories>
+        <category>故事</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>女性主义</title>
     <url>/2021/06/06/%E5%A5%B3%E6%80%A7%E4%B8%BB%E4%B9%89/</url>
     <content><![CDATA[<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>一种朴素的对“公平性”的辩护，认为男性、女性不应该被区别对待，这一点与性别无关。</p>
@@ -1614,6 +1657,8 @@
 <li>男性凝视</li>
 <li>男性油腻</li>
 </ul>
+<span id="more"></span>
+
 <h1 id="女性主义理论"><a href="#女性主义理论" class="headerlink" title="女性主义理论"></a>女性主义理论</h1><h2 id="女性主义理论-1"><a href="#女性主义理论-1" class="headerlink" title="女性主义理论"></a>女性主义理论</h2><p>两类：宏观理论和微观理论。</p>
 <p>奠基性作品七部：</p>
 <p>女性主义重要观点：<strong>女性的地位是衡量一个民族文明程度的最好尺度</strong>。</p>
@@ -1683,6 +1728,8 @@
 <p>基本的原理颇为简单，它们自古有之，它们在各种（人类所处的）时空都是有效的。</p>
 <h2 id="有益和必要的知识"><a href="#有益和必要的知识" class="headerlink" title="有益和必要的知识"></a>有益和必要的知识</h2><p>阅读金融百科全书，或了解货币史，不能给我们带来富裕和幸福。</p>
 <p>描述基本的事实时，有一种危险：人们会过快地做出结论，我已经知道了。这会让人停止学习。</p>
+<span id="more"></span>
+
 <h2 id="财富法则"><a href="#财富法则" class="headerlink" title="财富法则"></a>财富法则</h2><ol>
 <li>一开始，我们必须明确金钱对自己的<strong>意义</strong>。</li>
 <li>确立最重要的目标。（长长的 wishlist 中的某几个）</li>
@@ -1825,6 +1872,8 @@
 <p>控制力幻象：我们可以控制很多东西。认清现实后，又不甘心只能控制这么一点，看不到这一点的丰富。</p>
 <p>不同的心理咨询的流派都在帮助我们重新建立控制感。</p>
 <p>生活是一个修行的道场。</p>
+<span id="more"></span>
+
 <h1 id="2、乐观的人反而会更焦虑？寻求控制感"><a href="#2、乐观的人反而会更焦虑？寻求控制感" class="headerlink" title="2、乐观的人反而会更焦虑？寻求控制感"></a>2、乐观的人反而会更焦虑？寻求控制感</h1><p>我们有烦恼，是因为我们总妄想去控制那些我们控制不了的东西，却不愿对我们能够控制的东西担负起责任。</p>
 <p>控制是人的基本需要。从婴儿时期，人就想控制这个世界了。</p>
 <p>控制感是<strong>安全感</strong>的来源。从某种程度上说，人的心智成熟，就是从认为很多事我能控制到发现很多事我不能控制。</p>
@@ -1970,30 +2019,13 @@
       </tags>
   </entry>
   <entry>
-    <title>大龄男青年相亲故事一则</title>
-    <url>/2020/07/04/%E5%A4%A7%E9%BE%84%E7%94%B7%E9%9D%92%E5%B9%B4%E7%9B%B8%E4%BA%B2%E6%95%85%E4%BA%8B%E4%B8%80%E5%88%99/</url>
-    <content><![CDATA[<p>村中有一个大龄单身男青年，相亲屡次失败，一家人为此都很是拿急。说起来，失败的原因不是因为太穷，或者太矮、太土，只是因为他的嘴实在有些大。</p>
-<p>一天，村里一位大姐来家里耍，聊起了相亲的事儿，便问：“你和那些闺女一般都拉些什么？”他说，就是家常啊，不知道为什么就是不行。一次典型的聊天可能是这样的：</p>
-<blockquote>
-<p>女：你属什么？<br>男：属马。<br>女：你喜欢吃什么？<br>男：吃瓜（地瓜）。<br>女：那你喜欢看什么？<br>男：看花。</p>
-</blockquote>
-<p>大姐听了，沉吟了一会儿说：“这样，以后你就这么说：我属虎、喜欢吃红薯、喜欢看竹。”</p>
-<p>很快，下一次相亲机会来了，在女方家里。男青年按大姐的指点一一作答，没有什么破绽，大家都挺满意的。女方留男青年在家吃午饭，吃饺子。不巧的是，家里醋没了，吃饺子可不能没有醋啊，男青年主动提出去打醋。</p>
-<p>过了一会儿，男青年端着一碗醋回来了，奇怪的是只有小半碗儿。那个闺女问起原因，男青年说：“本来是打了满满的一碗，都洒咯。”</p>
-]]></content>
-      <categories>
-        <category>故事</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《数学分析八讲》笔记</title>
     <url>/2017/10/05/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90%E5%85%AB%E8%AE%B2/</url>
     <content><![CDATA[<p><a href="https://book.douban.com/subject/4825571/">数学分析八讲 原书链接</a>，作者辛钦。</p>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>非数学专业的工程师、经济学家等，一般会先行学习较为简单的微积分，到了某个时候发现需要更为牢固的数学基础。如果找一本《微积分学教程》来看，事实证明效果不佳。学习者要么无法安排足够的时间去学习，要么还没有足够好的数学基础，无法从研究中区分出哪些是原则的内容，哪些是较为微末的细节。</p>
 <p>要满足这类学生的需求，所需其实有限。我的秘诀是：从一开始就拒绝充分详细地讲授哪怕只是阐述本课程牟一章的想法，而只限于讲授那些<strong>具有原则性的内容</strong>。我讲的更多地是关于目的和趋势、问题和方法、基本的分析概念之间的以及它们与应用之间的<strong>关系</strong>，而不是个别的定理与证明。但在有着主导作用和原则意义的概念或方法上，我则不吝时间，力求用各种手段，通过各种表述和直观形象等，尽可能明白而有效地把这些基本内容教给我的学生。有了这个基础，<strong>他们每一个人在需要更深入地研究数学分析的某一章节时，就能够独立地找到他所需的材料，然后进行研究，也就是说，可以自立地区分主要和次要、本质和非本质</strong>。</p>
+<span id="more"></span>
+
 <h1 id="第一讲-连续统"><a href="#第一讲-连续统" class="headerlink" title="第一讲 连续统"></a>第一讲 连续统</h1><h2 id="为什么数学分析必须从研究连续统开始？"><a href="#为什么数学分析必须从研究连续统开始？" class="headerlink" title="为什么数学分析必须从研究连续统开始？"></a>为什么数学分析必须从研究连续统开始？</h2><blockquote>
 <p>如果对于变量$x$的每一个值，变量$y$都有唯一确定的值与之对应，那么变量$y$称为变量$x$的函数。</p>
 </blockquote>
@@ -2068,6 +2100,8 @@
     <content><![CDATA[<p>弗洛姆是德裔美籍心理学家，第一个研究“爱”和“爱的能力”的学者，除了《爱的艺术》，还有另一著作《逃避自由》。</p>
 <hr>
 <h1 id="一、爱是一门艺术吗？"><a href="#一、爱是一门艺术吗？" class="headerlink" title="一、爱是一门艺术吗？"></a>一、爱是一门艺术吗？</h1><p>爱是艺术，如绘画、木工，这意味着它需要去学习，努力学习。但也有人认为，爱不是艺术，而是一种偶然产生的令人心荡神怡的感受。如果是后者，那么爱不可学习，也不需要学习。</p>
+<span id="more"></span>
+
 <h2 id="为什么说爱不可学？"><a href="#为什么说爱不可学？" class="headerlink" title="为什么说爱不可学？"></a>为什么说爱不可学？</h2><p>若有此想法，大概因为以下视角：</p>
 <ul>
 <li>我是否值得被人爱：要赢得人心与对异性有吸引力（名利、权力、举止、谈吐等）</li>
@@ -2141,13 +2175,15 @@
     <url>/2017/10/24/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/</url>
     <content><![CDATA[<p>原书链接：<a href="https://book.douban.com/subject/1425950/">线性代数及其应用</a></p>
 <h1 id="0-1-前言"><a href="#0-1-前言" class="headerlink" title="0.1 前言"></a>0.1 前言</h1><p>完成微积分的学生学习起来更易接受。</p>
-<h2 id="本身特点"><a href="#本身特点" class="headerlink" title="本身特点"></a>本身特点</h2><ul>
+<h2 id="本书特点"><a href="#本书特点" class="headerlink" title="本书特点"></a>本书特点</h2><ul>
 <li>提前介绍主要概念</li>
 <li>矩阵乘法的现代观点：定义和证明中使用矩阵的“列”，而非“元素”，核心课题是<strong>将矩阵与向量之乘积$Ax$视为关于$A$的列的一个线性组合</strong>。这种现代方法简化了很多论述，并将向量空间和线性系统的研究联系在了一起。</li>
 <li>线性变换：贯穿整本书，增强了本书的几何趣味。</li>
 <li>特征值和动力系统：特征值来源并应用于离散动力系统和连续动力系统。</li>
 <li>正交性和最小二乘法：与普通入门教材相比，本书对这些主题的讨论更为全面。</li>
 </ul>
+<span id="more"></span>
+
 <h1 id="0-2-给学生的注释"><a href="#0-2-给学生的注释" class="headerlink" title="0.2 给学生的注释"></a>0.2 给学生的注释</h1><p>独立完成尽可能多的习题，过早查看答案，会误以为已经理解了尚未理解的概念。</p>
 <p><strong>线性代数是一种语言</strong>，用学习外语的方法<strong>每天学习这种语言</strong>。</p>
 <h2 id="数值计算的注解"><a href="#数值计算的注解" class="headerlink" title="数值计算的注解"></a>数值计算的注解</h2><p>关注一下这部分内容，因为现实中的应用通常会涉及一定误差下的计算，这部分可帮助你理解计算中潜在的困难。</p>
