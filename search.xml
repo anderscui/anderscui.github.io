@@ -14,6 +14,399 @@
       </tags>
   </entry>
   <entry>
+    <title>OCaml Modular Programming</title>
+    <url>/2025/06/26/OCaml-Modular-Programming/</url>
+    <content><![CDATA[<blockquote>
+<p>按：本文整理自<a href="https://cs3110.github.io/textbook/cover.html">《OCaml Programming: Correct + Efficient + Beautiful》</a>一书的第五章 Modular Programming。</p>
+<p>初学 OCaml 时，建议先看完《OCaml from the Very Beginning》，然后看《Learn Programming with OCaml》的前三（或五）章，然后再来看《OCaml Programming》第五章。再往后，就按需去看吧。</p>
+</blockquote>
+<p>在程序规模很小的时候，如数十行，它完全可以由一个人完成，代码放在单个文件中。但在真实世界的开发中，程序规模要大好几个数量级，多的能到数千万行。此时，它必须有多个程序员完成，并且代码放在不同文件中。</p>
+<p>其中一个解决方案是<strong>模块化编程（modular programming）</strong>：程序由多个分别开发的模块构成。划分为模块后，每个程序员都仅关注于手头的任务，无须理解整个程序。</p>
+<p>同时，我们需要确保每个模块的准确性，此时使用的是 local reasoning：不需要太多关注整体的程序，而是关注它需要满足的 <strong>contract</strong>（此为<strong>接口</strong>）。如果每个人都能正确完成，那么各个分别开发的程序组合起来之后应当可以正确工作。这是模块化编程的核心思想。</p>
+<p>因此，构建大型程序必须要使用 <strong>abstraction</strong>，即上面所提及的 contract、接口。不同组件之间通过 abstraction 连接，而非<strong>实现的细节</strong>。</p>
+<p>模块通过给出它们应当完成的功能（specification，规格 or 规范）进行抽象。好的模块规格应当是清晰易懂的，提供恰到好处的信息，使得该模块的 client 能正确使用之。</p>
+<span id="more"></span>
+
+<p>上述模块规范（specification）称为<strong>接口（interface）</strong>，它向 client 提供功能信息，并隐藏具体实现。在 Java 中，interface 显然是一种 interface，广义上讲，一个类的 public 成员也提供了一种 interface。</p>
+<p>在日常开发中，大部分开发者已经习惯了作为模块使用者去开发：标准库由若干模块组成，开发者根据模块的接口文档去使用之，但通常不去考虑实现细节。在这个意义上，接口如同一份 contract（契约）。</p>
+<p>设计接口时，需要注意：</p>
+<ul>
+<li>最好让实现者和 client 共同参与，达成共识</li>
+<li>虽然开发的进行，修改代码会越来越困难</li>
+<li><strong>模块应该仅通过其声明的接口使用</strong></li>
+</ul>
+<p>模块化编程的好处：</p>
+<ul>
+<li>可以分别开发：其中重要的是 interface，相当于约定，如此不同开发者可专注于不同模块（功能）的开发</li>
+<li>可单独理解：每个模块自成一体，比如关于 collections、datetime 等的模块</li>
+<li>reason locally, not globally</li>
+</ul>
+<h2 id="5-1-Module-Systems"><a href="#5-1-Module-Systems" class="headerlink" title="5.1 Module Systems"></a>5.1 Module Systems</h2><p>编程语言的模块系统（Module System），是它用来支持模块化编程的一组特性。</p>
+<p>Java 与 OCaml modularity 的对比：</p>
+<p><img src="/images/ocaml/features_for_modularity.png"></p>
+<p>以下是模块系统常见的 concerns：</p>
+<ul>
+<li><strong>Namespace</strong>：一个命名空间提供了逻辑上相关的一组名称，并与其他命名空间相区别。对于模块化来说，命名空间是必要的，否则容易有命名冲突的情形。Java 使用 package、class 来对名称分组，OCaml 的 structure 类似于 class。structure 是 OCaml 模块系统的 core。</li>
+<li><strong>Abstraction</strong>：抽象，意味着公开一些信息，而隐藏另一些信息。故而抽象使得封装成为可能。抽象对于模块化也是必要的，它使得实现者隐藏实现细节，避免 client 滥用细节；同时也使得 client 免于面对过多细节。<ul>
+<li>Java 中，interface 和 abstract class 提供抽象能力。</li>
+<li>OCaml 中则是使用 signatures。</li>
+</ul>
+</li>
+<li>Code reuse：代码复用是指，模块系统可以让开发者引入一个模块的部分代码而不需要 copy 之。<ul>
+<li>Java 中，使用 subtyping 和 inheritance</li>
+<li>OCaml 中，使用 functors、includes。functor 类似于 function，它从旧的模块中生出新模块；include 则像是智能形式的 copy-paste。</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-Modules"><a href="#5-2-Modules" class="headerlink" title="5.2 Modules"></a>5.2 Modules</h2><p>一个 structure，只是一组（collection）定义，比如：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> inc x = x + <span class="number">1</span></span><br><span class="line">  <span class="keyword">type</span> primary_color = <span class="type">Red</span> | <span class="type">Green</span> | <span class="type">Blue</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Oops</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>但它不能编译，但可以将其 bind 给一个name：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">MyModule</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> inc x = x + <span class="number">1</span></span><br><span class="line">  <span class="keyword">type</span> primary_color = <span class="type">Red</span> | <span class="type">Green</span> | <span class="type">Blue</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Oops</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在 utop 中显示：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">module MyModule :</span><br><span class="line">  sig</span><br><span class="line">    val inc : int -&gt; int</span><br><span class="line">    <span class="built_in">type</span> primary_color = Red | Green | Blue</span><br><span class="line">    exception Oops</span><br><span class="line">  end</span><br></pre></td></tr></table></figure>
+
+<p>这说明 <code>MyModule</code> 已经被定义，类型为 <code>module type</code> ，而 type 的 signature 则是 <code>sig...end</code> 部分。</p>
+<p>PS：为何说它是 signature，可以看 inc 函数，它仅作为签名出现。</p>
+<p>PPS：signature 本身是一组 specification。</p>
+<h3 id="更真实的例子"><a href="#更真实的例子" class="headerlink" title="更真实的例子"></a>更真实的例子</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(** [empty] is the empty stack. *)</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [is_empty s] is whether [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [push x s] pushes [x] onto the top of [s]. *)</span></span><br><span class="line">  <span class="keyword">let</span> push x s = x :: s</span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [Empty] is raised when an operation cannot be applied</span></span><br><span class="line"><span class="comment">      to an empty stack. *)</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [peek s] is the top element of [s].</span></span><br><span class="line"><span class="comment">      Raises [Empty] if [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span></span><br><span class="line">    | <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span></span><br><span class="line">    | x :: _ -&gt; x</span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [pop s] is all but the top element of [s].</span></span><br><span class="line"><span class="comment">      Raises [Empty] if [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span></span><br><span class="line">    | <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span></span><br><span class="line">    | _ :: s -&gt; s</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这里是使用 List 实现一个 Stack，signature 是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> :</span><br><span class="line">  <span class="keyword">sig</span></span><br><span class="line">    <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">    <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="built_in">bool</span></span><br><span class="line">    <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">    <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">    <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line">    <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，这里的 module 定义和 signature 就和 Java 等语言中的 interface、class 很接近了。而且 ListStack 的内容是高内聚的，即都与 stack of list 高度相关，这是 module 应有之义。</p>
+<p>使用例子：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="type">ListStack</span>.push <span class="number">2</span> (<span class="type">ListStack</span>.push <span class="number">1</span> <span class="type">ListStack</span>.empty)</span><br><span class="line"></span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">2</span>; <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>上面一行代码可以简化为：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"># <span class="type">ListStack</span>.(push <span class="number">2</span> (push <span class="number">1</span> empty));;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">2</span>; <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>ListStack.(e)</code> 时，ListStack 中的所有name在e中都是可用的。通过 pipeline 可进一步简化之：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"># <span class="type">ListStack</span>.(empty |&gt; push <span class="number">1</span> |&gt; push <span class="number">2</span>);;</span><br><span class="line">- : <span class="built_in">int</span> <span class="built_in">list</span> = [<span class="number">2</span>; <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>相比于 Java 中的 class，这里的 module 要简陋许多，因为 module 只是一组<strong>定义</strong>的容器而已。</p>
+<h3 id="Module-Definitions"><a href="#Module-Definitions" class="headerlink" title="Module Definitions"></a>Module Definitions</h3><p><code>module</code> 定义关键词，与 <code>let</code> 很像，差异在于：</p>
+<ul>
+<li>let：将一个 value 绑定到 name</li>
+<li>module：将一个 module value 绑定到 name</li>
+</ul>
+<p>基本语法：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ModuleName</span> = <span class="keyword">struct</span></span><br><span class="line">  module_items</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>模块内的 module_items，可以是 let、type 定义、exception，也可以嵌套的其他 module 定义。模块名需要以大写字母开头，一般使用 <code>CamelCase</code>。</p>
+<p>PS：毕竟是 OCaml，怎么能不使用 CamelCase 呢？</p>
+<p>但更准确的形式应是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ModuleName</span> = module_expression</span><br></pre></td></tr></table></figure>
+
+<p>其中 struct 只是形式之一，另一种是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">L</span> = <span class="type">List</span></span><br></pre></td></tr></table></figure>
+
+<p>这相当于是为既有模块使用一个 alias。</p>
+<p>structure 中的定义，可以选择使用 <code>;;</code> 分隔，像 toplevel 中那样，但并非必要：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">M</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">0</span>;;</span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">int</span>;;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Scope-and-Open"><a href="#Scope-and-Open" class="headerlink" title="Scope and Open"></a>Scope and Open</h3><p>如果有以下 module 定义：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">M</span> = <span class="keyword">struct</span> <span class="keyword">let</span> x = <span class="number">42</span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>要访问其中的 x，可使用 <code>M.x</code>，也可以使用 open：</p>
+<p><code>open M</code>，这样可直接使用 <code>x</code> 访问之了。</p>
+<p>PS：<code>open module</code> 语句，其作用相当于将模块中的定义在当前作用域内“写一遍”。比如 <code>open String</code>，相当于：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> length = <span class="type">String</span>.length</span><br><span class="line"><span class="keyword">let</span> get = <span class="type">String</span>.get</span><br><span class="line"><span class="keyword">let</span> lowercase_ascii = <span class="type">String</span>.lowercase_ascii</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>在当前 scope 内有了 length、get 等函数的定义。</p>
+<p>总是 open 的 module，即标准库 <strong>Stdlib</strong>。</p>
+<p>open 语句也可以作为一种 module_items：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">M</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">open</span> <span class="type">List</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [uppercase_all lst] upper-cases all the elements of [lst]. *)</span></span><br><span class="line">  <span class="keyword">let</span> uppercase_all = map <span class="type">String</span>.uppercase_ascii</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>open List</code> ，map 函数可直接使用。如果也 open String，那么会导致一个问题，map 有冲突，后 open 者会覆盖先 open 者。</p>
+<p>有一个可选的、有些怪异的方式：<code>let open M in e</code>：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">(** [lower_trim s] is [s] in lower case with whitespace removed. *)</span></span><br><span class="line"><span class="keyword">let</span> lower_trim s =</span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">open</span> <span class="type">String</span> <span class="keyword">in</span></span><br><span class="line">  s |&gt; trim |&gt; lowercase_ascii</span><br></pre></td></tr></table></figure>
+
+<h3 id="Module-Type-Definitions"><a href="#Module-Type-Definitions" class="headerlink" title="Module Type Definitions"></a>Module Type Definitions</h3><p>在如下的定义中：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ModuleName</span> = <span class="keyword">struct</span></span><br><span class="line">  module_items</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>OCaml 会 infer 出 module 的 type，它是一个 signature（就像函数的 type 也是一个 signature）。而这个签名，实际上也可以自己写出：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">LIST_STACK</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="comment">(** [Empty] is raised when an operation cannot be applied</span></span><br><span class="line"><span class="comment">      to an empty stack. *)</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [empty] is the empty stack. *)</span></span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [is_empty s] is whether [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="built_in">bool</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [push x s] pushes [x] onto the top of [s]. *)</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [peek s] is the top element of [s].</span></span><br><span class="line"><span class="comment">      Raises [Empty] if [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [pop s] is all but the top element of [s].</span></span><br><span class="line"><span class="comment">      Raises [Empty] if [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> push x s = x :: s</span><br><span class="line"></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span></span><br><span class="line">    | <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span></span><br><span class="line">    | x :: _ -&gt; x</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span></span><br><span class="line">    | <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span></span><br><span class="line">    | _ :: s -&gt; s</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这里有几个值得注意的点：</p>
+<ul>
+<li><code>module type LIST_STACK = sig end</code>：这是 <strong>module type</strong> 的<strong>签名</strong>定义，定义了 interface，并且 注释也包含在此处，这是合理的，因为 signature 才是接口，而不是 structure</li>
+<li><code>module ListStack = struct end</code>：这是 <strong>module</strong> 的定义。</li>
+</ul>
+<p>不过此时，两者尚没有任何关联，要关联起来，可添加 <strong>type annotation</strong>：<code>module ListStack : LIST_STACK = struct ... end</code>，此时在 utop 中加载时，显示会很不同：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#use &quot;stacks.ml&quot;;;</span></span><br><span class="line">module <span class="built_in">type</span> LIST_STACK =</span><br><span class="line">  sig</span><br><span class="line">    exception Empty</span><br><span class="line">    val empty : <span class="string">&#x27;a list</span></span><br><span class="line"><span class="string">    val is_empty : &#x27;</span>a list -&gt; bool</span><br><span class="line">    val push : <span class="string">&#x27;a -&gt; &#x27;</span>a list -&gt; <span class="string">&#x27;a list</span></span><br><span class="line"><span class="string">    val peek : &#x27;</span>a list -&gt; <span class="string">&#x27;a</span></span><br><span class="line"><span class="string">    val pop : &#x27;</span>a list -&gt; <span class="string">&#x27;a list</span></span><br><span class="line"><span class="string">  end</span></span><br><span class="line"><span class="string">module ListStack : LIST_STACK</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="更多语法"><a href="#更多语法" class="headerlink" title="更多语法"></a>更多语法</h4><p>关于 type annotations，其语法是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ModuleName</span> : module_type = module_expression</span><br><span class="line"></span><br><span class="line"><span class="comment">(* 以下为示例 *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStackAlias</span> : <span class="type">LIST_STACK</span> = <span class="type">ListStack</span></span><br><span class="line"><span class="comment">(* equivalently *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStackAlias</span> = (<span class="type">ListStack</span> : <span class="type">LIST_STACK</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> : <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">end</span> = <span class="keyword">struct</span> <span class="keyword">let</span> x = <span class="number">42</span> <span class="keyword">end</span></span><br><span class="line"><span class="comment">(* equivalently *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> = (<span class="keyword">struct</span> <span class="keyword">let</span> x = <span class="number">42</span> <span class="keyword">end</span> : <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在上面四个示例中：</p>
+<ul>
+<li>第一、二：是 Module 的别名</li>
+<li>第三：是将 type annotation 加在了 module name 之后</li>
+<li>第四：类似于 <code>(e: t)</code> t在此处作为手动添加的类型标注</li>
+</ul>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">(* 示例三 *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> : <span class="keyword">sig</span> </span><br><span class="line">  <span class="keyword">val</span> x : <span class="built_in">int</span> </span><br><span class="line"><span class="keyword">end</span> = <span class="keyword">struct</span> </span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">42</span> </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* 示例四 *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> = (<span class="keyword">struct</span> <span class="keyword">let</span> x = <span class="number">42</span> <span class="keyword">end</span> : <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">end</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Module-Type-Semantics"><a href="#Module-Type-Semantics" class="headerlink" title="Module Type Semantics"></a>Module Type Semantics</h3><p>如上所述，如果 M 只是一个 struct block，那么其 type 可由编译器自动推断，但这一点可通过 annotation 改变。那么问题是：<code>module M: T = ...</code> 究竟意味着什么？编译器可保证两点：</p>
+<ul>
+<li>signature matching：T 的每个 name 在 M 都有定义，类型要么相同，要么更 general（即 T 被完全涵盖）</li>
+<li>opacity：出现于 M 中，但不在 T 中的名字，对于外部都是不可见的</li>
+</ul>
+<p>这一点看起来很像是 Java 中的 <strong>subtyping</strong>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">D</span> <span class="keyword">extends</span> <span class="title class_">C</span> &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">D</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">D</span>();</span><br><span class="line"><span class="type">C</span> <span class="variable">c</span> <span class="operator">=</span> d;</span><br></pre></td></tr></table></figure>
+
+<p>最后一行可见，D 类型的值可以赋值给 C 类型。（还可以想起很久以前学过的 Liskov Principle 吗？）</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">M</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> z = <span class="number">2</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">X</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">val</span> x : <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">MX</span> = (<span class="type">M</span> : <span class="type">X</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Z</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">val</span> z : <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">MZ</span> = (<span class="type">M</span> : <span class="type">Z</span>)</span><br></pre></td></tr></table></figure>
+
+<p>看上面 OCaml 的例子。模块 M 有 x、z 两成员，<code>module MX = (M : X)</code> 相当于将 M 类型的值赋值给 X，此时 MX 模块的 public 成员只有 X 包含的，即 x；类似地，MZ 只有 z 可以访问。</p>
+<p>从什么可以看到，在 OCaml 中将 M 标记为 X 类型，并不需要两者有显式声明的关系（如 extends 或 implements）。这两种方式分别称为：</p>
+<ul>
+<li>nominal subtyping：名义上的子类型，明确声明</li>
+<li>structural subtyping：结构上的，结构上兼容即可（再如 py 中的 duck type 也是）</li>
+</ul>
+<p>一种特殊情况：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">MXZ&#x27;</span> = ((<span class="type">M</span> : <span class="type">X</span>) : <span class="type">Z</span>)</span><br></pre></td></tr></table></figure>
+
+<p>对于 (M: X)，其结果的类型是 X，此时 (X: Z) 就会报错，虽然最初的 (M: Z) 是有效的。</p>
+<p>这是 OCaml 静态类型系统的一个结果，看起来似乎不够灵活，但也减少了许多运行时错误。</p>
+<h2 id="5-3-Modules-and-the-Toplevel"><a href="#5-3-Modules-and-the-Toplevel" class="headerlink" title="5.3 Modules and the Toplevel"></a>5.3 Modules and the Toplevel</h2><h3 id="一个小例子"><a href="#一个小例子" class="headerlink" title="一个小例子"></a>一个小例子</h3><p><code>mods.ml</code> 的内容如下：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b = <span class="string">&quot;bigred&quot;</span></span><br><span class="line"><span class="keyword">let</span> inc x = x + <span class="number">1</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> y = <span class="number">42</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>ocamlc mods.ml</code> 编译之，会得到三个文件：</p>
+<ul>
+<li>mods.cmo：compiled module object file，即 bytecode<ul>
+<li><code>ocamlc -c foo.ml</code></li>
+</ul>
+</li>
+<li>mods.cmi：compiled module interface，模块接口信息<ul>
+<li>从 mli 生成，或从 ml 推断而得</li>
+<li><code>ocamlc -c foo.mli</code></li>
+</ul>
+</li>
+<li>a.out：可执行文件</li>
+</ul>
+<p>在 utop 中可以 load 该模块：<code>#load &quot;mods.cmo&quot;</code>，其效果如同将 ml 代码在 utop中输入一样。</p>
+<ul>
+<li>Mods.b：有效</li>
+<li>Mods.M.y：有效</li>
+<li>inc：无效</li>
+</ul>
+<p>可使用 <code>open Mods;;</code> 将所有成员一起引入。</p>
+<h3 id="使用-dune-utop"><a href="#使用-dune-utop" class="headerlink" title="使用 dune utop"></a>使用 dune utop</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"># 目录结构</span><br><span class="line">project/</span><br><span class="line">├── lib/</span><br><span class="line">│   ├── mods.ml</span><br><span class="line">│   └── dune</span><br><span class="line"></span><br><span class="line"># dune 内容</span><br><span class="line">(library</span><br><span class="line"> (name mods))</span><br><span class="line"> </span><br><span class="line"># 启动 utop</span><br><span class="line">dune utop lib</span><br><span class="line"></span><br><span class="line"># 此时 <span class="type">Mods</span> 直接可用</span><br></pre></td></tr></table></figure>
+
+<h3 id="utop-的-init-文件"><a href="#utop-的-init-文件" class="headerlink" title="utop 的 init 文件"></a>utop 的 init 文件</h3><p>使用全部或当前目录的 <code>.ocamlinit</code> 文件，作用很类似于 ipython 的 <code>~/.ipython/profile_default/startup/start.py</code> 文件。</p>
+<h3 id="Load-vs-Use"><a href="#Load-vs-Use" class="headerlink" title="Load vs. Use"></a>Load vs. Use</h3><p><code>#load</code> 是加载一个编译过的 cmo 文件；而 <code>#use</code> 是使用一个 source code 文件。使用起来差别也很明显，后者相当于是将文件内容直接输入到 utop，因此以 <code>mods.ml</code> 为例，其结果不是引入了 Mods 模块，而是使得 Mods 下的各个成员直接可见了。</p>
+<p>一般来说，推荐使用 <code>#load</code>，因为它准确反映了模块与其他代码是如何真实交互的。</p>
+<h2 id="5-4-Encapsulation"><a href="#5-4-Encapsulation" class="headerlink" title="5.4 Encapsulation"></a>5.4 Encapsulation</h2><p>模块系统的主要关注点之一便是封装：将实现细节隐藏于接口之后。</p>
+<h3 id="Opacity"><a href="#Opacity" class="headerlink" title="Opacity"></a>Opacity</h3><p>在任何一种语言中，以下的封装场景都是很常见的：在一个模块中想要提供函数，同时希望它的辅助函数不可见。比如：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">Math</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(** [fact_aux n acc] is [n! * acc]. *)</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">rec</span> fact_aux n acc =</span><br><span class="line">    <span class="keyword">if</span> n = <span class="number">0</span> <span class="keyword">then</span> acc <span class="keyword">else</span> fact_aux (n - <span class="number">1</span>) (n * acc)</span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [fact n] is [n!]. *)</span></span><br><span class="line">  <span class="keyword">let</span> fact n = fact_aux n <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>一种方案是将 fact_aux 作为 fact 的嵌套函数，但有时这样不太好。更好地做法是使用 module type：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">MATH</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="comment">(** [fact n] is [n!]. *)</span></span><br><span class="line">  <span class="keyword">val</span> fact : <span class="built_in">int</span> -&gt; <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">Math</span> : <span class="type">MATH</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(** [fact_aux n acc] is [n! * acc]. *)</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">rec</span> fact_aux n acc =</span><br><span class="line">    <span class="keyword">if</span> n = <span class="number">0</span> <span class="keyword">then</span> acc <span class="keyword">else</span> fact_aux (n - <span class="number">1</span>) (n * acc)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> fact n = fact_aux n <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>添加这样的 annotation 之后，Math 只能作为 MATH interface 来使用。</p>
+<p>在这个意义上，可以说 type annotation 是不透明的（opaque），也可以说它把 module 密封（seal）了。</p>
+<p>如果希望做定义的检查，同时又不隐藏任何内容，该怎么做呢？</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">MATH</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="comment">(** [fact n] is [n!]. *)</span></span><br><span class="line">  <span class="keyword">val</span> fact : <span class="built_in">int</span> -&gt; <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">Math</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(** [fact_aux n acc] is [n! * acc]. *)</span></span><br><span class="line">  <span class="keyword">let</span> <span class="keyword">rec</span> fact_aux n acc =</span><br><span class="line">    <span class="keyword">if</span> n = <span class="number">0</span> <span class="keyword">then</span> acc <span class="keyword">else</span> fact_aux (n - <span class="number">1</span>) (n * acc)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> fact n = fact_aux n <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">MathCheck</span> : <span class="type">MATH</span> = <span class="type">Math</span></span><br></pre></td></tr></table></figure>
+
+<p>定义 Math 的时候不使用 annotation，但之后再添加用于检查的定义，但这样的名字具体为何毫无意义，所以也可以：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> _ : <span class="type">MATH</span> = <span class="type">Math</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="与-visibility-modifier-的比较"><a href="#与-visibility-modifier-的比较" class="headerlink" title="与 visibility modifier 的比较"></a>与 visibility modifier 的比较</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="type">int</span> x;</span><br><span class="line">  <span class="keyword">public</span> <span class="type">int</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">type</span> <span class="variable">C_PUBLIC</span> <span class="operator">=</span> sig</span><br><span class="line">  val y : <span class="type">int</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"><span class="type">module</span> <span class="variable">CPrivate</span> <span class="operator">=</span> struct</span><br><span class="line">  <span class="type">let</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">  <span class="type">let</span> <span class="variable">y</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> C : C_PUBLIC = CPrivate</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，Java 代码大致可在 OCaml 中如此表示。</p>
+<h3 id="Abstract-Types"><a href="#Abstract-Types" class="headerlink" title="Abstract Types"></a>Abstract Types</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">LIST_STACK</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="comment">(** [Empty] is raised when an operation cannot be applied</span></span><br><span class="line"><span class="comment">      to an empty stack. *)</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [empty] is the empty stack. *)</span></span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [is_empty s] is whether [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="built_in">bool</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [push x s] pushes [x] onto the top of [s]. *)</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [peek s] is the top element of [s].</span></span><br><span class="line"><span class="comment">      Raises [Empty] if [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [pop s] is all but the top element of [s].</span></span><br><span class="line"><span class="comment">      Raises [Empty] if [s] is empty. *)</span></span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">LIST_STACK</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push x s = x :: s</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | x :: _ -&gt; x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | _ :: s -&gt; s</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>signature 为：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">LIST_STACK</span> =</span><br><span class="line">  <span class="keyword">sig</span></span><br><span class="line">    <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">    <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">    <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="built_in">bool</span></span><br><span class="line">    <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">    <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line">    <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>如果因为某个功能的需要，要将底层的 <code>&#39;a list</code> 替换，比如替换为 <code>&#39;a list * int</code>，即其底层实现是通过一个 list 和一个表示 size 的 int 完成的。那么上面的 signature 必将大改，而且所有 client 代码亦然。</p>
+<p>但从抽象角度看，无论是 <code>&#39;a list</code> 还是 <code>&#39;a list * int</code>，都可以理解为用于实现 List 的底层类型，这无疑也是可以抽象出来的，如此，也不许因为新类型而大量改变接口设计。因此可以修改为：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">LIST_STACK</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> stack -&gt; <span class="built_in">bool</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> stack -&gt; <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> stack -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> stack -&gt; <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">val</span> size : <span class="symbol">&#x27;a</span> stack -&gt; <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">LIST_STACK</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> stack = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push x s = x :: s</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | x :: _ -&gt; x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | _ :: s -&gt; s</span><br><span class="line">  <span class="keyword">let</span> size = <span class="type">List</span>.length</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStackCachedSize</span> : <span class="type">LIST_STACK</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> stack = <span class="symbol">&#x27;a</span> <span class="built_in">list</span> * <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = (<span class="literal">[]</span>, <span class="number">0</span>)</span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> (<span class="literal">[]</span>, _) -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push x (stack, size) = (x :: stack, size + <span class="number">1</span>)</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> (<span class="literal">[]</span>, _) -&gt; raise <span class="type">Empty</span> | (x :: _, _) -&gt; x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span></span><br><span class="line">    | (<span class="literal">[]</span>, _) -&gt; raise <span class="type">Empty</span></span><br><span class="line">    | (_ :: stack, size) -&gt; (stack, size - <span class="number">1</span>)</span><br><span class="line">  <span class="keyword">let</span> size = snd</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在实现module中，分别有一行指定了当前实现对应的 abstract type 是什么：</p>
+<ul>
+<li><code>type &#39;a stack = &#39;a list</code></li>
+<li><code>type &#39;a stack = &#39;a list * int</code></li>
+</ul>
+<p>它甚至还可以像下面这样指定类型：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="symbol">&#x27;a</span> entry = &#123;top : <span class="symbol">&#x27;a</span>; rest : <span class="symbol">&#x27;a</span> stack; size : <span class="built_in">int</span>&#125;</span><br><span class="line"><span class="keyword">and</span> <span class="symbol">&#x27;a</span> stack = <span class="type">S</span> <span class="keyword">of</span> <span class="symbol">&#x27;a</span> entry option</span><br></pre></td></tr></table></figure>
+
+<p>而有了各种各样的实现之后，<code>LIST_STACK</code> 改为 <code>Stack</code> 更为合适：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Stack</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> stack -&gt; <span class="built_in">bool</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> stack -&gt; <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> stack -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> stack -&gt; <span class="symbol">&#x27;a</span> stack</span><br><span class="line">  <span class="keyword">val</span> size : <span class="symbol">&#x27;a</span> stack -&gt; <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">Stack</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> stack = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push x s = x :: s</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | x :: _ -&gt; x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | _ :: s -&gt; s</span><br><span class="line">  <span class="keyword">let</span> size = <span class="type">List</span>.length</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>ListStack.empty</code>，其签名是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"># <span class="type">ListStack</span>.empty;;</span><br><span class="line">- : <span class="symbol">&#x27;a</span> <span class="type">ListStack</span>.stack = &lt;abstr&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这一类型名略显笨重冗余，OCaml 的习惯做法是使用 <code>t</code> 表示之。</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Stack</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">bool</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> size : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">Stack</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push x s = x :: s</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | x :: _ -&gt; x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | _ :: s -&gt; s</span><br><span class="line">  <span class="keyword">let</span> size = <span class="type">List</span>.length</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>形如 <code>Stack.t</code> 的表示在标准库中也是很常见的。</p>
+<p>严格来说，在 signature 中实际上也可以暴露具体类型：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">T</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">val</span> x : t</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> : <span class="type">T</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">42</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a : <span class="built_in">int</span> = <span class="type">M</span>.x</span><br></pre></td></tr></table></figure>
+
+<p>由于在 sig 中，t &#x3D; int，因此 a 的类型确实为 int，但如果保持 abstract，那么唯一能确定的只是 <code>M.t</code>。</p>
+<h2 id="5-5-Compilation-Units"><a href="#5-5-Compilation-Units" class="headerlink" title="5.5 Compilation Units"></a>5.5 Compilation Units</h2><p>OCaml 中的一个编译单元，是指同一目录下的<strong>一对儿源文件</strong>：它们名称相同，但扩展名分别是 <code>.ml</code> 和 <code>.mli</code>，前者是 implementation，后者是 interface。</p>
+<p>如果有一对儿文件 foo.mli 和 foo.ml，文件内容分别是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> x : <span class="built_in">int</span></span><br><span class="line"><span class="keyword">val</span> f : <span class="built_in">int</span> -&gt; <span class="built_in">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> x = <span class="number">0</span></span><br><span class="line"><span class="keyword">let</span> y = <span class="number">12</span></span><br><span class="line"><span class="keyword">let</span> f x = x + y</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>则其效果等价于在 foo.ml 中手动定义一个 module：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">Foo</span> : <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">val</span> x : <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">val</span> f : <span class="built_in">int</span> -&gt; <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> y = <span class="number">12</span></span><br><span class="line">  <span class="keyword">let</span> f x = x + y</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>一般来说，当编译器遇到一个编译单元，它就是如上处理的：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">Foo</span></span><br><span class="line">  : <span class="keyword">sig</span> <span class="comment">(* insert contents of foo.mli here *)</span> <span class="keyword">end</span></span><br><span class="line">= <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(* insert contents of foo.ml here *)</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>标准库使用编译单元实现了我们在使用的大部分模块。</p>
+<h3 id="文档注释"><a href="#文档注释" class="headerlink" title="文档注释"></a>文档注释</h3><ul>
+<li>一种 abstraction 的 client，理应去阅读接口文件（或以此产生的文档），因此编写接口文件的注释时，应当以 client 为目标读者。它们应当描述清楚：如何使用抽象、前置条件、可能的异常、使用了哪些重要算法。</li>
+<li>不应期望 client 去阅读实现文件，它们主要是创建者和维护者阅读的。实现文件的注释应当描述实现的内部细节，如表示类型如何使用、代码如何工作、重要的内部 invariant 等。</li>
+</ul>
+<p>文档不应在 interface 和 implementation 两个文件中有重复。总的来说，interface 的文档更重要。</p>
+<h3 id="Stack-的一个例子"><a href="#Stack-的一个例子" class="headerlink" title="Stack 的一个例子"></a>Stack 的一个例子</h3><p>使用了文件 <code>mystack.mli</code> 和 <code>mystack.ml</code>：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">(* .mli *)</span></span><br><span class="line"><span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line"><span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">bool</span></span><br><span class="line"><span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line"><span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line"></span><br><span class="line"><span class="comment">(* .ml *)</span></span><br><span class="line"><span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"><span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line"><span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line"><span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line"><span class="keyword">let</span> push = <span class="type">List</span>.cons</span><br><span class="line"><span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | x :: _ -&gt; x</span><br><span class="line"><span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | _ :: s -&gt; s</span><br></pre></td></tr></table></figure>
+
+<p><strong>编译方法一</strong>：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line">ocamlc -c mystack.mli</span><br><span class="line">ocamlc -o mystack mystack.ml</span><br></pre></td></tr></table></figure>
+
+<p>编译方法二（dune）。</p>
+<h3 id="Incomplete-Compilation-Units"><a href="#Incomplete-Compilation-Units" class="headerlink" title="Incomplete Compilation Units"></a>Incomplete Compilation Units</h3><p>1、缺少 interface 文件。这没问题，实际上从开始学习至此，基本上都是以这种模式开发的。</p>
+<p>2、缺少 implementation 文件。如果有一个 stack interface，它有两种实现，那么按 Java 习惯，可能会这么分隔文件：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* stack.mli *)</span></span><br><span class="line"><span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="comment">(* etc. *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* listStack.ml *)</span></span><br><span class="line"><span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"><span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line"><span class="keyword">let</span> push = <span class="type">List</span>.cons</span><br><span class="line"><span class="comment">(* etc. *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* customStack.ml *)</span></span><br><span class="line"><span class="comment">(* omitted *)</span></span><br></pre></td></tr></table></figure>
+
+<p>但这种方式不可行，因而作为一个 unit，名称必须完全一致。可以尝试的方法是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* stack.ml *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">S</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="comment">(* etc. *)</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* listStack.ml *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> : <span class="type">Stack</span>.<span class="type">S</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> push = <span class="type">List</span>.cons</span><br><span class="line">  <span class="comment">(* etc. *)</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* customStack.ml *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">M</span> : <span class="type">Stack</span>.<span class="type">S</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(* omitted *)</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这里是显式定义了 module type 的 signature，然后在别的文件里引用之。需要注意的是：</p>
+<ul>
+<li>module type 定义在 .ml 文件中，而非 .mli，因为这里不是在创建编译单元。</li>
+<li>使用短名称，否则会出现诸如 <code>Stack.Stack</code> 这样的引用。</li>
+</ul>
+<p>另一种分隔代码的方法是：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* stack.mli *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">S</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="comment">(* etc. *)</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">S</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">CustomStack</span> : <span class="type">S</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(********************************)</span></span><br><span class="line"><span class="comment">(* stack.ml *)</span></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">S</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="comment">(* etc. *)</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">S</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> push = <span class="type">List</span>.cons</span><br><span class="line">  <span class="comment">(* etc. *)</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">CustomStack</span> : <span class="type">S</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(* omitted *)</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方法的问题是，不得不 duplicate <code>Stack.S</code>。在 OCaml 中无法自动 import 一个已经声明的 module type。</p>
+<h2 id="5-6-Functional-Data-Structures"><a href="#5-6-Functional-Data-Structures" class="headerlink" title="5.6 Functional Data Structures"></a>5.6 Functional Data Structures</h2><p>函数式数据结构具有两个重要特点：</p>
+<ul>
+<li>不可变性：不依赖于 mutability</li>
+<li>持久性：persistent</li>
+</ul>
+<p>更新数据结构时，不修改原有版本，而是产生一个新版本。好的语言实现会确保未修改部分在新旧版本之间得以共享，以减少开销。</p>
+<p>值得注意的是，函数式数据结构可以通过函数式或命令式编程语言来实现。</p>
+<h3 id="Lists"><a href="#Lists" class="headerlink" title="Lists"></a>Lists</h3><p>list 是函数式的，它不可修改，也是持久的。</p>
+<h3 id="Stacks"><a href="#Stacks" class="headerlink" title="Stacks"></a>Stacks</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Stack</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">bool</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> size : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">val</span> to_list : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">Stack</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push = <span class="type">List</span>.cons</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | x :: _ -&gt; x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; raise <span class="type">Empty</span> | _ :: s -&gt; s</span><br><span class="line">  <span class="keyword">let</span> size = <span class="type">List</span>.length</span><br><span class="line">  <span class="keyword">let</span> to_list = <span class="type">Fun</span>.id</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个实现中，Stack 是不可变的，同时也是 persistent 的：push、pop 的前面暗示，它们都返回一个新的 Stack。</p>
+<p>使用时可注意 pipeline：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="type">ListStack</span>;;</span><br><span class="line"><span class="keyword">let</span> s = empty |&gt; push <span class="number">1</span> |&gt; push <span class="number">2</span>;;</span><br><span class="line"><span class="keyword">let</span> s&#x27; = pop s;;</span><br><span class="line">to_list s;;</span><br><span class="line">to_list s&#x27;;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Options-vs-Exceptions"><a href="#Options-vs-Exceptions" class="headerlink" title="Options vs. Exceptions"></a>Options vs. Exceptions</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Stack</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> empty : <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> is_empty : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">bool</span></span><br><span class="line">  <span class="keyword">val</span> push : <span class="symbol">&#x27;a</span> -&gt; <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line">  <span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> option</span><br><span class="line">  <span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t option</span><br><span class="line">  <span class="keyword">val</span> size : <span class="symbol">&#x27;a</span> t -&gt; <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">val</span> to_list : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">ListStack</span> : <span class="type">Stack</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">exception</span> <span class="type">Empty</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> is_empty = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="literal">true</span> | _ -&gt; <span class="literal">false</span></span><br><span class="line">  <span class="keyword">let</span> push = <span class="type">List</span>.cons</span><br><span class="line">  <span class="keyword">let</span> peek = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="type">None</span> | x :: _ -&gt; <span class="type">Some</span> x</span><br><span class="line">  <span class="keyword">let</span> pop = <span class="keyword">function</span> <span class="literal">[]</span> -&gt; <span class="type">None</span> | _ :: s -&gt; <span class="type">Some</span> s</span><br><span class="line">  <span class="keyword">let</span> size = <span class="type">List</span>.length</span><br><span class="line">  <span class="keyword">let</span> to_list = <span class="type">Fun</span>.id</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>注意其中 peek、pop 签名的变化。</p>
+<p>两种方式需要 tradeoff。使用 option，程序确实会少一些异常，因而更 robust，但 pipeline 操作也不支持了；使用异常，所需代码更少，但更不 robust。</p>
+<p>目前 OCaml 标准库中开始提供两个版本的接口，如：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">val</span> peek : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span></span><br><span class="line"><span class="keyword">val</span> peek_opt : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> option</span><br><span class="line"><span class="keyword">val</span> pop : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">val</span> pop_opt : <span class="symbol">&#x27;a</span> t -&gt; <span class="symbol">&#x27;a</span> t option</span><br></pre></td></tr></table></figure>
+
+<h3 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Map</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="comment">(** [(&#x27;k, &#x27;v) t] is the type of maps that bind keys of type [&#x27;k] to</span></span><br><span class="line"><span class="comment">      values of type [&#x27;v]. *)</span></span><br><span class="line">  <span class="keyword">type</span> (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t</span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [empty] does not bind any keys. *)</span></span><br><span class="line">  <span class="keyword">val</span> empty  : (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t</span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [insert k v m] is the map that binds [k] to [v], and also contains</span></span><br><span class="line"><span class="comment">      all the bindings of [m].  If [k] was already bound in [m], that old</span></span><br><span class="line"><span class="comment">      binding is superseded by the binding to [v] in the returned map. *)</span></span><br><span class="line">  <span class="keyword">val</span> insert : <span class="symbol">&#x27;k</span> -&gt; <span class="symbol">&#x27;v</span> -&gt; (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t -&gt; (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t</span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [lookup k m] is the value bound to [k] in [m]. Raises: [Not_found] if [k]</span></span><br><span class="line"><span class="comment">      is not bound in [m]. *)</span></span><br><span class="line">  <span class="keyword">val</span> lookup : <span class="symbol">&#x27;k</span> -&gt; (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t -&gt; <span class="symbol">&#x27;v</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">(** [bindings m] is an association list containing the same bindings as [m].</span></span><br><span class="line"><span class="comment">      The keys in the list are guaranteed to be unique. *)</span></span><br><span class="line">  <span class="keyword">val</span> bindings : (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t -&gt; (<span class="symbol">&#x27;k</span> * <span class="symbol">&#x27;v</span>) <span class="built_in">list</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">AssocListMap</span> : <span class="type">Map</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(** The list [(k1, v1); ...; (kn, vn)] binds key [ki] to value [vi].</span></span><br><span class="line"><span class="comment">      If a key appears more than once in the list, it is bound to the</span></span><br><span class="line"><span class="comment">      the left-most occurrence in the list. *)</span></span><br><span class="line">  <span class="keyword">type</span> (<span class="symbol">&#x27;k</span>, <span class="symbol">&#x27;v</span>) t = (<span class="symbol">&#x27;k</span> * <span class="symbol">&#x27;v</span>) <span class="built_in">list</span></span><br><span class="line">  <span class="keyword">let</span> empty = <span class="literal">[]</span></span><br><span class="line">  <span class="keyword">let</span> insert k v m = (k, v) :: m</span><br><span class="line">  <span class="keyword">let</span> lookup k m = <span class="type">List</span>.assoc k m</span><br><span class="line">  <span class="keyword">let</span> keys m = <span class="type">List</span>.(m |&gt; map fst |&gt; sort_uniq <span class="type">Stdlib</span>.compare)</span><br><span class="line">  <span class="keyword">let</span> bindings m = m |&gt; keys |&gt; <span class="type">List</span>.map (<span class="keyword">fun</span> k -&gt; (k, lookup k m))</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><code>List.assoc</code> 就是为 association list 量身定做的。</p>
+<h2 id="5-7-Module-Type-Constraints"><a href="#5-7-Module-Type-Constraints" class="headerlink" title="5.7 Module Type Constraints"></a>5.7 Module Type Constraints</h2><p>前面一直在“赞美”封装的好处，现在来看一个反直觉的做法——选择性违反封装原则（selectively violate encapsulation）。</p>
+<p>以下是一个例子，它表示一个环：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">Ring</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">type</span> t</span><br><span class="line">  <span class="keyword">val</span> zero : t</span><br><span class="line">  <span class="keyword">val</span> one : t</span><br><span class="line">  <span class="keyword">val</span> ( + ) : t -&gt; t -&gt; t</span><br><span class="line">  <span class="keyword">val</span> ( * ) : t -&gt; t -&gt; t</span><br><span class="line">  <span class="keyword">val</span> ( ~- ) : t -&gt; t  <span class="comment">(* additive inverse *)</span></span><br><span class="line">  <span class="keyword">val</span> to_string : t -&gt; <span class="built_in">string</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是一种 环 的实现：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">IntRing</span> : <span class="type">Ring</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">let</span> zero = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> one = <span class="number">1</span></span><br><span class="line">  <span class="keyword">let</span> ( + ) = <span class="type">Stdlib</span>.( + )</span><br><span class="line">  <span class="keyword">let</span> ( * ) = <span class="type">Stdlib</span>.( * )</span><br><span class="line">  <span class="keyword">let</span> ( ~- ) = <span class="type">Stdlib</span>.( ~- )</span><br><span class="line">  <span class="keyword">let</span> to_string = string_of_int</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>由于抽象类型，IntRing 的值类型显示为 <code>IntRing.t</code>，从而调试时不太方便，甚至还要定义 to_string、printer。而如果有另一个 FloatRing，则需要再完成同一套操作。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IntRing.(one + one)</span><br><span class="line">- : IntRing.t = &lt;abstr&gt;</span><br><span class="line"></span><br><span class="line">IntRing.(one + one |&gt; to_string)</span><br><span class="line">- : string = <span class="string">&quot;2&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> pp_intring <span class="built_in">fmt</span> i =</span><br><span class="line">  Format.fprintf <span class="built_in">fmt</span> <span class="string">&quot;%s&quot;</span> (IntRing.to_string i);;</span><br><span class="line"><span class="comment">#install_printer pp_intring;;</span></span><br><span class="line"></span><br><span class="line">IntRing.(one + one)</span><br><span class="line">- : IntRing.t = 2</span><br></pre></td></tr></table></figure>
+
+<p>之前有过一种处理：先定义 module，在为其添加 module type 约束：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">IntRing</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">let</span> zero = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> one = <span class="number">1</span></span><br><span class="line">  <span class="keyword">let</span> ( + ) = <span class="type">Stdlib</span>.( + )</span><br><span class="line">  <span class="keyword">let</span> ( * ) = <span class="type">Stdlib</span>.( * )</span><br><span class="line">  <span class="keyword">let</span> ( ~- ) = <span class="type">Stdlib</span>.( ~- )</span><br><span class="line">  <span class="keyword">let</span> to_string = string_of_int</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> _ : <span class="type">Ring</span> = <span class="type">IntRing</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，对于 IntRing 来说，t 就是 int，而不是抽象的。要达到这一点，还有另一种方法：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">INT_RING</span> = <span class="type">Ring</span> <span class="keyword">with</span> <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">IntRing</span> : <span class="type">INT_RING</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line">  <span class="keyword">let</span> zero = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> one = <span class="number">1</span></span><br><span class="line">  <span class="keyword">let</span> ( + ) = <span class="type">Stdlib</span>.( + )</span><br><span class="line">  <span class="keyword">let</span> ( * ) = <span class="type">Stdlib</span>.( * )</span><br><span class="line">  <span class="keyword">let</span> ( ~- ) = <span class="type">Stdlib</span>.( ~- )</span><br><span class="line">  <span class="keyword">let</span> to_string = string_of_int</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 INT_RING，它的 t 就等同于 int，于是用起来也会很方便：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="type">IntRing</span>.(one + one)</span><br><span class="line"><span class="type">IntRing</span>.(<span class="number">1</span> + one)</span><br><span class="line"></span><br><span class="line">- : <span class="built_in">int</span> = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 FloatRing，也可以类似来定义，不过你应该可以想到，这样一种”模式“，OCaml 应该有更好地支持：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">FloatRing</span> : <span class="type">Ring</span> <span class="keyword">with</span> <span class="keyword">type</span> t = <span class="built_in">float</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">type</span> t = <span class="built_in">float</span></span><br><span class="line">  <span class="keyword">let</span> zero = <span class="number">0.</span></span><br><span class="line">  <span class="keyword">let</span> one = <span class="number">1.</span></span><br><span class="line">  <span class="keyword">let</span> ( + ) = <span class="type">Stdlib</span>.( +. )</span><br><span class="line">  <span class="keyword">let</span> ( * ) = <span class="type">Stdlib</span>.( *. )</span><br><span class="line">  <span class="keyword">let</span> ( ~- ) = <span class="type">Stdlib</span>.( ~-. )</span><br><span class="line">  <span class="keyword">let</span> to_string = string_of_float</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">(* tests *)</span></span><br><span class="line"># <span class="type">FloatRing</span>.(<span class="number">1.0</span>+one);;</span><br><span class="line">- : <span class="built_in">float</span> = <span class="number">2.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Constraints（约束）"><a href="#Constraints（约束）" class="headerlink" title="Constraints（约束）"></a>Constraints（约束）</h3><p>有两种类型的 Constraints：</p>
+<ul>
+<li><code>T with type x = t</code>：这种前面已经看到，T 是 module type，t 是类型，x 是类型名</li>
+<li><code>T with module M = N</code>：表示两个模块中所有类型的 equality。</li>
+</ul>
+<p>多个约束可以使用 and 连接。</p>
+<p><code>T with type x = t</code> 与 T 的唯一不同，是其中的 type x 被替换为 <code>type x = t</code>，如下面的例子：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">T</span> = <span class="keyword">sig</span> <span class="keyword">type</span> t <span class="keyword">end</span></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">U</span> = <span class="type">T</span> <span class="keyword">with</span> <span class="keyword">type</span> t = <span class="built_in">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">T</span> = <span class="keyword">sig</span> <span class="keyword">type</span> t <span class="keyword">end</span></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">U</span> = <span class="keyword">sig</span> <span class="keyword">type</span> t = <span class="built_in">int</span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>PS：这里的 <code>M = N</code>，是指两者的 types 被限定为必须相等，但并不意味着两者的类型完全一样。</p>
+<h2 id="5-8-Includes"><a href="#5-8-Includes" class="headerlink" title="5.8 Includes"></a>5.8 Includes</h2><p>看一个最简单的例子：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">A</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">1</span></span><br><span class="line">  <span class="keyword">let</span> f y = y + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">B</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">include</span> <span class="type">A</span></span><br><span class="line">  <span class="keyword">let</span> z = f x</span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">2</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这样，B 就有了 A 中定义的x、f。</p>
+<p>这有点像是 OOP 中继承的实现。还有一个值得注意的点是，A 的 x 在 B 中被重写了。</p>
+<p>总的来说，<code>include</code> 作用是，在一个模块中包含另一个模块的所有成员，或一个模块类型（module type）包含入另一个模块的所有成员。例子：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ListSetExtended</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">include</span> <span class="type">ListSet</span></span><br><span class="line">  <span class="keyword">let</span> of_list lst = <span class="type">List</span>.fold_right add lst empty</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的效果是：ListSetExtended 模块包含了 ListSet的所有定义，同时也添加了新的定义，理论上也完全可以重写某些定义。于是，这里和 inheritance 就比较相像了。</p>
+<p>上段代码近似于如此编码：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">ListSetExtended</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="comment">(* BEGIN all the includes *)</span></span><br><span class="line">  <span class="keyword">type</span> <span class="symbol">&#x27;a</span> t = <span class="symbol">&#x27;a</span> <span class="type">ListSet</span>.t</span><br><span class="line">  <span class="keyword">let</span> empty = <span class="type">ListSet</span>.empty</span><br><span class="line">  <span class="keyword">let</span> mem = <span class="type">ListSet</span>.mem</span><br><span class="line">  <span class="keyword">let</span> add = <span class="type">ListSet</span>.add</span><br><span class="line">  <span class="keyword">let</span> elements = <span class="type">ListSet</span>.elements</span><br><span class="line">  <span class="comment">(* END all the includes *)</span></span><br><span class="line">  <span class="keyword">let</span> of_list lst = <span class="type">List</span>.fold_right add lst empty</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>即将另一个模块的定义一个个 ”copy“过来，但并非真的 copy。比如 ListSet 修改后，ListSetExtended 也会得到更新，这正是我们期望的。</p>
+<p>module type 的 Include 也是类似的：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">SetExtended</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">include</span> <span class="type">Set</span></span><br><span class="line">  <span class="keyword">val</span> of_list : <span class="symbol">&#x27;a</span> <span class="built_in">list</span> -&gt; <span class="symbol">&#x27;a</span> t</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Include-vs-Open"><a href="#Include-vs-Open" class="headerlink" title="Include vs. Open"></a>Include vs. Open</h3><figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">M</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">N</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">include</span> <span class="type">M</span></span><br><span class="line">  <span class="keyword">let</span> y = x + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">O</span> = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">open</span> <span class="type">M</span></span><br><span class="line">  <span class="keyword">let</span> y = x + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>看什么三个 module 的签名信息：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">M</span> : <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">end</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">N</span> : <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">val</span> y : <span class="built_in">int</span> <span class="keyword">end</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">O</span> : <span class="keyword">sig</span> <span class="keyword">val</span> y : <span class="built_in">int</span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，include 会 import 定义作为自己的定义，因而 export 到外部；而 open 仅在局部可见。</p>
+<h2 id="5-9-Functors"><a href="#5-9-Functors" class="headerlink" title="5.9 Functors"></a>5.9 Functors</h2><p>在范畴论中，Functor 意为函子，颇为抽象，不过在 OCaml 中，Functor 的概念很简单——从模块到模块的<strong>函数</strong>。</p>
+<p>看一个小例子：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">X</span> = <span class="keyword">sig</span></span><br><span class="line">  <span class="keyword">val</span> x : <span class="built_in">int</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">IncX</span> (<span class="type">M</span> : <span class="type">X</span>) = <span class="keyword">struct</span></span><br><span class="line">  <span class="keyword">let</span> x = <span class="type">M</span>.x + <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="keyword">type</span> <span class="type">X</span> = <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">end</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">IncX</span> : <span class="keyword">functor</span> (<span class="type">M</span> : <span class="type">X</span>) -&gt; <span class="keyword">sig</span> <span class="keyword">val</span> x : <span class="built_in">int</span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>IncX 是一个 functor，其输入是 M，类型为 X，而输出是 <code>struct ... end</code>，因而是另一个 module。</p>
+<p>另一个角度是，将 IncX 视为一个<strong>参数化的结构</strong>（parameterized structure）。</p>
+<p>functor 既为函数，便可以 apply 之。</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">A</span> = <span class="keyword">struct</span> <span class="keyword">let</span> x = <span class="number">0</span> <span class="keyword">end</span></span><br><span class="line"><span class="keyword">module</span> <span class="type">B</span> = <span class="type">IncX</span> (<span class="type">A</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> _ = <span class="keyword">assert</span> (<span class="type">B</span>.x = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> <span class="type">C</span> = <span class="type">IncX</span> (<span class="type">B</span>)</span><br><span class="line"><span class="keyword">let</span> _ = <span class="keyword">assert</span> (<span class="type">C</span>.x = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>module B = IncX (A)</code> 反映出了 functor 的本质：<strong>从模块到模块的函数</strong>。</p>
+<p>注意：调用时，甚至可以使用匿名模块：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">C</span> = <span class="type">IncX</span> (<span class="keyword">struct</span> <span class="keyword">let</span> x = <span class="number">41</span> <span class="keyword">end</span>)</span><br><span class="line"><span class="keyword">let</span> _ = <span class="keyword">assert</span> (<span class="type">C</span>.x = <span class="number">42</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="语法与语义"><a href="#语法与语义" class="headerlink" title="语法与语义"></a>语法与语义</h3><p>在 functor 定义中：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">F</span> (<span class="type">M</span> : <span class="type">S</span>) = ...</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>type annotation 中的 S 与括号是必需的。唯有如此，OCaml 才能进行类型推断。</p>
+<p>functor 与函数一样，也可以匿名：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">F</span> (<span class="type">M</span> : <span class="type">S</span>) = ...</span><br><span class="line"><span class="keyword">module</span> <span class="type">F</span> = <span class="keyword">functor</span> (<span class="type">M</span> : <span class="type">S</span>) -&gt; ...</span><br></pre></td></tr></table></figure>
+
+<p>上面第二行是匿名 functor，其作用类似于 函数的 fun。</p>
+<p>上面的 M 类似于参数名，functor 可包含多个参数：</p>
+<figure class="highlight ocaml"><table><tr><td class="code"><pre><span class="line"><span class="keyword">module</span> <span class="type">F</span> (<span class="type">M1</span> : <span class="type">S1</span>) ... (<span class="type">Mn</span> : <span class="type">Sn</span>) = ...</span><br></pre></td></tr></table></figure>
+
+<p>TODO：</p>
+<p>Functor Type；Map Module。</p>
+<h2 id="5-10-Summary"><a href="#5-10-Summary" class="headerlink" title="5.10 Summary"></a>5.10 Summary</h2><p>OCaml 的<strong>模块系统</strong>与更主流语言的机制不尽相同（比如 Java、Python 等），不过，在了解这些不同机制之后，遇到新语言的模块系统理解起来也不会太难。</p>
+<p><strong>抽象类型</strong>和<strong>签名</strong>，提供了抽象机制，与 Java 的 visibility modifier、接口相近。</p>
+<p>「<strong>类型可以是抽象的</strong>」，这一思想本身对于编程语言设计极为重要，而这一点在 OCaml 中颇为醒目的，其他语言通常并非明显。</p>
+<p>Functor 是 OCaml 的高级特性，乍看之下很神秘。但请记住，它只是从模块到模块的函数而已。</p>
+<p>Functor 和 include 提供了代码复用功能。Java 中 class 的扩展，可视为 functor 和 include 的一种组合。扩展一个类，像是写一个 functor，将 base class 作为输入，include 之，然后添加一些函数。但理论上，functor 比 class extension 更通用。</p>
+<p>学习 OCaml 的模块系统，也许最重要的一点，是理解那些超越了特定语言的模块化概念：命名空间、抽象和代码复用。<strong>不同语言以不同的机制来实现类似这些相通的目标</strong>。在认识了几种很不同的语言后，你就能在学习下一种语言时，更清晰地识别其理念。</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+        <category>OCaml</category>
+      </categories>
+      <tags>
+        <tag>Programming</tag>
+        <tag>OCaml</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>非典型孤独（atypical）</title>
     <url>/2017/10/03/atypical/</url>
     <content><![CDATA[<p>来自美剧<a href="https://movie.douban.com/subject/26895435/">非典型孤独（Atypical）</a></p>
@@ -110,25 +503,6 @@
       </tags>
   </entry>
   <entry>
-    <title>effective-go</title>
-    <url>/2021/03/14/effective-go/</url>
-    <content><![CDATA[<h1 id="Effective-Go"><a href="#Effective-Go" class="headerlink" title="Effective Go"></a>Effective Go</h1><p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
-<h1 id="Errors"><a href="#Errors" class="headerlink" title="Errors"></a>Errors</h1><p><code>error</code> 的信息可以通过前缀来增加信息，如 <code>image: unknown format</code>。</p>
-<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p>向调用者报告错误通常的方法是返回一个 <code>error</code>，但有时候一个错误发生，意味着严重的或很难预料到的错误（比如本应是无限循环，却退出了），此时退出程序也许更为合适，这是 <code>panic</code> 的用场。</p>
-<p>通常来说，应避免使用 <code>panic</code>，但凡程序还有救的话。一些特殊情况是，程序启动时无法连接到主数据库，那么继续执行下去也无意义，此时可以 <code>panic</code>。</p>
-<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>在 <code>panic</code> 调用后（包括自定义 <code>panic</code>，以及 slice 索引越界等运行时错误），当前函数执行立即结束，开始释放 goroutines，执行 defferred 函数。如果释放过程到了程序的 top level 代码，程序就终止了。</p>
-<p>但还是可以通过 <code>recover</code> 来重新获得 goroutine 的掌控，继续执行程序。</p>
-<p><code>recover</code> 停止上述释放过程，返回 <code>panic</code> 的参数，<code>recover</code> 只能用于 deferred 函数。</p>
-]]></content>
-      <categories>
-        <category>Programming</category>
-        <category>Go</category>
-      </categories>
-      <tags>
-        <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>concurrency-in-go</title>
     <url>/2021/03/22/concurrency-in-go/</url>
     <content><![CDATA[<h1 id="Concurrency-in-Go"><a href="#Concurrency-in-Go" class="headerlink" title="Concurrency in Go"></a>Concurrency in Go</h1><p>参考：《Go in Action》第六章</p>
@@ -143,6 +517,25 @@
 <h2 id="Goroutines"><a href="#Goroutines" class="headerlink" title="Goroutines"></a>Goroutines</h2><h2 id="Race-Condition"><a href="#Race-Condition" class="headerlink" title="Race Condition"></a>Race Condition</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
 
 <h2 id="Locking-shared-resources"><a href="#Locking-shared-resources" class="headerlink" title="Locking shared resources"></a>Locking shared resources</h2>]]></content>
+      <categories>
+        <category>Programming</category>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>effective-go</title>
+    <url>/2021/03/14/effective-go/</url>
+    <content><![CDATA[<h1 id="Effective-Go"><a href="#Effective-Go" class="headerlink" title="Effective Go"></a>Effective Go</h1><p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
+<h1 id="Errors"><a href="#Errors" class="headerlink" title="Errors"></a>Errors</h1><p><code>error</code> 的信息可以通过前缀来增加信息，如 <code>image: unknown format</code>。</p>
+<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p>向调用者报告错误通常的方法是返回一个 <code>error</code>，但有时候一个错误发生，意味着严重的或很难预料到的错误（比如本应是无限循环，却退出了），此时退出程序也许更为合适，这是 <code>panic</code> 的用场。</p>
+<p>通常来说，应避免使用 <code>panic</code>，但凡程序还有救的话。一些特殊情况是，程序启动时无法连接到主数据库，那么继续执行下去也无意义，此时可以 <code>panic</code>。</p>
+<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>在 <code>panic</code> 调用后（包括自定义 <code>panic</code>，以及 slice 索引越界等运行时错误），当前函数执行立即结束，开始释放 goroutines，执行 defferred 函数。如果释放过程到了程序的 top level 代码，程序就终止了。</p>
+<p>但还是可以通过 <code>recover</code> 来重新获得 goroutine 的掌控，继续执行程序。</p>
+<p><code>recover</code> 停止上述释放过程，返回 <code>panic</code> 的参数，<code>recover</code> 只能用于 deferred 函数。</p>
+]]></content>
       <categories>
         <category>Programming</category>
         <category>Go</category>
@@ -250,97 +643,6 @@
       </categories>
       <tags>
         <tag>Go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello, Rust</title>
-    <url>/2017/09/24/hello-rust/</url>
-    <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
-
-<p>运行此命令，按其中的提示安装即可。</p>
-<span id="more"></span>
-
-<h2 id="升级与卸载"><a href="#升级与卸载" class="headerlink" title="升级与卸载"></a>升级与卸载</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustup update</span><br><span class="line"></span><br><span class="line">$ rustup self uninstall</span><br></pre></td></tr></table></figure>
-
-<h2 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc --version</span><br></pre></td></tr></table></figure>
-
-<h2 id="本地文档"><a href="#本地文档" class="headerlink" title="本地文档"></a>本地文档</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.</span><br><span class="line">$rustup doc</span><br></pre></td></tr></table></figure>
-
-<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello, World!"></a>Hello, World!</h1><p>假设把代码放在某个目录下，cd到它，创建一个<code>main.rs</code>文件（rs是Rust文件的扩展名）：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后，编译再运行之：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc main.rs</span><br><span class="line">$ ./main</span><br></pre></td></tr></table></figure>
-
-<h2 id="Rust程序的结构"><a href="#Rust程序的结构" class="headerlink" title="Rust程序的结构"></a>Rust程序的结构</h2><p><code>fn</code>定义一个函数，而<code>main</code>同时是特别的<strong>入口函数</strong>，与<code>C</code>和<code>C#</code>之类语言类似。Rust中的函数需要花括号包含其函数体。</p>
-<p>第二行<code>println!(&quot;Hello, world!&quot;);</code>，输出一行文本到屏幕。这里看起来有点特别的是<code>println!</code>，带有<code>!</code>在Rust中意味着调用宏而非函数。行末的<code>;</code>表示一个表达式的结束，<strong>大多数</strong>Rust代码行以<code>;</code>结束。</p>
-<h1 id="编译和执行的分离"><a href="#编译和执行的分离" class="headerlink" title="编译和执行的分离"></a>编译和执行的分离</h1><p>作为静态语言，Rust程序执行之前需要先行编译，这类似于<code>gcc</code>或<code>clang</code>。</p>
-<p>对于简单的程序，可如上使用<code>rustc</code>，对于更为复杂的程序，你可能需要<code>Cargo</code>这个工具。</p>
-<h1 id="Cargo"><a href="#Cargo" class="headerlink" title="Cargo"></a>Cargo</h1><p><code>Cargo</code>是Rust的构建系统（Build System）和包管理器（Package Manager）。它可以生成代码、下载依赖库，生成库代码。</p>
-<p><code>Cargo</code>随Rust一起安装。</p>
-<h2 id="以Cargo创建一个项目"><a href="#以Cargo创建一个项目" class="headerlink" title="以Cargo创建一个项目"></a>以Cargo创建一个项目</h2><p>使用命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo new hello_cargo --bin</span><br></pre></td></tr></table></figure>
-
-<p>创建一个项目，<code>--bin</code>表示所创建者为可执行文件（binaries）。<code>Cargo</code>生成了两个文件：</p>
-<ul>
-<li>Cargo.toml（TOML格式的配置文件）</li>
-<li>src&#x2F;main.rs（与上面手工创建的一样）</li>
-</ul>
-<p>Cargo.toml内容如下：</p>
-<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;hello_cargo&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">&quot;andersc &lt;andersc@mail.com&gt;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br></pre></td></tr></table></figure>
-
-<p><code>[dependencies]</code>列出了依赖的库，这些依赖在Rust中称为<code>crate</code>。Cargo创建了初始的目录结构，也是建议将代码放在src下，其它文件放在顶级目录。</p>
-<h2 id="Building-and-Running-a-Cargo-Project"><a href="#Building-and-Running-a-Cargo-Project" class="headerlink" title="Building and Running a Cargo Project"></a>Building and Running a Cargo Project</h2><p>使用如下命令编译并运行程序：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo build</span><br><span class="line">$ ./target/debug/hello_cargo</span><br></pre></td></tr></table></figure>
-
-<p>首次执行<code>cargo build</code>时，它会创建文件<code>Cargo.lock</code>，用于跟踪应用的依赖。一般不需要手工改动之。作为一种更快捷的方式，可以用<code>cargo run</code>来编译并运行程序。</p>
-<h2 id="发布程序"><a href="#发布程序" class="headerlink" title="发布程序"></a>发布程序</h2><p>上面可见，编译的程序放在了<code>debug</code>下，如果要正式发布，则应使用<code>cargo build --release</code>选项，这会优化所生成的程序，代价是编译时间更长。</p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
-<li>Sublime 3：<a href="https://github.com/rust-lang/sublime-rust">Sublime Rust</a></li>
-<li><a href="https://intellij-rust.github.io/">IntelliJ Rust</a></li>
-</ul>
-<h1 id="Guessing-Game"><a href="#Guessing-Game" class="headerlink" title="Guessing Game"></a>Guessing Game</h1><p>通过一个真实的程序来演示几个Rust的常见概念，如<code>let</code>， <code>match</code>，方法，关联函数，使用外部库等。</p>
-<p>猜数游戏是一个经典的编程初学者的问题。</p>
-<h2 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cargo new guessing_game --bin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> guessing_game</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="感受一下"><a href="#感受一下" class="headerlink" title="感受一下"></a>感受一下</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Guess the number!&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Please input your guess.&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">guess</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    io::<span class="title function_ invoke__">stdin</span>().<span class="title function_ invoke__">read_line</span>(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">               .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Failed to read line&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;You guessed: &#123;&#125;&quot;</span>, guess);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里面，<code>use</code>不用多说；let创建一个<strong>变量</strong>，不过在Rust中变量默认是不可修改的，如果希望修改，则需要使用<strong>mut</strong>；String:new()就是所谓关联函数（associated function），相当于其它语言中的<strong>静态方法</strong>。</p>
-<p><code>stdin</code>是io的关联函数；read_line函数读取用户输入，将值赋给一个变量，<code>&amp;</code>表示参数为<strong>引用（reference）</strong>。</p>
-]]></content>
-      <categories>
-        <category>Programming</category>
-        <category>Rust</category>
-      </categories>
-      <tags>
-        <tag>Programming</tag>
-        <tag>Rust</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo的安装与配置</title>
-    <url>/2017/06/27/hexo-so/</url>
-    <content><![CDATA[<p>可能是npm的问题，也可能是Hexo的问题，总之：</p>
-<ul>
-<li>Error: Cannot find module ‘.&#x2F;build&#x2F;Release&#x2F;DTraceProviderBindings’频繁出现</li>
-<li>将网站从一个目录移动到另一个目录也颇需要一番周折</li>
-</ul>
-<p>可参考的两篇文章：</p>
-<ul>
-<li><p><a href="http://www.ixirong.com/2016/08/30/solve-hexo-not-found-problem/">mac osx 下 hexo DTraceProviderBindings 错误</a></p>
-</li>
-<li><p><a href="https://absentm.github.io/2016/08/31/The-note-of-how-to-rebuild-hexo-next-blogs-when-switch-to-another-PC-or-reinstall-system/">The note of how to rebuild hexo+next blogs when switch to another PC or reinstall system</a></p>
-</li>
-</ul>
-<p>PS：不熟悉Node.js，每次安装都莫名担心会失败。。。</p>
-<p>PPS：测试git commit效果。</p>
-<p>PPPS：测试Github Pages更新。</p>
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -612,6 +914,97 @@
       <tags>
         <tag>Psychology</tag>
         <tag>幸福心理学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo的安装与配置</title>
+    <url>/2017/06/27/hexo-so/</url>
+    <content><![CDATA[<p>可能是npm的问题，也可能是Hexo的问题，总之：</p>
+<ul>
+<li>Error: Cannot find module ‘.&#x2F;build&#x2F;Release&#x2F;DTraceProviderBindings’频繁出现</li>
+<li>将网站从一个目录移动到另一个目录也颇需要一番周折</li>
+</ul>
+<p>可参考的两篇文章：</p>
+<ul>
+<li><p><a href="http://www.ixirong.com/2016/08/30/solve-hexo-not-found-problem/">mac osx 下 hexo DTraceProviderBindings 错误</a></p>
+</li>
+<li><p><a href="https://absentm.github.io/2016/08/31/The-note-of-how-to-rebuild-hexo-next-blogs-when-switch-to-another-PC-or-reinstall-system/">The note of how to rebuild hexo+next blogs when switch to another PC or reinstall system</a></p>
+</li>
+</ul>
+<p>PS：不熟悉Node.js，每次安装都莫名担心会失败。。。</p>
+<p>PPS：测试git commit效果。</p>
+<p>PPPS：测试Github Pages更新。</p>
+]]></content>
+      <categories>
+        <category>Hexo</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello, Rust</title>
+    <url>/2017/09/24/hello-rust/</url>
+    <content><![CDATA[<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
+
+<p>运行此命令，按其中的提示安装即可。</p>
+<span id="more"></span>
+
+<h2 id="升级与卸载"><a href="#升级与卸载" class="headerlink" title="升级与卸载"></a>升级与卸载</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustup update</span><br><span class="line"></span><br><span class="line">$ rustup self uninstall</span><br></pre></td></tr></table></figure>
+
+<h2 id="确认"><a href="#确认" class="headerlink" title="确认"></a>确认</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="本地文档"><a href="#本地文档" class="headerlink" title="本地文档"></a>本地文档</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用此命令在浏览器中打开本地文档，其中包含 The Rust Programming Language.</span><br><span class="line">$rustup doc</span><br></pre></td></tr></table></figure>
+
+<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello, World!"></a>Hello, World!</h1><p>假设把代码放在某个目录下，cd到它，创建一个<code>main.rs</code>文件（rs是Rust文件的扩展名）：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello, world!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，编译再运行之：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ rustc main.rs</span><br><span class="line">$ ./main</span><br></pre></td></tr></table></figure>
+
+<h2 id="Rust程序的结构"><a href="#Rust程序的结构" class="headerlink" title="Rust程序的结构"></a>Rust程序的结构</h2><p><code>fn</code>定义一个函数，而<code>main</code>同时是特别的<strong>入口函数</strong>，与<code>C</code>和<code>C#</code>之类语言类似。Rust中的函数需要花括号包含其函数体。</p>
+<p>第二行<code>println!(&quot;Hello, world!&quot;);</code>，输出一行文本到屏幕。这里看起来有点特别的是<code>println!</code>，带有<code>!</code>在Rust中意味着调用宏而非函数。行末的<code>;</code>表示一个表达式的结束，<strong>大多数</strong>Rust代码行以<code>;</code>结束。</p>
+<h1 id="编译和执行的分离"><a href="#编译和执行的分离" class="headerlink" title="编译和执行的分离"></a>编译和执行的分离</h1><p>作为静态语言，Rust程序执行之前需要先行编译，这类似于<code>gcc</code>或<code>clang</code>。</p>
+<p>对于简单的程序，可如上使用<code>rustc</code>，对于更为复杂的程序，你可能需要<code>Cargo</code>这个工具。</p>
+<h1 id="Cargo"><a href="#Cargo" class="headerlink" title="Cargo"></a>Cargo</h1><p><code>Cargo</code>是Rust的构建系统（Build System）和包管理器（Package Manager）。它可以生成代码、下载依赖库，生成库代码。</p>
+<p><code>Cargo</code>随Rust一起安装。</p>
+<h2 id="以Cargo创建一个项目"><a href="#以Cargo创建一个项目" class="headerlink" title="以Cargo创建一个项目"></a>以Cargo创建一个项目</h2><p>使用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo new hello_cargo --bin</span><br></pre></td></tr></table></figure>
+
+<p>创建一个项目，<code>--bin</code>表示所创建者为可执行文件（binaries）。<code>Cargo</code>生成了两个文件：</p>
+<ul>
+<li>Cargo.toml（TOML格式的配置文件）</li>
+<li>src&#x2F;main.rs（与上面手工创建的一样）</li>
+</ul>
+<p>Cargo.toml内容如下：</p>
+<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line"><span class="section">[package]</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;hello_cargo&quot;</span></span><br><span class="line"><span class="attr">version</span> = <span class="string">&quot;0.1.0&quot;</span></span><br><span class="line"><span class="attr">authors</span> = [<span class="string">&quot;andersc &lt;andersc@mail.com&gt;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[dependencies]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>[dependencies]</code>列出了依赖的库，这些依赖在Rust中称为<code>crate</code>。Cargo创建了初始的目录结构，也是建议将代码放在src下，其它文件放在顶级目录。</p>
+<h2 id="Building-and-Running-a-Cargo-Project"><a href="#Building-and-Running-a-Cargo-Project" class="headerlink" title="Building and Running a Cargo Project"></a>Building and Running a Cargo Project</h2><p>使用如下命令编译并运行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cargo build</span><br><span class="line">$ ./target/debug/hello_cargo</span><br></pre></td></tr></table></figure>
+
+<p>首次执行<code>cargo build</code>时，它会创建文件<code>Cargo.lock</code>，用于跟踪应用的依赖。一般不需要手工改动之。作为一种更快捷的方式，可以用<code>cargo run</code>来编译并运行程序。</p>
+<h2 id="发布程序"><a href="#发布程序" class="headerlink" title="发布程序"></a>发布程序</h2><p>上面可见，编译的程序放在了<code>debug</code>下，如果要正式发布，则应使用<code>cargo build --release</code>选项，这会优化所生成的程序，代价是编译时间更长。</p>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul>
+<li>Sublime 3：<a href="https://github.com/rust-lang/sublime-rust">Sublime Rust</a></li>
+<li><a href="https://intellij-rust.github.io/">IntelliJ Rust</a></li>
+</ul>
+<h1 id="Guessing-Game"><a href="#Guessing-Game" class="headerlink" title="Guessing Game"></a>Guessing Game</h1><p>通过一个真实的程序来演示几个Rust的常见概念，如<code>let</code>， <code>match</code>，方法，关联函数，使用外部库等。</p>
+<p>猜数游戏是一个经典的编程初学者的问题。</p>
+<h2 id="建立项目"><a href="#建立项目" class="headerlink" title="建立项目"></a>建立项目</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">cargo new guessing_game --bin</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> guessing_game</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="感受一下"><a href="#感受一下" class="headerlink" title="感受一下"></a>感受一下</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Guess the number!&quot;</span>);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Please input your guess.&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">guess</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    io::<span class="title function_ invoke__">stdin</span>().<span class="title function_ invoke__">read_line</span>(&amp;<span class="keyword">mut</span> guess)</span><br><span class="line">               .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Failed to read line&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;You guessed: &#123;&#125;&quot;</span>, guess);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面，<code>use</code>不用多说；let创建一个<strong>变量</strong>，不过在Rust中变量默认是不可修改的，如果希望修改，则需要使用<strong>mut</strong>；String:new()就是所谓关联函数（associated function），相当于其它语言中的<strong>静态方法</strong>。</p>
+<p><code>stdin</code>是io的关联函数；read_line函数读取用户输入，将值赋给一个变量，<code>&amp;</code>表示参数为<strong>引用（reference）</strong>。</p>
+]]></content>
+      <categories>
+        <category>Programming</category>
+        <category>Rust</category>
+      </categories>
+      <tags>
+        <tag>Programming</tag>
+        <tag>Rust</tag>
       </tags>
   </entry>
   <entry>
@@ -934,10 +1327,11 @@
 </ul>
 ]]></content>
       <categories>
+        <category>Programming</category>
         <category>IO</category>
       </categories>
       <tags>
-        <tag>IO</tag>
+        <tag>Programming</tag>
       </tags>
   </entry>
   <entry>
@@ -1343,6 +1737,56 @@
       </tags>
   </entry>
   <entry>
+    <title>Text Retrieval and Search Engines(2)</title>
+    <url>/2017/07/09/text-retrieval-and-search-engines-part-2/</url>
+    <content><![CDATA[<p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
+<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
+<p>主要概念：</p>
+<ul>
+<li>关键词词频（Term Frequency，TF）</li>
+<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
+<li>TF transformation</li>
+<li>Pivoted length normalization</li>
+<li>BM25</li>
+<li>倒排索引（Inverted Index）与posting</li>
+<li>Binary coding，unary coding，gamma-coding和d-gap</li>
+<li>Zipf法则</li>
+</ul>
+<span id="more"></span>
+
+<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
+<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
+<ul>
+<li>d4匹配到了更多关键词，应获得更高的相似度</li>
+<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
+</ul>
+<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
+<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
+<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
+<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
+<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
+<p>现在重新计算上面的三个文档，会发现$f(q, d2) &#x3D; 3$，$f(q, d3) &#x3D; 3$，$f(q, d4) &#x3D; 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
+<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
+<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
+<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
+<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
+<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
+<p>引入IDF后，文档的向量公式变为：</p>
+<p>$$d &#x3D; (y_1, \cdots, y_N，y_i &#x3D; c(W_i, d) * IDF(W_i)$$</p>
+<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
+<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
+]]></content>
+      <categories>
+        <category>NLP</category>
+        <category>Text Retrieval</category>
+      </categories>
+      <tags>
+        <tag>Text Retrieval</tag>
+        <tag>Information Retrieval</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>什么是民粹主义</title>
     <url>/2020/10/31/what-is-populism/</url>
     <content><![CDATA[<h1 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h1><blockquote>
@@ -1414,56 +1858,6 @@
       </categories>
       <tags>
         <tag>政治学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Text Retrieval and Search Engines(2)</title>
-    <url>/2017/07/09/text-retrieval-and-search-engines-part-2/</url>
-    <content><![CDATA[<p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
-<p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
-<p>主要概念：</p>
-<ul>
-<li>关键词词频（Term Frequency，TF）</li>
-<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
-<li>TF transformation</li>
-<li>Pivoted length normalization</li>
-<li>BM25</li>
-<li>倒排索引（Inverted Index）与posting</li>
-<li>Binary coding，unary coding，gamma-coding和d-gap</li>
-<li>Zipf法则</li>
-</ul>
-<span id="more"></span>
-
-<p>在<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1</a>中介绍了”最简单的VSM“（以下简称SVSM），看下图，考虑该模型是否存在问题？</p>
-<p><img src="/images/text-retrieval/problems-of-svsm.png" alt="Two Problems of the SVSM"></p>
-<p>三个文档的相似度计算结果相同，但直觉上，它们应当是有差别的，比如：</p>
-<ul>
-<li>d4匹配到了更多关键词，应获得更高的相似度</li>
-<li>d2的匹配关键词中有一个是about，d3中则有presidential，d3应该与查询更相似</li>
-</ul>
-<p>出现这两个问题，是因为我们使用了词袋模型和位向量，首先词频被忽略，这样高频词对相似度的贡献被忽略，接着关键词之间也被同等看待，原本贡献更高的词也泯然众“词”矣。要改进模型，可以从这两方面入手。</p>
-<p>先把词频（TF）考虑进去，得到如下的向量表示法：</p>
-<p><img src="/images/text-retrieval/add-tf-to-svsm.png" alt="Two Problems of the SVSM"></p>
-<p>这个新的相似度计算方式可以如何解释？它是否解决了上面的两个问题？</p>
-<p>计入词频后，高频词相比于低频词对相似度的贡献会更大，这符合我们的直觉。因为一个文档内，词的频率越高，它就更可能作为该文档的“主题”，而如果一个词频率太低，说不定只是凑巧“混”进了文档而已。</p>
-<p>现在重新计算上面的三个文档，会发现$f(q, d2) &#x3D; 3$，$f(q, d3) &#x3D; 3$，$f(q, d4) &#x3D; 4$，它的相似度确实比d2和d3高了，而。这样我们解决了第一个问题，但第二个问题依然存在。</p>
-<p>如何给不同的词赋予不同的权重呢？为什么我们会认为presidential要比about重要呢？大致可以这样理解，对于about或the这样的词，它们有很高的频率出现在各种不同主题的文档中，那么查询和文档同时出现这样的词——我们不会感到意外。可以说它们携带的信息很少，不足以区分不同的文档。但presidential就很不一样，介绍信息检索的文章（本文除外）很少会出现。</p>
-<p>about这样的词，常常被称为<strong>停用词</strong>（Stopword）。我们可以考虑用某种方法来“惩罚”停用词。不过首先的问题是，如何确定哪些词属于停用词？可以统计整个文档集的所有词，如果一个词出现在了很高比例的文档中（如80%），那么它很可能是停用词。另一方面，对于像presidential这样的词，我们考虑“奖励”它，因为它们可以更好地区分文档。实现这里惩罚和奖励的常见方法是<strong>逆向文档频率</strong>（IDF）。标准的IDF实现如下：</p>
-<p><img src="/images/text-retrieval/idf.png" alt="IDF"></p>
-<p>$M$是文档集中的文档数量，$k$是包含词$W$的文档总数，即DF，取到数后就成了IDF。通过函数图像（曲线）可知，一个词出现在越多的文档中，其IDF越低，即得到了越多的惩罚，反之出现在越少的文档中，则会得到奖励。</p>
-<p>当$k$很小时，IDF值很大，也就是说如果一个词只出现在了少数几个文档中，那么他们就会有很高的权重。当$k$逐渐增大时，IDF下降得很快，直到越过中间的转折点后，IDF就变得相当小，此时该词对于相似度而言就不甚重要了。对于about这样的词，$k$可能是接近于$M$的，它的IDF值接近于$0$。</p>
-<p>引入IDF后，文档的向量公式变为：</p>
-<p>$$d &#x3D; (y_1, \cdots, y_N，y_i &#x3D; c(W_i, d) * IDF(W_i)$$</p>
-<p>这时再计算的话，d3的相似度就高于d2了，这样就解决了问题2。然而新的问题又出现了，看下图，d5的相似度好像有点过高了，如何解决呢：</p>
-<p><img src="/images/text-retrieval/vsm-after-tfidf.png" alt="VSM after TFIDF"></p>
-]]></content>
-      <categories>
-        <category>NLP</category>
-        <category>Text Retrieval</category>
-      </categories>
-      <tags>
-        <tag>Text Retrieval</tag>
-        <tag>Information Retrieval</tag>
       </tags>
   </entry>
   <entry>

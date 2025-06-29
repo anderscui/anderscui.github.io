@@ -167,13 +167,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -200,6 +200,110 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2025/06/26/OCaml-Modular-Programming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Anders Cui">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mathacker">
+      <meta itemprop="description" content="时光中的碎片">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | mathacker">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/26/OCaml-Modular-Programming/" class="post-title-link" itemprop="url">OCaml Modular Programming</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-06-26 06:50:50" itemprop="dateCreated datePublished" datetime="2025-06-26T06:50:50+08:00">2025-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-06-29 15:20:23" itemprop="dateModified" datetime="2025-06-29T15:20:23+08:00">2025-06-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/OCaml/" itemprop="url" rel="index"><span itemprop="name">OCaml</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>按：本文整理自<a href="https://cs3110.github.io/textbook/cover.html">《OCaml Programming: Correct + Efficient + Beautiful》</a>一书的第五章 Modular Programming。</p>
+<p>初学 OCaml 时，建议先看完《OCaml from the Very Beginning》，然后看《Learn Programming with OCaml》的前三（或五）章，然后再来看《OCaml Programming》第五章。再往后，就按需去看吧。</p>
+</blockquote>
+<p>在程序规模很小的时候，如数十行，它完全可以由一个人完成，代码放在单个文件中。但在真实世界的开发中，程序规模要大好几个数量级，多的能到数千万行。此时，它必须有多个程序员完成，并且代码放在不同文件中。</p>
+<p>其中一个解决方案是<strong>模块化编程（modular programming）</strong>：程序由多个分别开发的模块构成。划分为模块后，每个程序员都仅关注于手头的任务，无须理解整个程序。</p>
+<p>同时，我们需要确保每个模块的准确性，此时使用的是 local reasoning：不需要太多关注整体的程序，而是关注它需要满足的 <strong>contract</strong>（此为<strong>接口</strong>）。如果每个人都能正确完成，那么各个分别开发的程序组合起来之后应当可以正确工作。这是模块化编程的核心思想。</p>
+<p>因此，构建大型程序必须要使用 <strong>abstraction</strong>，即上面所提及的 contract、接口。不同组件之间通过 abstraction 连接，而非<strong>实现的细节</strong>。</p>
+<p>模块通过给出它们应当完成的功能（specification，规格 or 规范）进行抽象。好的模块规格应当是清晰易懂的，提供恰到好处的信息，使得该模块的 client 能正确使用之。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/06/26/OCaml-Modular-Programming/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -638,7 +742,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-06-22 20:58:36" itemprop="dateModified" datetime="2025-06-22T20:58:36+08:00">2025-06-22</time>
+      <time title="Modified: 2025-06-22 21:15:18" itemprop="dateModified" datetime="2025-06-22T21:15:18+08:00">2025-06-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -646,7 +750,11 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/IO/" itemprop="url" rel="index"><span itemprop="name">IO</span></a>
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/IO/" itemprop="url" rel="index"><span itemprop="name">IO</span></a>
         </span>
     </span>
 
@@ -1074,97 +1182,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/03/14/golang-packages/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://anderscui.github.io/2021/03/01/%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Anders Cui">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mathacker">
-      <meta itemprop="description" content="时光中的碎片">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | mathacker">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/01/%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1/" class="post-title-link" itemprop="url">小狗钱钱</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-03-01 17:28:11" itemprop="dateCreated datePublished" datetime="2021-03-01T17:28:11+08:00">2021-03-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-06-22 20:38:39" itemprop="dateModified" datetime="2025-06-22T20:38:39+08:00">2025-06-22</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
-<p>富裕是每个人与生俱来的权利，它让我们更有尊严，也能更好地为自己和他人服务。</p>
-</blockquote>
-<p>PS：富裕也给人以更多<strong>自由</strong>。</p>
-<p>个人的经历是无法效仿的，但最基本的真理却完全可以。</p>
-<p>那些复杂的投资模型经常将人引入歧途。现代社会里，追求高深莫测的东西似乎才是正道，而那些简单和基本的真理越来越被人淡忘。人们常常认为：“这不可能如此简单”。实际上，这就是“如此简单”。</p>
-<p>基本的原理颇为简单，它们自古有之，它们在各种（人类所处的）时空都是有效的。</p>
-<h2 id="有益和必要的知识"><a href="#有益和必要的知识" class="headerlink" title="有益和必要的知识"></a>有益和必要的知识</h2><p>阅读金融百科全书，或了解货币史，不能给我们带来富裕和幸福。</p>
-<p>描述基本的事实时，有一种危险：人们会过快地做出结论，我已经知道了。这会让人停止学习。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/01/%E5%B0%8F%E7%8B%97%E9%92%B1%E9%92%B1/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
