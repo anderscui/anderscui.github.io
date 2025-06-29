@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。 课程结构 术语表 Text Retrieval（TR）：文本检索 Information Retrieval（IR）：信息检索 Natural Language Processing（NLP）：自然语言处理 Information Need：信息需求 Document：文档">
+    <meta name="description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。 课程结构   Course Schedule  术语表  Text Retrieval（TR）：文本检索 Information Retrieval（IR）：信息检索 Natural Language Processing（NLP）：自然语言处理 Information N">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Text Retrieval and Search Engines(1)">
 <meta property="og:url" content="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/index.html">
 <meta property="og:site_name" content="mathacker">
-<meta property="og:description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。 课程结构 术语表 Text Retrieval（TR）：文本检索 Information Retrieval（IR）：信息检索 Natural Language Processing（NLP）：自然语言处理 Information Need：信息需求 Document：文档">
+<meta property="og:description" content="此文内容整理自Coursera课程文本检索与搜索引擎（Text Retrieval and Search Engines）。 课程结构   Course Schedule  术语表  Text Retrieval（TR）：文本检索 Information Retrieval（IR）：信息检索 Natural Language Processing（NLP）：自然语言处理 Information N">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://anderscui.github.io/images/text-retrieval/text-retrieval-course-schedule.png">
 <meta property="og:image" content="https://anderscui.github.io/images/text-retrieval/an-example-of-nlp.png">
@@ -73,6 +73,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
 
 
 
@@ -166,7 +172,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BE%E7%A8%8B%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">课程结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E8%A1%A8"><span class="nav-number">1.1.</span> <span class="nav-text">术语表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">1、文本检索基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%86%85%E5%AE%B9%E7%9A%84%E5%88%86%E6%9E%90"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 自然语言内容的分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E4%BB%80%E4%B9%88%E6%98%AFNLP%EF%BC%9F"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1.1 什么是NLP？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-NLP%E6%98%AF%E5%BE%88%E9%9A%BE%E7%9A%84"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.1.2 NLP是很难的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3-NLP%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.1.3 NLP研究现状</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4-NLP%E4%B8%8E%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2"><span class="nav-number">2.1.4.</span> <span class="nav-text">1.1.4 NLP与文本检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%96%87%E6%9C%AC%E8%AE%BF%E9%97%AE"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 文本访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-TR%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 TR中的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2%EF%BC%9F"><span class="nav-number">2.3.1.</span> <span class="nav-text">1.3.1 什么是文本检索？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2-vs-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A3%80%E7%B4%A2"><span class="nav-number">2.3.2.</span> <span class="nav-text">1.3.2 文本检索 vs. 数据库检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3-%E6%96%87%E6%A1%A3%E9%80%89%E6%8B%A9-vs-%E6%96%87%E6%A1%A3%E6%8E%92%E5%BA%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">1.3.3 文档选择 vs. 文档排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 文本检索方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">1.5 向量空间模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-VSM%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.6.</span> <span class="nav-text">1.6 VSM的最简单实现</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%BE%E7%A8%8B%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">课程结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD%E8%A1%A8"><span class="nav-number">1.1.</span> <span class="nav-text">术语表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">1、文本检索基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%86%85%E5%AE%B9%E7%9A%84%E5%88%86%E6%9E%90"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 自然语言内容的分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFnlp"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1.1 什么是NLP？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nlp%E6%98%AF%E5%BE%88%E9%9A%BE%E7%9A%84"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.1.2 NLP是很难的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nlp%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.1.3 NLP研究现状</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nlp%E4%B8%8E%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2"><span class="nav-number">2.1.4.</span> <span class="nav-text">1.1.4 NLP与文本检索</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E8%AE%BF%E9%97%AE"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 文本访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tr%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 TR中的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2"><span class="nav-number">2.3.1.</span> <span class="nav-text">1.3.1 什么是文本检索？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2-vs.-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A3%80%E7%B4%A2"><span class="nav-number">2.3.2.</span> <span class="nav-text">1.3.2 文本检索 vs. 数据库检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E9%80%89%E6%8B%A9-vs.-%E6%96%87%E6%A1%A3%E6%8E%92%E5%BA%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">1.3.3 文档选择 vs. 文档排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E6%A3%80%E7%B4%A2%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 文本检索方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.5.</span> <span class="nav-text">1.5 向量空间模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vsm%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.6.</span> <span class="nav-text">1.6 VSM的最简单实现</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -283,9 +289,17 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。</p>
-<h1 id="课程结构"><a href="#课程结构" class="headerlink" title="课程结构"></a>课程结构</h1><p><img src="/images/text-retrieval/text-retrieval-course-schedule.png" alt="Course Schedule"></p>
-<h2 id="术语表"><a href="#术语表" class="headerlink" title="术语表"></a>术语表</h2><ul>
+    <div class="post-body" itemprop="articleBody"><p>此文内容整理自Coursera课程<a
+href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text
+Retrieval and Search Engines）</a>。</p>
+<h1 id="课程结构">课程结构</h1>
+<figure>
+<img src="/images/text-retrieval/text-retrieval-course-schedule.png"
+alt="Course Schedule" />
+<figcaption aria-hidden="true">Course Schedule</figcaption>
+</figure>
+<h2 id="术语表">术语表</h2>
+<ul>
 <li>Text Retrieval（TR）：文本检索</li>
 <li>Information Retrieval（IR）：信息检索</li>
 <li>Natural Language Processing（NLP）：自然语言处理</li>
@@ -302,43 +316,70 @@
 <li>Dot Product：点积</li>
 </ul>
 <span id="more"></span>
-
-<h1 id="1、文本检索基本概念"><a href="#1、文本检索基本概念" class="headerlink" title="1、文本检索基本概念"></a>1、文本检索基本概念</h1><p>第一部分将涵盖上图中1-5部分的内容。</p>
-<h2 id="1-1-自然语言内容的分析"><a href="#1-1-自然语言内容的分析" class="headerlink" title="1.1 自然语言内容的分析"></a>1.1 自然语言内容的分析</h2><p>这无疑是处理任何文本数据的第一步，本节包含三个小主题：</p>
+<h1 id="文本检索基本概念">1、文本检索基本概念</h1>
+<p>第一部分将涵盖上图中1-5部分的内容。</p>
+<h2 id="自然语言内容的分析">1.1 自然语言内容的分析</h2>
+<p>这无疑是处理任何文本数据的第一步，本节包含三个小主题：</p>
 <ul>
 <li>什么是NLP？</li>
 <li>NLP领域研究的现状</li>
 <li>NLP与文本检索</li>
 </ul>
-<h3 id="1-1-1-什么是NLP？"><a href="#1-1-1-什么是NLP？" class="headerlink" title="1.1.1 什么是NLP？"></a>1.1.1 什么是NLP？</h3><p>来看一个NLP的简单例子：</p>
-<p><img src="/images/text-retrieval/an-example-of-nlp.png" alt="An example of NLP"></p>
-<p>如果想让计算机理解这个句子，需要哪些步骤呢？类似于人类的理解过程，首先需要知道它包含哪些词，以及各个词的词性。这个过程称为<strong>词法分析</strong>（Lexical analysis）或<strong>词性标注</strong>（Part-of-speech tagging）。</p>
-<p>接下来需要了解句子的语法结构，即这些词如何构成更复杂的语法结构。如A和dog构成名词短语，on、the及playground构成介词短语等等。这个过程称为<strong>语法分析</strong>（Syntactic analysis）。</p>
-<p>了解了句子的词法结构和语法结构，计算机仍不足以了解句子的意义。这时需要的是<strong>语义分析</strong>（Semantic analysis）。对计算机来说，需要将词和短语这样的成分对应到某些symbol，同时还要有symbol之间的关系，比如上图中的Chasing就是这样一种关系。更进一步，在关系之上，我们还可以进行<strong>推理</strong>（Inference），比如我们有一条规则：如果某实体被狗追，那么该实体会害怕。在此规则下，我们可以推理出一个结论：the boy is scared。</p>
-<p>另外还可以考虑，一个人为何说出这样一句话？ta的意图是什么？一种可能是，ta在提醒另一个人把狗牵回来。这个过程称为<strong>Pragmatic analysis</strong>，即分析“语言行为“本身。</p>
+<h3 id="什么是nlp">1.1.1 什么是NLP？</h3>
+<p>来看一个NLP的简单例子：</p>
+<figure>
+<img src="/images/text-retrieval/an-example-of-nlp.png"
+alt="An example of NLP" />
+<figcaption aria-hidden="true">An example of NLP</figcaption>
+</figure>
+<p>如果想让计算机理解这个句子，需要哪些步骤呢？类似于人类的理解过程，首先需要知道它包含哪些词，以及各个词的词性。这个过程称为<strong>词法分析</strong>（Lexical
+analysis）或<strong>词性标注</strong>（Part-of-speech tagging）。</p>
+<p>接下来需要了解句子的语法结构，即这些词如何构成更复杂的语法结构。如A和dog构成名词短语，on、the及playground构成介词短语等等。这个过程称为<strong>语法分析</strong>（Syntactic
+analysis）。</p>
+<p>了解了句子的词法结构和语法结构，计算机仍不足以了解句子的意义。这时需要的是<strong>语义分析</strong>（Semantic
+analysis）。对计算机来说，需要将词和短语这样的成分对应到某些symbol，同时还要有symbol之间的关系，比如上图中的Chasing就是这样一种关系。更进一步，在关系之上，我们还可以进行<strong>推理</strong>（Inference），比如我们有一条规则：如果某实体被狗追，那么该实体会害怕。在此规则下，我们可以推理出一个结论：the
+boy is scared。</p>
+<p>另外还可以考虑，一个人为何说出这样一句话？ta的意图是什么？一种可能是，ta在提醒另一个人把狗牵回来。这个过程称为<strong>Pragmatic
+analysis</strong>，即分析“语言行为“本身。</p>
 <p>计算机要理解一个如此简单的句子都需要很繁琐的过程。人类理解起来要容易得多，这是因为人的大脑早已有了庞大的”知识“库，而计算机则需要从头学起。</p>
 <p>直觉上，人类学习语言并非如洛克的”白板论”那样，一个人对于语言的理解应当有相当的部分来自于遗传。总之，对于可怜的计算机而言，NLP是很难的。</p>
-<h3 id="1-1-2-NLP是很难的"><a href="#1-1-2-NLP是很难的" class="headerlink" title="1.1.2 NLP是很难的"></a>1.1.2 NLP是很难的</h3><p>”自然语言“当然是为人类的有效沟通而设计，其结果是：我们会大量的”<strong>常识</strong>“内容，并假设听者或读者是能够理解的；语言中存在大量的<strong>歧义</strong>（ambiguity），我们假设听者或读者能够仔细理解之。</p>
+<h3 id="nlp是很难的">1.1.2 NLP是很难的</h3>
+<p>”自然语言“当然是为人类的有效沟通而设计，其结果是：我们会大量的”<strong>常识</strong>“内容，并假设听者或读者是能够理解的；语言中存在大量的<strong>歧义</strong>（ambiguity），我们假设听者或读者能够仔细理解之。</p>
 <p>当一个人缺乏<strong>常识</strong>，与ta沟通起来会感觉困难。对NLP来说，以Siri之类的应用为例，我们的感觉不是与它很难沟通，而是完全无法沟通。当一个人说的话有<strong>歧义</strong>，人类也会觉得理解起来有困难，拿不准其准确含义，遑论计算机了。所以，常识的缺乏和歧义使得NLP格外困难。</p>
 <p>歧义的常见情况有：</p>
 <ul>
 <li>词的歧义：不同词性；多义词；</li>
-<li>语法结构的歧义：修饰语与被修饰语的不同结合；介词短语附着（PP Attachment），”A man saw a boy <em>with a telescope</em>；</li>
-<li>首语重复（Anaphora）解析：John persuaded Bill to buy a TV for <em>himself</em>；</li>
-<li>预先假定（Presupposition）：”He has quit smoking”暗示他曾吸过烟。</li>
+<li>语法结构的歧义：修饰语与被修饰语的不同结合；介词短语附着（PP
+Attachment），”A man saw a boy <em>with a telescope</em>；</li>
+<li>首语重复（Anaphora）解析：John persuaded Bill to buy a TV for
+<em>himself</em>；</li>
+<li>预先假定（Presupposition）：“He has quit
+smoking”暗示他曾吸过烟。</li>
 </ul>
-<h3 id="1-1-3-NLP研究现状"><a href="#1-1-3-NLP研究现状" class="headerlink" title="1.1.3 NLP研究现状"></a>1.1.3 NLP研究现状</h3><p><img src="/images/text-retrieval/state-of-the-art-nlp.png" alt="State of the Art NLP"></p>
-<p>词性标注准确率较高；语法解析层面，部分解析（Partial Parsing，即句子的一部分，如短语级别）达到90%以上。</p>
+<h3 id="nlp研究现状">1.1.3 NLP研究现状</h3>
+<figure>
+<img src="/images/text-retrieval/state-of-the-art-nlp.png"
+alt="State of the Art NLP" />
+<figcaption aria-hidden="true">State of the Art NLP</figcaption>
+</figure>
+<p>词性标注准确率较高；语法解析层面，部分解析（Partial
+Parsing，即句子的一部分，如短语级别）达到90%以上。</p>
 <p>语义解析的进展则相当不好。不过在某些特定应用上取得了一些进展，如实体识别、关系提取、情感分析。</p>
 <p>推理和语言行为方面的表现则是更差。</p>
 <p>值得一提的是，尽管说词性标注和部分解析的准确率已经达到较高的程度，但这些评测都是基于特定的测试数据集，此类测试集常常是新闻类数据，这会导致一定的偏差。因此相应的算法应用到不同领域中可能未必有同样好的效果。</p>
-<h3 id="1-1-4-NLP与文本检索"><a href="#1-1-4-NLP与文本检索" class="headerlink" title="1.1.4 NLP与文本检索"></a>1.1.4 NLP与文本检索</h3><p>文本检索通常涉及大量而广泛的文本，如果希望其中的NLP技术是健壮和高效的，那么目前来看只能采用浅层的NLP。文本的<strong>词袋</strong>（Bag of Words）表示是最简单的一种，它无疑丢弃了文本的大量信息，但对于大部分（不是全部）搜索任务而言却是够用的。</p>
+<h3 id="nlp与文本检索">1.1.4 NLP与文本检索</h3>
+<p>文本检索通常涉及大量而广泛的文本，如果希望其中的NLP技术是健壮和高效的，那么目前来看只能采用浅层的NLP。文本的<strong>词袋</strong>（Bag
+of
+Words）表示是最简单的一种，它无疑丢弃了文本的大量信息，但对于大部分（不是全部）搜索任务而言却是够用的。</p>
 <p>某些文本检索技术可以自然地解决NLP问题，如语义消歧。</p>
-<p>但是，对于复杂的搜索任务，更深层的NLP技术仍是必需的，比如<strong>知识图谱</strong>（Knowledge Graph）。</p>
-<h2 id="1-2-文本访问"><a href="#1-2-文本访问" class="headerlink" title="1.2 文本访问"></a>1.2 文本访问</h2><p>一个文本信息系统该如何让用户访问到他们关心的（或相关的，relevant）数据？这里主要考虑两种模式。</p>
+<p>但是，对于复杂的搜索任务，更深层的NLP技术仍是必需的，比如<strong>知识图谱</strong>（Knowledge
+Graph）。</p>
+<h2 id="文本访问">1.2 文本访问</h2>
+<p>一个文本信息系统该如何让用户访问到他们关心的（或相关的，relevant）数据？这里主要考虑两种模式。</p>
 <ul>
 <li>Pull模式（搜索引擎）：由用户发起。用户在系统中根据特定的需求开始查询，并浏览相应的结果。此时的需求往往是临时性的，比如查询某个术语、某个作者或一类商品的信息。这种情形下，系统很难预知用户的需求，因此Pull模式较为适合。</li>
-<li>Push模式（推荐系统）：由系统发起。如果用户有某种较固定的需求，而且系统对用户比较了解，那么系统可以主动向用户push信息。比如Pocket app在用户使用一段时间后，可以向用户推荐其感兴趣的文章。</li>
+<li>Push模式（推荐系统）：由系统发起。如果用户有某种较固定的需求，而且系统对用户比较了解，那么系统可以主动向用户push信息。比如Pocket
+app在用户使用一段时间后，可以向用户推荐其感兴趣的文章。</li>
 </ul>
 <p>在pull模式下，也存在两种不同的方式：</p>
 <ul>
@@ -346,46 +387,64 @@
 <li>Browsing：用户对需求不甚清楚，希望先在系统中漫游一番。当我们遇到某书店的打折信息，满200减100，但暂时并没有特定要买的书，这时往往从分类或主题开始浏览。</li>
 </ul>
 <p>尽管说Browsing属于pull模式，但仔细想想，当用户不太清楚想要什么时，不正是推荐系统发挥作用的地方吗？</p>
-<h2 id="1-3-TR中的问题"><a href="#1-3-TR中的问题" class="headerlink" title="1.3 TR中的问题"></a>1.3 TR中的问题</h2><p>本节包含三个小主题：</p>
+<h2 id="tr中的问题">1.3 TR中的问题</h2>
+<p>本节包含三个小主题：</p>
 <ul>
 <li>什么是文本检索？</li>
-<li>文本检索 vs. 数据库检索</li>
-<li>文档选择（Selection） vs. 文档排序（Ranking）</li>
+<li>文本检索 vs. 数据库检索</li>
+<li>文档选择（Selection） vs. 文档排序（Ranking）</li>
 </ul>
-<h3 id="1-3-1-什么是文本检索？"><a href="#1-3-1-什么是文本检索？" class="headerlink" title="1.3.1 什么是文本检索？"></a>1.3.1 什么是文本检索？</h3><p>对于使用过搜索引擎的人来说，这甚至算不上是一个问题：）</p>
-<p>系统已收集大量（具体的量级视具体问题而定）文档。用户发起查询，表达自己的<strong>信息需求</strong>（Information Need）。系统返回相关文档给用户。这就是high level的文本检索过程。</p>
-<p>文本检索也被称为<strong>信息检索</strong>（Information Retrieval，IR），但实际上IR的范围更广，因为其数据可能是非文本的。文本检索在业界被称为“搜索技术”。</p>
-<h3 id="1-3-2-文本检索-vs-数据库检索"><a href="#1-3-2-文本检索-vs-数据库检索" class="headerlink" title="1.3.2 文本检索 vs. 数据库检索"></a>1.3.2 文本检索 vs. 数据库检索</h3><p>这里将两者简称为TR和DR，并从不同的角度来看：</p>
-<ol>
+<h3 id="什么是文本检索">1.3.1 什么是文本检索？</h3>
+<p>对于使用过搜索引擎的人来说，这甚至算不上是一个问题：）</p>
+<p>系统已收集大量（具体的量级视具体问题而定）文档。用户发起查询，表达自己的<strong>信息需求</strong>（Information
+Need）。系统返回相关文档给用户。这就是high level的文本检索过程。</p>
+<p>文本检索也被称为<strong>信息检索</strong>（Information
+Retrieval，IR），但实际上IR的范围更广，因为其数据可能是非文本的。文本检索在业界被称为“搜索技术”。</p>
+<h3 id="文本检索-vs.-数据库检索">1.3.2 文本检索 vs. 数据库检索</h3>
+<p>这里将两者简称为TR和DR，并从不同的角度来看：</p>
+<ol type="1">
 <li>信息：TR是非结构化的、模糊的；DR是结构化的、具有良好语义的；</li>
 <li>查询：TR是模糊的、不完整的；DR是具有良好语义的、完整的；</li>
 <li>返回结果：TR是<strong>相关的文档</strong>，DR是<strong>匹配的记录</strong>；</li>
 <li>TR是基于经验的，不能以数学的方式精确判断一直方法的好坏，因此需要借助于用户的介入以评测方法的表现。比如通过用户对于查询结果的后续操作来判断其好坏。</li>
 </ol>
 <p>下图是TR的正式定义：</p>
-<p><img src="/images/text-retrieval/formal-formulation-of-tr.png" alt="Formal formulation of TR"></p>
+<figure>
+<img src="/images/text-retrieval/formal-formulation-of-tr.png"
+alt="Formal formulation of TR" />
+<figcaption aria-hidden="true">Formal formulation of TR</figcaption>
+</figure>
 <p><code>R(q)</code>是一次用户查询的相关文档构成的集合，但一般情况下，它是不可知的，同时也依赖于具体的用户。在此前提下，我们的任务是<strong>计算它的近似值</strong>。</p>
-<h3 id="1-3-3-文档选择-vs-文档排序"><a href="#1-3-3-文档选择-vs-文档排序" class="headerlink" title="1.3.3 文档选择 vs. 文档排序"></a>1.3.3 文档选择 vs. 文档排序</h3><p>上述任务的两种策略是：</p>
+<h3 id="文档选择-vs.-文档排序">1.3.3 文档选择 vs. 文档排序</h3>
+<p>上述任务的两种策略是：</p>
 <ul>
-<li>文档选择：通过某个函数或二元分类器来确定一个文档是否属于目标集合。对于<code>C</code>中的每一个文档，它的结果只能是属于或不属于。这里的结果是<strong>绝对相关度</strong>（absolute relevance）。</li>
-<li>文档排序：选择某个相关度度量函数，对每个文档判断它在多大程度上与当前用户查询是相关的。这里的结果是<strong>相对相关度</strong>（relative relevance）。</li>
+<li>文档选择：通过某个函数或二元分类器来确定一个文档是否属于目标集合。对于<code>C</code>中的每一个文档，它的结果只能是属于或不属于。这里的结果是<strong>绝对相关度</strong>（absolute
+relevance）。</li>
+<li>文档排序：选择某个相关度度量函数，对每个文档判断它在多大程度上与当前用户查询是相关的。这里的结果是<strong>相对相关度</strong>（relative
+relevance）。</li>
 </ul>
 <p>文档选择必须要严格确定出，一个文档是否是相关的；而文档排序则只需要给出相对的相关对，由用户来决定阈值。现实中，后者也确实更可取的方法。</p>
 <p>文档选择法存在固有的问题。其分类器很难达到特别准确的程度，要么过于严格而返回过少的文档，要么过于宽松而返回过多的文档。另一方面，即使它是准确的，所返回的”相关文档“的相关度理应是不同的，而分类器没办法确定出来。</p>
-<p>文档排序法的依据来自于<strong>概率排序原理</strong>（Probability ranking principle），即在如下两个假设下，按文档对于查询的相关度降序排列的列表是最佳策略：</p>
+<p>文档排序法的依据来自于<strong>概率排序原理</strong>（Probability
+ranking
+principle），即在如下两个假设下，按文档对于查询的相关度降序排列的列表是最佳策略：</p>
 <ul>
 <li>文档对于用户的价值（utility）相互之间是不相关的</li>
 <li>用户会顺序浏览结果</li>
 </ul>
 <p>实际上，这两个假设都不一定为真。比如，如果两个文档内容接近，那么用户看过一个后，对于第二个就没有太大兴趣了；用户会跳过部分文档。这两种情况在使用Google之类的搜索引擎时都会遇到。</p>
-<h2 id="1-4-文本检索方法"><a href="#1-4-文本检索方法" class="headerlink" title="1.4 文本检索方法"></a>1.4 文本检索方法</h2><p>文本检索的定义可见于1.3.2中的图片。简言之，我们需要找到一个合适的<strong>排序函数</strong>（ranking function）。当前常见的检索模型有：</p>
+<h2 id="文本检索方法">1.4 文本检索方法</h2>
+<p>文本检索的定义可见于1.3.2中的图片。简言之，我们需要找到一个合适的<strong>排序函数</strong>（ranking
+function）。当前常见的检索模型有：</p>
 <ul>
 <li>基于相似度（similarity）的模型：Vector space model</li>
-<li>概率模型：经典概率模型；Language model；Divergence-from-randomness模型</li>
+<li>概率模型：经典概率模型；Language
+model；Divergence-from-randomness模型</li>
 <li>Probabilistic inference model</li>
 <li>Axiomatic model</li>
 </ul>
-<p>本课程主要涉及<strong>向量空间模型</strong>（VSM）和语言模型（Language model）。有趣的是，尽管上述诸方法的思路颇不相同，但其最终的模型形式却是很相似的。</p>
+<p>本课程主要涉及<strong>向量空间模型</strong>（VSM）和语言模型（Language
+model）。有趣的是，尽管上述诸方法的思路颇不相同，但其最终的模型形式却是很相似的。</p>
 <p>那么，哪一种模型是最好的？答案是，在优化之后，下面几种模型的表现同样好：</p>
 <ul>
 <li>Pivoted length normalization</li>
@@ -394,37 +453,67 @@
 <li>PL2</li>
 </ul>
 <p>BM25是其中最流行。这些模型涉及到的重要概念有：词袋表示、TF、DF和文档长度。</p>
-<h2 id="1-5-向量空间模型"><a href="#1-5-向量空间模型" class="headerlink" title="1.5 向量空间模型"></a>1.5 向量空间模型</h2><p>VSM是基于相似度的一种模型。所谓基于相似度，是指它以文档和查询之间的<strong>相似度</strong>来度量<strong>相关度</strong>。</p>
+<h2 id="向量空间模型">1.5 向量空间模型</h2>
+<p>VSM是基于相似度的一种模型。所谓基于相似度，是指它以文档和查询之间的<strong>相似度</strong>来度量<strong>相关度</strong>。</p>
 <p>为计算相似度，我们把文档和查询都<strong>表示为向量空间中的向量</strong>，如下图所示：</p>
-<p><img src="/images/text-retrieval/vsm.png" alt="Vector space model"></p>
-<p>文档$d_1$表示为Library和Presidential两个关键词（term），$d_2$表示为Programming和Library两个term（很可能，这里的Library是指编程中的”库“），而查询$q$看起来与$d_2$最相似，那么按VSM模型，与该查询相关度最高的文档是$d_2$。</p>
+<figure>
+<img src="/images/text-retrieval/vsm.png" alt="Vector space model" />
+<figcaption aria-hidden="true">Vector space model</figcaption>
+</figure>
+<p>文档<span
+class="math inline"><em>d</em><sub>1</sub></span>表示为Library和Presidential两个关键词（term），<span
+class="math inline"><em>d</em><sub>2</sub></span>表示为Programming和Library两个term（很可能，这里的Library是指编程中的”库“），而查询<span
+class="math inline"><em>q</em></span>看起来与<span
+class="math inline"><em>d</em><sub>2</sub></span>最相似，那么按VSM模型，与该查询相关度最高的文档是<span
+class="math inline"><em>d</em><sub>2</sub></span>。</p>
 <p>下面给出VSM更正式的定义。VSM是一个框架：</p>
 <ul>
-<li>将文档和查询表示为term vector<ul>
+<li>将文档和查询表示为term vector
+<ul>
 <li>Term：关键词（文档中的基本概念），可以是词、短语或ngram</li>
 <li>每个term定义为一个维度</li>
 <li>N个term就定义了一个N维空间</li>
-<li>查询向量：$q &#x3D; (x_1, \dots, x_N), x_i \in R$，这里的$x_i$表示查询在相应维度上的权重（weight）</li>
-<li>文档向量：$d &#x3D; (y_1, \dots, y_N), y_i \in R$，这里的$y_i$表示文档在相应维度上的权重（weight）</li>
+<li>查询向量：<span
+class="math inline"><em>q</em> = (<em>x</em><sub>1</sub>, …, <em>x</em><sub><em>N</em></sub>), <em>x</em><sub><em>i</em></sub> ∈ <em>R</em></span>，这里的<span
+class="math inline"><em>x</em><sub><em>i</em></sub></span>表示查询在相应维度上的权重（weight）</li>
+<li>文档向量：<span
+class="math inline"><em>d</em> = (<em>y</em><sub>1</sub>, …, <em>y</em><sub><em>N</em></sub>), <em>y</em><sub><em>i</em></sub> ∈ <em>R</em></span>，这里的<span
+class="math inline"><em>y</em><sub><em>i</em></sub></span>表示文档在相应维度上的权重（weight）</li>
+</ul></li>
+<li>相关度<span
+class="math inline"><em>r</em><em>e</em><em>l</em><em>e</em><em>v</em><em>a</em><em>n</em><em>c</em><em>e</em>(<em>q</em>, <em>d</em>)</span>转化为<span
+class="math inline"><em>s</em><em>i</em><em>m</em><em>i</em><em>l</em><em>a</em><em>r</em><em>i</em><em>t</em><em>y</em>(<em>q</em>, <em>d</em>) = <em>f</em>(<em>q</em>, <em>d</em>)</span></li>
 </ul>
-</li>
-<li>相关度$relevance(q, d)$转化为$similarity(q, d) &#x3D; f(q, d)$</li>
-</ul>
-<p>之所以说VSM是一个框架，是因为这里实际上没有给出任何与具体实现相关的细节。要找到这里的$f$我们还需要考虑：</p>
+<p>之所以说VSM是一个框架，是因为这里实际上没有给出任何与具体实现相关的细节。要找到这里的<span
+class="math inline"><em>f</em></span>我们还需要考虑：</p>
 <ul>
-<li>如何定义或选择关键词？<ul>
+<li>如何定义或选择关键词？
+<ul>
 <li>它们需要是正交的（orthogonal）</li>
-</ul>
-</li>
+</ul></li>
 <li>如何为查询和文档向量设置合适的权重？</li>
 <li>如何度量相似度？</li>
 </ul>
-<h2 id="1-6-VSM的最简单实现"><a href="#1-6-VSM的最简单实现" class="headerlink" title="1.6 VSM的最简单实现"></a>1.6 VSM的最简单实现</h2><p>VSM的最简单实现是位向量（Bit Vector），即用一个布尔值表示一个term是否出现在了文档中。如果term$w_i$未出现，那么$y_i &#x3D; 0$，否则$y_i &#x3D; 1$。而查询也以同样的方式表示。</p>
+<h2 id="vsm的最简单实现">1.6 VSM的最简单实现</h2>
+<p>VSM的最简单实现是位向量（Bit
+Vector），即用一个布尔值表示一个term是否出现在了文档中。如果term<span
+class="math inline"><em>w</em><sub><em>i</em></sub></span>未出现，那么<span
+class="math inline"><em>y</em><sub><em>i</em></sub> = 0</span>，否则<span
+class="math inline"><em>y</em><sub><em>i</em></sub> = 1</span>。而查询也以同样的方式表示。</p>
 <p>这种方式的特点之一是，它忽略了一个term在文档中出现的具体次数。另外，当文档集较大（一般都是如此）时，向量维度变得较高，从而使得文档和查询的向量变得很稀疏，即出现大量的0。</p>
-<p>这样，文档与查询的相似度可表示为两者向量的<strong>点积</strong>（Dot Product）：</p>
-<p>$$Sim(q, d) &#x3D; q.d &#x3D; \sum_{i&#x3D;1}^{N}x_i y_i$$</p>
-<p><img src="/images/text-retrieval/bit-vector.png" alt="Vector space model"></p>
-<p>在这个例子中，$V$表示文档集中所有term构成的”词汇表“。然后我们列出查询与文档的位向量，然后计算其点积。从结果来看，d2的相似度高于d1。看起来还蛮合理的，这就是我们”最简单的VSM“，它可以总结为：BOW + Bit Vector + Dot Product，编程实现足够简单，只要一个类似于jieba之类的分词工具即可。</p>
+<p>这样，文档与查询的相似度可表示为两者向量的<strong>点积</strong>（Dot
+Product）：</p>
+<p><span class="math display">$$Sim(q, d) = q.d = \sum_{i=1}^{N}x_i
+y_i$$</span></p>
+<figure>
+<img src="/images/text-retrieval/bit-vector.png"
+alt="Vector space model" />
+<figcaption aria-hidden="true">Vector space model</figcaption>
+</figure>
+<p>在这个例子中，<span
+class="math inline"><em>V</em></span>表示文档集中所有term构成的”词汇表“。然后我们列出查询与文档的位向量，然后计算其点积。从结果来看，d2的相似度高于d1。看起来还蛮合理的，这就是我们”最简单的VSM“，它可以总结为：BOW
++ Bit Vector + Dot
+Product，编程实现足够简单，只要一个类似于jieba之类的分词工具即可。</p>
 <p>那么这里点积的结果作何解释呢？点积的计算结果恰好表示了，同时出现在文档和查询中的term的数量。虽然它有时比较合理，但也会产生一些问题。比如，它只计数共同出现的term数量，数量相同的就没法区分了，也就是说对所有term一视同仁，这与我们的直觉不符，因为某些term应该是更重要的，而像the、about这样的term则不能对相似度提供什么帮助。</p>
 <p>后续的课程会介绍不这么简单的VSM：）</p>
 

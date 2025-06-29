@@ -64,6 +64,12 @@
 
 
 
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -268,8 +274,9 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>弗洛姆是德裔美籍心理学家，第一个研究“爱”和“爱的能力”的学者，除了《爱的艺术》，还有另一著作《逃避自由》。</p>
-<hr>
-<h1 id="一、爱是一门艺术吗？"><a href="#一、爱是一门艺术吗？" class="headerlink" title="一、爱是一门艺术吗？"></a>一、爱是一门艺术吗？</h1><p>爱是艺术，如绘画、木工，这意味着它需要去学习，努力学习。但也有人认为，爱不是艺术，而是一种偶然产生的令人心荡神怡的感受。如果是后者，那么爱不可学习，也不需要学习。</p>
+<hr />
+<h1 id="一爱是一门艺术吗">一、爱是一门艺术吗？</h1>
+<p>爱是艺术，如绘画、木工，这意味着它需要去学习，努力学习。但也有人认为，爱不是艺术，而是一种偶然产生的令人心荡神怡的感受。如果是后者，那么爱不可学习，也不需要学习。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/06/05/%E7%88%B1%E7%9A%84%E8%89%BA%E6%9C%AF%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/#more" rel="contents">
@@ -366,21 +373,27 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>本文主要整理自《Fluent Python》的第16章。</p>
-<p>David Beazley（又）尝言，协程是py文档中最语焉不详、模糊的，看起来是一个毫无用处的特性。当然，事实并非如此，他写过关于协程与并发的系列文章：<a href="http://www.dabeaz.com/coroutines/">A Curious Course on Coroutines and Concurrency</a>。</p>
+<p>David
+Beazley（又）尝言，协程是py文档中最语焉不详、模糊的，看起来是一个毫无用处的特性。当然，事实并非如此，他写过关于协程与并发的系列文章：<a
+href="http://www.dabeaz.com/coroutines/">A Curious Course on Coroutines
+and Concurrency</a>。</p>
 <p><code>yield</code>一次在英语中有两个主要含义：产生和让路。在生成器中，这两个含义都适用：每次产生一个值，生成器都会挂起，“让路”给调用者。</p>
 <p>协程的语法看起来像是生成器，但协程一般出现在表达式的右边（如<code>datum = yield</code>），它也不一定需要产生一个值。调用者使用<code>.send()</code>时，协程接受到一个值。</p>
-<p>甚至可以完全没有数据从<code>yield</code>进出，所以不妨把<code>yield</code>看作<strong>一个流程控制装置</strong>，可用于实现协作式多任务处理：每个协程交出控制给central scheduler，随后其它协程可被激活。</p>
-<h1 id="协程的基本操作"><a href="#协程的基本操作" class="headerlink" title="协程的基本操作"></a>协程的基本操作</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> inspect <span class="keyword">import</span> getgeneratorstate</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">simple_coro</span>(<span class="params">a</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Started: a =&#x27;</span>, a)</span><br><span class="line">    b = <span class="keyword">yield</span> a</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Received: b =&#x27;</span>, b)</span><br><span class="line">    c = <span class="keyword">yield</span> a + b</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Received: c =&#x27;</span>, c)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">coro = simple_coro(<span class="number">14</span>)</span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(coro))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(coro))</span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(coro))</span><br><span class="line"><span class="built_in">print</span>(coro.send(<span class="number">28</span>))</span><br><span class="line"><span class="built_in">print</span>(coro.send(<span class="number">99</span>))</span><br></pre></td></tr></table></figure>
-
+<p>甚至可以完全没有数据从<code>yield</code>进出，所以不妨把<code>yield</code>看作<strong>一个流程控制装置</strong>，可用于实现协作式多任务处理：每个协程交出控制给central
+scheduler，随后其它协程可被激活。</p>
+<h1 id="协程的基本操作">协程的基本操作</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> inspect <span class="keyword">import</span> getgeneratorstate</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">simple_coro</span>(<span class="params">a</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Started: a =&#x27;</span>, a)</span><br><span class="line">    b = <span class="keyword">yield</span> a</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Received: b =&#x27;</span>, b)</span><br><span class="line">    c = <span class="keyword">yield</span> a + b</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;-&gt; Received: c =&#x27;</span>, c)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">coro = simple_coro(<span class="number">14</span>)</span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(coro))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(coro))</span><br><span class="line"><span class="built_in">print</span>(getgeneratorstate(coro))</span><br><span class="line"><span class="built_in">print</span>(coro.send(<span class="number">28</span>))</span><br><span class="line"><span class="built_in">print</span>(coro.send(<span class="number">99</span>))</span><br></pre></td></tr></table></figure>
 <p>从调用者角度看，它获取数据的方式与生成器类似，但是它同时多了两次<code>send</code>操作，<code>send</code>比<code>next</code>多了一个方向的数据流转，但对于<code>yield</code>，它依然会挂起当前例程（此处为协程），将执行交给调用者。</p>
-<h1 id="协程示例：持续计算均值"><a href="#协程示例：持续计算均值" class="headerlink" title="协程示例：持续计算均值"></a>协程示例：持续计算均值</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">averager</span>():</span><br><span class="line">    total, count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        term = <span class="keyword">yield</span> average</span><br><span class="line">        total += term</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">co = averager()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(co))</span><br><span class="line"><span class="built_in">print</span>(co.send(<span class="number">10</span>))</span><br><span class="line"><span class="built_in">print</span>(co.send(<span class="number">30</span>))</span><br><span class="line"><span class="built_in">print</span>(co.send(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
-
+<h1 id="协程示例持续计算均值">协程示例：持续计算均值</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">averager</span>():</span><br><span class="line">    total, count = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    average = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        term = <span class="keyword">yield</span> average</span><br><span class="line">        total += term</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        average = total / count</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">co = averager()</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">next</span>(co))</span><br><span class="line"><span class="built_in">print</span>(co.send(<span class="number">10</span>))</span><br><span class="line"><span class="built_in">print</span>(co.send(<span class="number">30</span>))</span><br><span class="line"><span class="built_in">print</span>(co.send(<span class="number">5</span>))</span><br></pre></td></tr></table></figure>
 <p>实现这一功能不是非得用协程，也可以用类或闭包，但在协程里，total和count都是简单的局部变量。</p>
 <p>在上面两个例子中可以看到，使用协程都需要最开始调用一次<code>next</code>，这次操作一般称为“启动”（prime）。每个协程都需要启动，而协程也是函数，所以装饰器就派上用场了。</p>
-<h1 id="启动协程的装饰器"><a href="#启动协程的装饰器" class="headerlink" title="启动协程的装饰器"></a>启动协程的装饰器</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">coroutine</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">primer</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        gen = func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">next</span>(gen)</span><br><span class="line">        <span class="keyword">return</span> gen</span><br><span class="line">    <span class="keyword">return</span> primer</span><br></pre></td></tr></table></figure>
-
-<h1 id="协程的终止与异常处理"><a href="#协程的终止与异常处理" class="headerlink" title="协程的终止与异常处理"></a>协程的终止与异常处理</h1><p><code>.throw()</code>与<code>.close()</code>。</p>
-<h1 id="协程的返回值"><a href="#协程的返回值" class="headerlink" title="协程的返回值"></a>协程的返回值</h1><p>协程是生成器函数，因此可以有返回值，此时协程必须是正常终止的，比如<code>while</code>break之后。</p>
+<h1 id="启动协程的装饰器">启动协程的装饰器</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">coroutine</span>(<span class="params">func</span>):</span><br><span class="line"><span class="meta">    @wraps(<span class="params">func</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">primer</span>(<span class="params">*args, **kwargs</span>):</span><br><span class="line">        gen = func(*args, **kwargs)</span><br><span class="line">        <span class="built_in">next</span>(gen)</span><br><span class="line">        <span class="keyword">return</span> gen</span><br><span class="line">    <span class="keyword">return</span> primer</span><br></pre></td></tr></table></figure>
+<h1 id="协程的终止与异常处理">协程的终止与异常处理</h1>
+<p><code>.throw()</code>与<code>.close()</code>。</p>
+<h1 id="协程的返回值">协程的返回值</h1>
+<p>协程是生成器函数，因此可以有返回值，此时协程必须是正常终止的，比如<code>while</code>break之后。</p>
 
       
     </div>
@@ -470,8 +483,9 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>本文主要整理自《Fluent Python》的第14章。</p>
-<p>**迭代（iteration）**在数据处理中不可或缺的。当数据在内存中放不下时，我们需要偷一下懒（lazily），每次按需取一个数据项，这就是所谓的迭代器（iterator）模式。</p>
-<p>Python 2.2（2001）添加了<code>yield</code>关键字，用以构造<strong>生成器（generator）</strong>，生成器可达成迭代器的效果。而且，在Python社区中，生成器与迭代器同义。</p>
+<p><strong>迭代（iteration）</strong>在数据处理中不可或缺的。当数据在内存中放不下时，我们需要偷一下懒（lazily），每次按需取一个数据项，这就是所谓的迭代器（iterator）模式。</p>
+<p>Python
+2.2（2001）添加了<code>yield</code>关键字，用以构造<strong>生成器（generator）</strong>，生成器可达成迭代器的效果。而且，在Python社区中，生成器与迭代器同义。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/05/10/python-iterables/#more" rel="contents">
@@ -567,11 +581,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>原书链接：<a href="https://book.douban.com/subject/1425950/">线性代数及其应用</a></p>
-<h1 id="0-1-前言"><a href="#0-1-前言" class="headerlink" title="0.1 前言"></a>0.1 前言</h1><p>完成微积分的学生学习起来更易接受。</p>
-<h2 id="本书特点"><a href="#本书特点" class="headerlink" title="本书特点"></a>本书特点</h2><ul>
+          <p>原书链接：<a
+href="https://book.douban.com/subject/1425950/">线性代数及其应用</a></p>
+<h1 id="前言">0.1 前言</h1>
+<p>完成微积分的学生学习起来更易接受。</p>
+<h2 id="本书特点">本书特点</h2>
+<ul>
 <li>提前介绍主要概念</li>
-<li>矩阵乘法的现代观点：定义和证明中使用矩阵的“列”，而非“元素”，核心课题是<strong>将矩阵与向量之乘积$Ax$视为关于$A$的列的一个线性组合</strong>。这种现代方法简化了很多论述，并将向量空间和线性系统的研究联系在了一起。</li>
+<li>矩阵乘法的现代观点：定义和证明中使用矩阵的“列”，而非“元素”，核心课题是<strong>将矩阵与向量之乘积<span
+class="math inline"><em>A</em><em>x</em></span>视为关于<span
+class="math inline"><em>A</em></span>的列的一个线性组合</strong>。这种现代方法简化了很多论述，并将向量空间和线性系统的研究联系在了一起。</li>
 <li>线性变换：贯穿整本书，增强了本书的几何趣味。</li>
 <li>特征值和动力系统：特征值来源并应用于离散动力系统和连续动力系统。</li>
 <li>正交性和最小二乘法：与普通入门教材相比，本书对这些主题的讨论更为全面。</li>
@@ -671,8 +690,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><a href="https://book.douban.com/subject/4825571/">数学分析八讲 原书链接</a>，作者辛钦。</p>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>非数学专业的工程师、经济学家等，一般会先行学习较为简单的微积分，到了某个时候发现需要更为牢固的数学基础。如果找一本《微积分学教程》来看，事实证明效果不佳。学习者要么无法安排足够的时间去学习，要么还没有足够好的数学基础，无法从研究中区分出哪些是原则的内容，哪些是较为微末的细节。</p>
+          <p><a href="https://book.douban.com/subject/4825571/">数学分析八讲
+原书链接</a>，作者辛钦。</p>
+<h1 id="前言">前言</h1>
+<p>非数学专业的工程师、经济学家等，一般会先行学习较为简单的微积分，到了某个时候发现需要更为牢固的数学基础。如果找一本《微积分学教程》来看，事实证明效果不佳。学习者要么无法安排足够的时间去学习，要么还没有足够好的数学基础，无法从研究中区分出哪些是原则的内容，哪些是较为微末的细节。</p>
 <p>要满足这类学生的需求，所需其实有限。我的秘诀是：从一开始就拒绝充分详细地讲授哪怕只是阐述本课程牟一章的想法，而只限于讲授那些<strong>具有原则性的内容</strong>。我讲的更多地是关于目的和趋势、问题和方法、基本的分析概念之间的以及它们与应用之间的<strong>关系</strong>，而不是个别的定理与证明。但在有着主导作用和原则意义的概念或方法上，我则不吝时间，力求用各种手段，通过各种表述和直观形象等，尽可能明白而有效地把这些基本内容教给我的学生。有了这个基础，<strong>他们每一个人在需要更深入地研究数学分析的某一章节时，就能够独立地找到他所需的材料，然后进行研究，也就是说，可以自立地区分主要和次要、本质和非本质</strong>。</p>
           <!--noindex-->
             <div class="post-button">
@@ -766,7 +787,8 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>初听，“普通话”令人震惊。</p>
-<h1 id="1、导语：跟你的焦虑和解"><a href="#1、导语：跟你的焦虑和解" class="headerlink" title="1、导语：跟你的焦虑和解"></a>1、导语：跟你的焦虑和解</h1><p>焦虑，带着我们过去生活的匮乏，也带着对未来的担心和希望。焦虑的本质就是一种失控感。担心某些东西不在掌控范围内。担心上帝或命运不会善待我们，以至于忘了我们本能够掌控一些东西。</p>
+<h1 id="导语跟你的焦虑和解">1、导语：跟你的焦虑和解</h1>
+<p>焦虑，带着我们过去生活的匮乏，也带着对未来的担心和希望。焦虑的本质就是一种失控感。担心某些东西不在掌控范围内。担心上帝或命运不会善待我们，以至于忘了我们本能够掌控一些东西。</p>
 <p>即使在二战集中营这样的环境，我们依然能作出选择。那么理论上，我们的生活中也可以做出不同的选择。</p>
 <p>焦虑源于失控感，而失控感源于我们总是试图去控制那些我们控制不了的东西，却不愿对可控者承担起自己的责任。</p>
 <p>控制力幻象：我们可以控制很多东西。认清现实后，又不甘心只能控制这么一点，看不到这一点的丰富。</p>
@@ -867,20 +889,31 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>来自美剧<a href="https://movie.douban.com/subject/26895435/">非典型孤独（Atypical）</a></p>
-<hr>
-<h1 id="Nobody’s-normal"><a href="#Nobody’s-normal" class="headerlink" title="Nobody’s normal"></a>Nobody’s normal</h1><p>在剧中山姆被诊断为患有自闭症，还提到他是一个高功能自闭症，以及自闭症不能完全治愈。如果你看过《生活大爆炸》，也许会想到谢耳朵，其饰演者吉姆·帕森斯认为谢耳朵的表现很接近于阿斯伯格综合征。同时IMDB的剧集简介中提到了自闭症光谱。我想，有必要先了解一下这几个术语，下面相关术语的信息摘自维基。</p>
-<h2 id="自闭症"><a href="#自闭症" class="headerlink" title="自闭症"></a>自闭症</h2><p>自闭症（Autism）为一种脑部因发育障碍所导致的疾病，其特征是情绪表达困难、社交互动障碍、语言和非语言的沟通有问题，以及日常上常见的，表现出限制的行为与重复的动作，明显的特定兴趣。不能进行正常的语言表达和社交活动，常做一些刻板和守旧性的动作和行为。自闭症的病因仍然未知，很多研究人员怀疑自闭症是由基因控制，再由环境因素触发。</p>
+          <p>来自美剧<a
+href="https://movie.douban.com/subject/26895435/">非典型孤独（Atypical）</a></p>
+<hr />
+<h1 id="nobodys-normal">Nobody’s normal</h1>
+<p>在剧中山姆被诊断为患有自闭症，还提到他是一个高功能自闭症，以及自闭症不能完全治愈。如果你看过《生活大爆炸》，也许会想到谢耳朵，其饰演者吉姆·帕森斯认为谢耳朵的表现很接近于阿斯伯格综合征。同时IMDB的剧集简介中提到了自闭症光谱。我想，有必要先了解一下这几个术语，下面相关术语的信息摘自维基。</p>
+<h2 id="自闭症">自闭症</h2>
+<p>自闭症（Autism）为一种脑部因发育障碍所导致的疾病，其特征是情绪表达困难、社交互动障碍、语言和非语言的沟通有问题，以及日常上常见的，表现出限制的行为与重复的动作，明显的特定兴趣。不能进行正常的语言表达和社交活动，常做一些刻板和守旧性的动作和行为。自闭症的病因仍然未知，很多研究人员怀疑自闭症是由基因控制，再由环境因素触发。</p>
 <p>部分自闭症患者可经过诊疗、实习及特殊教育，可改善他们的社交能力，而可参与主流教育及社交活动。<strong>但以现时医疗科技水平来说，并不可能完整根治自闭症，仅是提升自闭儿的功能</strong>。</p>
-<h2 id="高功能自闭症"><a href="#高功能自闭症" class="headerlink" title="高功能自闭症"></a>高功能自闭症</h2><p>高功能自闭症（High-functioning autism，简称HFA），指智商中等或更高的自闭症患者，且多数具有语言能力，学习能力较佳、自闭倾向较不明显；但语言理解与表达力、人际互动与聊天的能力仍有困难的自闭症患者。</p>
-<h2 id="阿斯伯格综合征"><a href="#阿斯伯格综合征" class="headerlink" title="阿斯伯格综合征"></a>阿斯伯格综合征</h2><p>阿斯伯格综合征（Asperger syndrome，简称AS），属一种发展障碍，其重要特征是社交与非言语交际的困难，同时伴随着兴趣狭隘及重复特定行为，但相较于其他泛自闭症障碍，仍相对保有语言及认知发展。亚斯伯格症患者的智力正常，其中有许多人智商偏高具有天赋，只有极少数的人属于高智商，经常出现肢体笨拙和语言表达方式异常等状况，偶尔会发出怪声音，但并不作为诊断依据。其症状一般在两岁前出现，并伴随患者终生，目前没有有效治疗方法，预后差。</p>
-<h2 id="自闭症光谱"><a href="#自闭症光谱" class="headerlink" title="自闭症光谱"></a>自闭症光谱</h2><p>自闭症光谱（Autism spectrum）是一种心理状况的谱系障碍，亦称自闭症谱系障碍或泛自闭症障碍，描述了一个被DSM-5（精神障碍诊断与统计手册（第5版））归类为神经发展综合征的症状群的范围。 被诊断为自闭症（autism spectrum disorder (ASD)）的人必须存在下列两个症状。</p>
+<h2 id="高功能自闭症">高功能自闭症</h2>
+<p>高功能自闭症（High-functioning
+autism，简称HFA），指智商中等或更高的自闭症患者，且多数具有语言能力，学习能力较佳、自闭倾向较不明显；但语言理解与表达力、人际互动与聊天的能力仍有困难的自闭症患者。</p>
+<h2 id="阿斯伯格综合征">阿斯伯格综合征</h2>
+<p>阿斯伯格综合征（Asperger
+syndrome，简称AS），属一种发展障碍，其重要特征是社交与非言语交际的困难，同时伴随着兴趣狭隘及重复特定行为，但相较于其他泛自闭症障碍，仍相对保有语言及认知发展。亚斯伯格症患者的智力正常，其中有许多人智商偏高具有天赋，只有极少数的人属于高智商，经常出现肢体笨拙和语言表达方式异常等状况，偶尔会发出怪声音，但并不作为诊断依据。其症状一般在两岁前出现，并伴随患者终生，目前没有有效治疗方法，预后差。</p>
+<h2 id="自闭症光谱">自闭症光谱</h2>
+<p>自闭症光谱（Autism
+spectrum）是一种心理状况的谱系障碍，亦称自闭症谱系障碍或泛自闭症障碍，描述了一个被DSM-5（精神障碍诊断与统计手册（第5版））归类为神经发展综合征的症状群的范围。
+被诊断为自闭症（autism spectrum disorder
+(ASD)）的人必须存在下列两个症状。</p>
 <ul>
 <li>缺乏社交沟通与社交互动。（或社交及沟通上的广泛性异常）</li>
 <li>局限的、重复的行为、兴趣或活动。（或异常局限性的兴趣、高度重复性的行为）</li>
 </ul>
 <p>自闭症光谱有三个主要项目：自闭症、亚斯伯格综合征、待分类的广泛性发展障碍。自闭症在光谱核心位置，而阿斯伯格综合征在手册（第5版）中被移除。</p>
-<hr>
+<hr />
 
       
     </div>
@@ -969,8 +1002,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
-
+          <h1 id="安装">安装</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># On Mac</span><br><span class="line">$ curl https://sh.rustup.rs -sSf | sh</span><br></pre></td></tr></table></figure>
 <p>运行此命令，按其中的提示安装即可。</p>
           <!--noindex-->
             <div class="post-button">
@@ -1173,12 +1206,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>此文内容整理自Coursera课程<a href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text Retrieval and Search Engines）</a>。<a href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part 1笔记在此</a></p>
+          <p>此文内容整理自Coursera课程<a
+href="https://www.coursera.org/learn/text-retrieval/home/welcome">文本检索与搜索引擎（Text
+Retrieval and Search Engines）</a>。<a
+href="https://anderscui.github.io/2017/07/04/text-retrieval-and-search-engines-part-1/">Part
+1笔记在此</a></p>
 <p>这一部分将更详细地了解VSM，考虑它的不同优化思路，以及借助于倒排索引实现信息检索系统（即搜索引擎）。</p>
 <p>主要概念：</p>
 <ul>
 <li>关键词词频（Term Frequency，TF）</li>
-<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF， IDF）</li>
+<li>文档频率（Document Frequency，DF）与逆向文档频率（Inverse DF，
+IDF）</li>
 <li>TF transformation</li>
 <li>Pivoted length normalization</li>
 <li>BM25</li>

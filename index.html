@@ -64,6 +64,12 @@
 
 
 
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
 
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
@@ -245,7 +251,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-06-29 15:20:23" itemprop="dateModified" datetime="2025-06-29T15:20:23+08:00">2025-06-29</time>
+      <time title="Modified: 2025-06-29 15:37:10" itemprop="dateModified" datetime="2025-06-29T15:37:10+08:00">2025-06-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -272,14 +278,28 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p>按：本文整理自<a href="https://cs3110.github.io/textbook/cover.html">《OCaml Programming: Correct + Efficient + Beautiful》</a>一书的第五章 Modular Programming。</p>
-<p>初学 OCaml 时，建议先看完《OCaml from the Very Beginning》，然后看《Learn Programming with OCaml》的前三（或五）章，然后再来看《OCaml Programming》第五章。再往后，就按需去看吧。</p>
+<p>按：本文整理自<a
+href="https://cs3110.github.io/textbook/cover.html">《OCaml Programming:
+Correct + Efficient + Beautiful》</a>一书的第五章 Modular
+Programming。</p>
+<p>初学 OCaml 时，建议先看完《OCaml from the Very
+Beginning》，然后看《Learn Programming with
+OCaml》的前三（或五）章，然后再来看《OCaml
+Programming》第五章。再往后，就按需去看吧。</p>
 </blockquote>
 <p>在程序规模很小的时候，如数十行，它完全可以由一个人完成，代码放在单个文件中。但在真实世界的开发中，程序规模要大好几个数量级，多的能到数千万行。此时，它必须有多个程序员完成，并且代码放在不同文件中。</p>
-<p>其中一个解决方案是<strong>模块化编程（modular programming）</strong>：程序由多个分别开发的模块构成。划分为模块后，每个程序员都仅关注于手头的任务，无须理解整个程序。</p>
-<p>同时，我们需要确保每个模块的准确性，此时使用的是 local reasoning：不需要太多关注整体的程序，而是关注它需要满足的 <strong>contract</strong>（此为<strong>接口</strong>）。如果每个人都能正确完成，那么各个分别开发的程序组合起来之后应当可以正确工作。这是模块化编程的核心思想。</p>
-<p>因此，构建大型程序必须要使用 <strong>abstraction</strong>，即上面所提及的 contract、接口。不同组件之间通过 abstraction 连接，而非<strong>实现的细节</strong>。</p>
-<p>模块通过给出它们应当完成的功能（specification，规格 or 规范）进行抽象。好的模块规格应当是清晰易懂的，提供恰到好处的信息，使得该模块的 client 能正确使用之。</p>
+<p>其中一个解决方案是<strong>模块化编程（modular
+programming）</strong>：程序由多个分别开发的模块构成。划分为模块后，每个程序员都仅关注于手头的任务，无须理解整个程序。</p>
+<p>同时，我们需要确保每个模块的准确性，此时使用的是 local
+reasoning：不需要太多关注整体的程序，而是关注它需要满足的
+<strong>contract</strong>（此为<strong>接口</strong>）。如果每个人都能正确完成，那么各个分别开发的程序组合起来之后应当可以正确工作。这是模块化编程的核心思想。</p>
+<p>因此，构建大型程序必须要使用
+<strong>abstraction</strong>，即上面所提及的
+contract、接口。不同组件之间通过 abstraction
+连接，而非<strong>实现的细节</strong>。</p>
+<p>模块通过给出它们应当完成的功能（specification，规格 or
+规范）进行抽象。好的模块规格应当是清晰易懂的，提供恰到好处的信息，使得该模块的
+client 能正确使用之。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2025/06/26/OCaml-Modular-Programming/#more" rel="contents">
@@ -371,22 +391,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>本文主要整理了关于书评写作的几篇文章的内容，这些文章是：</p>
+          <h1 id="概述">概述</h1>
+<p>本文主要整理了关于书评写作的几篇文章的内容，这些文章是：</p>
 <ul>
-<li><a href="https://book.douban.com/review/8374678/">如何写出高质量的书评</a></li>
-<li><a href="https://www.zhihu.com/question/20750866/answer/32340974">如何写出好的书评</a></li>
-<li><a href="https://www.jianshu.com/p/a973416be1a7">给刚开始写书评的人的一些写书评的套路</a></li>
-<li><a href="https://www.essaymon.com/how-to-write-a-book-review-guide.html">如何写书评</a></li>
+<li><a
+href="https://book.douban.com/review/8374678/">如何写出高质量的书评</a></li>
+<li><a
+href="https://www.zhihu.com/question/20750866/answer/32340974">如何写出好的书评</a></li>
+<li><a
+href="https://www.jianshu.com/p/a973416be1a7">给刚开始写书评的人的一些写书评的套路</a></li>
+<li><a
+href="https://www.essaymon.com/how-to-write-a-book-review-guide.html">如何写书评</a></li>
 </ul>
-<p>而上述文章又来自于<a href="https://book.douban.com/subject/26952635/">完全写作指南</a>。</p>
-<h1 id="通用写作-checklist"><a href="#通用写作-checklist" class="headerlink" title="通用写作 checklist"></a>通用写作 checklist</h1><p>整理自夏丏尊的《文章作法》，所谓 6W：</p>
+<p>而上述文章又来自于<a
+href="https://book.douban.com/subject/26952635/">完全写作指南</a>。</p>
+<h1 id="通用写作-checklist">通用写作 checklist</h1>
+<p>整理自夏丏尊的《文章作法》，所谓 6W：</p>
 <ul>
 <li>Why：写作目的是？（叙述、趣味、评论等）</li>
 <li>What：要写什么？（旅行经历、一个命题等）</li>
 <li>Who：写给谁看？（以理解作者与读者的关系，且行文应因人而异）</li>
 <li>Where：写作的情境、场合（在乡村、程序员、学术圈等）</li>
 <li>When：文章主题所属的时代、季节等</li>
-<li>How：如何写？（体裁、简述&#x2F;详述、直白&#x2F;委婉、布局等）</li>
+<li>How：如何写？（体裁、简述/详述、直白/委婉、布局等）</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -479,7 +506,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>这本书从文学性上来讲，只能说勉强还行，但是其中金智英的经历实在太真实了，可以说让人触目惊心，将这些遭遇放在中国也毫无违和感。女性生活的整个经历，从成长、教育到职场、婚姻和育儿，充满了大量的男性难以想象的问题：性别刻板印象、性别歧视、性别规训、机会平等等等。其中的性别规训尤为突出，正如福柯所说的，性别规训是一种弥漫于整个社会的、像毛细血管似的“微观权力“。它的触手渗透到社会的方方面面，对人们的日常生活的每个细节都不放过。金智英的多数遭遇，也正符合第二波女权主义提出的”the personal is political“，因为身边的人”好像也都是这么做的“。</p>
+          <p>这本书从文学性上来讲，只能说勉强还行，但是其中金智英的经历实在太真实了，可以说让人触目惊心，将这些遭遇放在中国也毫无违和感。女性生活的整个经历，从成长、教育到职场、婚姻和育儿，充满了大量的男性难以想象的问题：性别刻板印象、性别歧视、性别规训、机会平等等等。其中的性别规训尤为突出，正如福柯所说的，性别规训是一种弥漫于整个社会的、像毛细血管似的“微观权力“。它的触手渗透到社会的方方面面，对人们的日常生活的每个细节都不放过。金智英的多数遭遇，也正符合第二波女权主义提出的”the
+personal is political“，因为身边的人”好像也都是这么做的“。</p>
 <p>与其说金智英是得了育儿抑郁，不如说是她在压抑之下无法正常发声，只能通过变换的形象代替自己发声吧。</p>
 
       
@@ -565,10 +593,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>一种朴素的对“公平性”的辩护，认为男性、女性不应该被区别对待，这一点与性别无关。</p>
+          <h1 id="缘起">缘起</h1>
+<p>一种朴素的对“公平性”的辩护，认为男性、女性不应该被区别对待，这一点与性别无关。</p>
 <p>feminism：女权主义与女性主义，“权”颇为敏感，有争权夺利之感，是来自“既得利益者”的视角。权主要表示权利，而非权力。</p>
 <p>污名化：为何不愿自称为女权主义者。</p>
-<h1 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h1><ul>
+<h1 id="关键词">关键词</h1>
+<ul>
 <li>同与异</li>
 <li>公私两个领域</li>
 <li>家庭劳动——非价值化</li>
@@ -668,11 +698,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>总的来说，比较“硬”的、有诸多事实和主题，或是讲亲身经历的文章和报道至今耐读，而当时用作批评和鼓吹，或基于一时的政治风潮而写的“观点型”文章，则光辉不再。</p>
+          <h1 id="前言">前言</h1>
+<p>总的来说，比较“硬”的、有诸多事实和主题，或是讲亲身经历的文章和报道至今耐读，而当时用作批评和鼓吹，或基于一时的政治风潮而写的“观点型”文章，则光辉不再。</p>
 <p>这两篇文章未能收录于此供读者评判，但它们佐证了筛选文集的难度：我对其中一篇所描述的事件颇有共鸣，对另一篇则没有，但这两篇文章都失之淡然。</p>
 <p>这一点，连同我为《太平洋事务》写的第一篇稿子所得的40美元稿费（我用来买了一台留声机和《蝴蝶夫人》选段《晴朗的一天》的唱片），让我觉得，我的职业生涯已经开始。</p>
 <p>我一直认为，让一个人背负深刻烙印的是他步入成熟的那些年，而不是他出生的那一年。所以，我认为我自己是19世纪30年代的孩子。我有信仰，我猜二十几岁的人都会有（在我那代人中确实是这样）。我信仰正义和理性最终会获得胜利。</p>
-<p>对于这些选文凑在一起是否提供了某种历史哲学的问题，我回答起来一直都甚为小心，因为我害怕各种哲学。它们隐藏着历史学家试图操控事实以充实自己理论体系的危险，导致历史强于意识形态，弱于“事实是如何发生的”。我不敢保证，一个长期写作历史的人不会遵行某种原理和准则。我想，后面的这些文章展现的是历史的一种偶然和循环，一种人类行为，就像平静的河水在无穷无尽的各种田野中流过，时代和人的好与坏交织共存，横流和逆流交替来回，任何一种简单的归纳都无法涵盖。至于应该怎样，我相信，事实应该早于论点；相信编年叙述（chronological narrative）是骨架和血液，它让历史更接近于“事实是如何发生的”，更易于恰当地理解原因和作用；我还相信，历史应该以当时的所知所识来叙述，而不是带着事后诸葛亮的视角，否则结论不足为信。虽然我没有做原创性声明，但这些原则都是我自己在多年的技艺习练和职业实践中发现的。</p>
+<p>对于这些选文凑在一起是否提供了某种历史哲学的问题，我回答起来一直都甚为小心，因为我害怕各种哲学。它们隐藏着历史学家试图操控事实以充实自己理论体系的危险，导致历史强于意识形态，弱于“事实是如何发生的”。我不敢保证，一个长期写作历史的人不会遵行某种原理和准则。我想，后面的这些文章展现的是历史的一种偶然和循环，一种人类行为，就像平静的河水在无穷无尽的各种田野中流过，时代和人的好与坏交织共存，横流和逆流交替来回，任何一种简单的归纳都无法涵盖。至于应该怎样，我相信，事实应该早于论点；相信编年叙述（chronological
+narrative）是骨架和血液，它让历史更接近于“事实是如何发生的”，更易于恰当地理解原因和作用；我还相信，历史应该以当时的所知所识来叙述，而不是带着事后诸葛亮的视角，否则结论不足为信。虽然我没有做原创性声明，但这些原则都是我自己在多年的技艺习练和职业实践中发现的。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/05/01/%E5%8E%86%E5%8F%B2%E7%9A%84%E6%8A%80%E8%89%BA/#more" rel="contents">
@@ -768,20 +800,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>refs:</p>
-<ul>
-<li>iText in Action</li>
-</ul>
-<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Different parts of PDF file:</p>
-<ul>
-<li>header</li>
-<li>body</li>
-<li>cross-reference table</li>
-<li>trailer</li>
-</ul>
+          <p>refs: * iText in Action</p>
+<h1 id="overview">Overview</h1>
+<p>Different parts of PDF file: * header * body * cross-reference table
+* trailer</p>
 <p>Also, the Carousel Object System.</p>
-<h1 id="PDFs-inside-out"><a href="#PDFs-inside-out" class="headerlink" title="PDFs inside-out"></a>PDFs inside-out</h1><p>from a de facto to an ISO standard.</p>
-<h2 id="why-and-how"><a href="#why-and-how" class="headerlink" title="why and how?"></a>why and how?</h2><p>1985年，Adobe 引入了 PostScript Page Description Language。同年，Adobe 也开发了 Adobe Illustrator。这两款产品引发了桌面 publishing 的革命。但 Adobe 的创建者们感觉还缺少了点什么。</p>
+<h1 id="pdfs-inside-out">PDFs inside-out</h1>
+<p>from a de facto to an ISO standard.</p>
+<h2 id="why-and-how">why and how?</h2>
+<p>1985年，Adobe 引入了 PostScript Page Description
+Language。同年，Adobe 也开发了 Adobe Illustrator。这两款产品引发了桌面
+publishing 的革命。但 Adobe 的创建者们感觉还缺少了点什么。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/04/30/pdf/#more" rel="contents">
@@ -877,18 +906,27 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Concurrency-in-Go"><a href="#Concurrency-in-Go" class="headerlink" title="Concurrency in Go"></a>Concurrency in Go</h1><p>参考：《Go in Action》第六章</p>
+          <h1 id="concurrency-in-go">Concurrency in Go</h1>
+<p>参考：《Go in Action》第六章</p>
 <ul>
 <li>使用 <code>goroutine</code> 运行代码</li>
 <li>检测和修复 race condition</li>
 <li>在 channel 之间共享数据</li>
 </ul>
-<p>Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。</p>
-<p>并发同步源于 CSP 范式，CSP 是一个消息传输模型。它通过在 goroutine 之间的数据通信来同步数据，而非 lock。在 Go 中，消息传输的核心数据类型是 <code>channel</code>。</p>
-<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>OS 调度线程，使之执行于物理处理器上，Go 运行时调度 goroutines，使之执行于逻辑处理器上。每个逻辑处理器则独立地绑定在单个 OS 线程上。</p>
-<h2 id="Goroutines"><a href="#Goroutines" class="headerlink" title="Goroutines"></a>Goroutines</h2><h2 id="Race-Condition"><a href="#Race-Condition" class="headerlink" title="Race Condition"></a>Race Condition</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
+<p>Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS
+之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。</p>
+<p>并发同步源于 CSP 范式，CSP 是一个消息传输模型。它通过在 goroutine
+之间的数据通信来同步数据，而非 lock。在 Go 中，消息传输的核心数据类型是
+<code>channel</code>。</p>
+<h2 id="并发与并行">并发与并行</h2>
+<p>OS 调度线程，使之执行于物理处理器上，Go 运行时调度
+goroutines，使之执行于逻辑处理器上。每个逻辑处理器则独立地绑定在单个 OS
+线程上。</p>
+<h2 id="goroutines">Goroutines</h2>
+<h2 id="race-condition">Race Condition</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
+<h2 id="locking-shared-resources">Locking shared resources</h2>
 
-<h2 id="Locking-shared-resources"><a href="#Locking-shared-resources" class="headerlink" title="Locking shared resources"></a>Locking shared resources</h2>
       
     </div>
 
@@ -976,13 +1014,27 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Effective-Go"><a href="#Effective-Go" class="headerlink" title="Effective Go"></a>Effective Go</h1><p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
-<h1 id="Errors"><a href="#Errors" class="headerlink" title="Errors"></a>Errors</h1><p><code>error</code> 的信息可以通过前缀来增加信息，如 <code>image: unknown format</code>。</p>
-<h2 id="Panic"><a href="#Panic" class="headerlink" title="Panic"></a>Panic</h2><p>向调用者报告错误通常的方法是返回一个 <code>error</code>，但有时候一个错误发生，意味着严重的或很难预料到的错误（比如本应是无限循环，却退出了），此时退出程序也许更为合适，这是 <code>panic</code> 的用场。</p>
-<p>通常来说，应避免使用 <code>panic</code>，但凡程序还有救的话。一些特殊情况是，程序启动时无法连接到主数据库，那么继续执行下去也无意义，此时可以 <code>panic</code>。</p>
-<h2 id="Recover"><a href="#Recover" class="headerlink" title="Recover"></a>Recover</h2><p>在 <code>panic</code> 调用后（包括自定义 <code>panic</code>，以及 slice 索引越界等运行时错误），当前函数执行立即结束，开始释放 goroutines，执行 defferred 函数。如果释放过程到了程序的 top level 代码，程序就终止了。</p>
-<p>但还是可以通过 <code>recover</code> 来重新获得 goroutine 的掌控，继续执行程序。</p>
-<p><code>recover</code> 停止上述释放过程，返回 <code>panic</code> 的参数，<code>recover</code> 只能用于 deferred 函数。</p>
+          <h1 id="effective-go">Effective Go</h1>
+<p><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
+<h1 id="errors">Errors</h1>
+<p><code>error</code> 的信息可以通过前缀来增加信息，如
+<code>image: unknown format</code>。</p>
+<h2 id="panic">Panic</h2>
+<p>向调用者报告错误通常的方法是返回一个
+<code>error</code>，但有时候一个错误发生，意味着严重的或很难预料到的错误（比如本应是无限循环，却退出了），此时退出程序也许更为合适，这是
+<code>panic</code> 的用场。</p>
+<p>通常来说，应避免使用
+<code>panic</code>，但凡程序还有救的话。一些特殊情况是，程序启动时无法连接到主数据库，那么继续执行下去也无意义，此时可以
+<code>panic</code>。</p>
+<h2 id="recover">Recover</h2>
+<p>在 <code>panic</code> 调用后（包括自定义 <code>panic</code>，以及
+slice 索引越界等运行时错误），当前函数执行立即结束，开始释放
+goroutines，执行 defferred 函数。如果释放过程到了程序的 top level
+代码，程序就终止了。</p>
+<p>但还是可以通过 <code>recover</code> 来重新获得 goroutine
+的掌控，继续执行程序。</p>
+<p><code>recover</code> 停止上述释放过程，返回 <code>panic</code>
+的参数，<code>recover</code> 只能用于 deferred 函数。</p>
 
       
     </div>
@@ -1071,21 +1123,46 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Go-程序的代码组织"><a href="#Go-程序的代码组织" class="headerlink" title="Go 程序的代码组织"></a>Go 程序的代码组织</h1><p>参考：<br><a href="https://golang.org/doc/code">How to Write Go Code</a><br><a href="https://stackoverflow.com/questions/55442878/organize-local-code-in-packages-using-go-modules/57314494#57314494">Organize Local Code</a><br><a href="https://github.com/golang-standards/project-layout">Common Project Layout</a><br><a href="https://golang.org/doc/effective_go">Effective Go</a></p>
-<h1 id="代码组织（Code-organization）"><a href="#代码组织（Code-organization）" class="headerlink" title="代码组织（Code organization）"></a>代码组织（Code organization）</h1><p>Go 程序以 <code>package</code> 组织。<code>package</code> 是一组在同一目录下的源代码文件集合。</p>
-<p>一个代码库包含一个或多个 <code>module</code>。<code>module</code> 是一组相关的 Go <code>package</code>。Go 代码通常仅包含一个 <code>module</code>，名为 <code>go.mod</code> 的文件声明了 module 路径。</p>
-<p><code>go.mod</code> 在代码库根目录，其定义的 module 包含了该目录下所有的 package。</p>
-<p>module 的路径可作为 import 的前缀，同时也说明了 <code>go</code> 命令如何定位并下载之。引用路径是字符串值，package 的引用路径是 module 的子目录，比如：</p>
+          <h1 id="go-程序的代码组织">Go 程序的代码组织</h1>
+<p>参考： <a href="https://golang.org/doc/code">How to Write Go Code</a>
+<a
+href="https://stackoverflow.com/questions/55442878/organize-local-code-in-packages-using-go-modules/57314494#57314494">Organize
+Local Code</a> <a
+href="https://github.com/golang-standards/project-layout">Common Project
+Layout</a> <a href="https://golang.org/doc/effective_go">Effective
+Go</a></p>
+<h1 id="代码组织code-organization">代码组织（Code organization）</h1>
+<p>Go 程序以 <code>package</code> 组织。<code>package</code>
+是一组在同一目录下的源代码文件集合。</p>
+<p>一个代码库包含一个或多个 <code>module</code>。<code>module</code>
+是一组相关的 Go <code>package</code>。Go 代码通常仅包含一个
+<code>module</code>，名为 <code>go.mod</code> 的文件声明了 module
+路径。</p>
+<p><code>go.mod</code> 在代码库根目录，其定义的 module
+包含了该目录下所有的 package。</p>
+<p>module 的路径可作为 import 的前缀，同时也说明了 <code>go</code>
+命令如何定位并下载之。引用路径是字符串值，package 的引用路径是 module
+的子目录，比如：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">github.com/google/go-cmp/cmp</span><br></pre></td></tr></table></figure>
-
 <p>但标准库中的 package 不需要 module 路径前缀。</p>
-<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>每个源文件可以包含自己的 <code>init</code> 函数，以进行必要之设置。<code>init</code> 在所属 package 内的所有变量初始化之后（这又在所有引用的 package eval 之后）执行。</p>
-<p><code>init</code> 可用于在程序真正执行之前验证和修复程序状态，也可进行配置、初始化变量等等。</p>
-<p>所有的 <code>init</code> 函数会被编译器发现，并在 <code>main</code> 函数之前调用之。</p>
-<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>对于简单的程序，repository 下只有一个 <code>module</code>，通过 <code>go.mod</code> 选择一个名称，如果想少打点字，使用 local name，而非完整路径。</p>
-<p>在项目内添加不同的目录，其中含有的代码的部分即是 package，这样让代码组织更清晰。package 下可以继续嵌套。</p>
-<p>如果要引用本地其它 repository 的 package，使用 <code>replace</code>。如果要发布代码，使用完整路径。</p>
-<h1 id="Don’t-Panic"><a href="#Don’t-Panic" class="headerlink" title="Don’t Panic"></a>Don’t Panic</h1>
+<h2 id="init">init</h2>
+<p>每个源文件可以包含自己的 <code>init</code>
+函数，以进行必要之设置。<code>init</code> 在所属 package
+内的所有变量初始化之后（这又在所有引用的 package eval 之后）执行。</p>
+<p><code>init</code>
+可用于在程序真正执行之前验证和修复程序状态，也可进行配置、初始化变量等等。</p>
+<p>所有的 <code>init</code> 函数会被编译器发现，并在 <code>main</code>
+函数之前调用之。</p>
+<h2 id="理解">理解</h2>
+<p>对于简单的程序，repository 下只有一个 <code>module</code>，通过
+<code>go.mod</code> 选择一个名称，如果想少打点字，使用 local
+name，而非完整路径。</p>
+<p>在项目内添加不同的目录，其中含有的代码的部分即是
+package，这样让代码组织更清晰。package 下可以继续嵌套。</p>
+<p>如果要引用本地其它 repository 的 package，使用
+<code>replace</code>。如果要发布代码，使用完整路径。</p>
+<h1 id="dont-panic">Don’t Panic</h1>
+
       
     </div>
 
@@ -1173,11 +1250,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Go-语言中的-Modules-与-Packages"><a href="#Go-语言中的-Modules-与-Packages" class="headerlink" title="Go 语言中的 Modules 与 Packages"></a>Go 语言中的 Modules 与 Packages</h1><h1 id="创建一个简单-app"><a href="#创建一个简单-app" class="headerlink" title="创建一个简单 app"></a>创建一个简单 app</h1><p><a href="https://golang.org/doc/tutorial/getting-started">参考：golang-getting-started</a></p>
-<h2 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir hello</span><br><span class="line">cd hello</span><br></pre></td></tr></table></figure>
-
-<h2 id="依赖追踪（dependency-tracking）"><a href="#依赖追踪（dependency-tracking）" class="headerlink" title="依赖追踪（dependency tracking）"></a>依赖追踪（dependency tracking）</h2><p>如果代码需要引入其它模块（module），在 Go 中使用当前项目的 module 来管理。当前的 module 由 <code>go.mod</code> 文件定义。<code>go.mod</code> 包含在代码库中，与代码同在。</p>
-<p>要在当前项目中其中依赖追踪，需运行 <code>go mod init</code> 命令。</p>
+          <h1 id="go-语言中的-modules-与-packages">Go 语言中的 Modules 与
+Packages</h1>
+<h1 id="创建一个简单-app">创建一个简单 app</h1>
+<p><a
+href="https://golang.org/doc/tutorial/getting-started">参考：golang-getting-started</a></p>
+<h2 id="创建目录">创建目录</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir hello</span><br><span class="line">cd hello</span><br></pre></td></tr></table></figure>
+<h2 id="依赖追踪dependency-tracking">依赖追踪（dependency
+tracking）</h2>
+<p>如果代码需要引入其它模块（module），在 Go 中使用当前项目的 module
+来管理。当前的 module 由 <code>go.mod</code>
+文件定义。<code>go.mod</code> 包含在代码库中，与代码同在。</p>
+<p>要在当前项目中其中依赖追踪，需运行 <code>go mod init</code>
+命令。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init andersc.com/hello</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内容</span></span><br><span class="line">module andersc.com/hello</span><br><span class="line"><span class="keyword">go</span> <span class="number">1.15</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">

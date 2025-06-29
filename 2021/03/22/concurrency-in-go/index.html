@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Concurrency in Go参考：《Go in Action》第六章  使用 goroutine 运行代码 检测和修复 race condition 在 channel 之间共享数据  Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。 并发同步源于 C">
+    <meta name="description" content="Concurrency in Go 参考：《Go in Action》第六章  使用 goroutine 运行代码 检测和修复 race condition 在 channel 之间共享数据  Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。 并发同步源于">
 <meta property="og:type" content="article">
 <meta property="og:title" content="concurrency-in-go">
 <meta property="og:url" content="https://anderscui.github.io/2021/03/22/concurrency-in-go/index.html">
 <meta property="og:site_name" content="mathacker">
-<meta property="og:description" content="Concurrency in Go参考：《Go in Action》第六章  使用 goroutine 运行代码 检测和修复 race condition 在 channel 之间共享数据  Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。 并发同步源于 C">
+<meta property="og:description" content="Concurrency in Go 参考：《Go in Action》第六章  使用 goroutine 运行代码 检测和修复 race condition 在 channel 之间共享数据  Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。 并发同步源于">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-21T17:05:26.000Z">
 <meta property="article:modified_time" content="2025-06-22T12:52:11.610Z">
@@ -65,6 +65,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
 
 
 
@@ -158,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Concurrency-in-Go"><span class="nav-number">1.</span> <span class="nav-text">Concurrency in Go</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">并发与并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Goroutines"><span class="nav-number">1.2.</span> <span class="nav-text">Goroutines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Race-Condition"><span class="nav-number">1.3.</span> <span class="nav-text">Race Condition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Locking-shared-resources"><span class="nav-number">1.4.</span> <span class="nav-text">Locking shared resources</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#concurrency-in-go"><span class="nav-number">1.</span> <span class="nav-text">Concurrency in Go</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%8E%E5%B9%B6%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">并发与并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goroutines"><span class="nav-number">1.2.</span> <span class="nav-text">Goroutines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#race-condition"><span class="nav-number">1.3.</span> <span class="nav-text">Race Condition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#locking-shared-resources"><span class="nav-number">1.4.</span> <span class="nav-text">Locking shared resources</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -275,18 +281,27 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="Concurrency-in-Go"><a href="#Concurrency-in-Go" class="headerlink" title="Concurrency in Go"></a>Concurrency in Go</h1><p>参考：《Go in Action》第六章</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="concurrency-in-go">Concurrency in Go</h1>
+<p>参考：《Go in Action》第六章</p>
 <ul>
 <li>使用 <code>goroutine</code> 运行代码</li>
 <li>检测和修复 race condition</li>
 <li>在 channel 之间共享数据</li>
 </ul>
-<p>Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS 之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。</p>
-<p>并发同步源于 CSP 范式，CSP 是一个消息传输模型。它通过在 goroutine 之间的数据通信来同步数据，而非 lock。在 Go 中，消息传输的核心数据类型是 <code>channel</code>。</p>
-<h2 id="并发与并行"><a href="#并发与并行" class="headerlink" title="并发与并行"></a>并发与并行</h2><p>OS 调度线程，使之执行于物理处理器上，Go 运行时调度 goroutines，使之执行于逻辑处理器上。每个逻辑处理器则独立地绑定在单个 OS 线程上。</p>
-<h2 id="Goroutines"><a href="#Goroutines" class="headerlink" title="Goroutines"></a>Goroutines</h2><h2 id="Race-Condition"><a href="#Race-Condition" class="headerlink" title="Race Condition"></a>Race Condition</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
+<p>Go 运行时 scheduler 能够有效地管理所有 goroutines。scheduler 在 OS
+之上，将 OS 的线程绑定到 logical 处理器，后者执行 goroutine。</p>
+<p>并发同步源于 CSP 范式，CSP 是一个消息传输模型。它通过在 goroutine
+之间的数据通信来同步数据，而非 lock。在 Go 中，消息传输的核心数据类型是
+<code>channel</code>。</p>
+<h2 id="并发与并行">并发与并行</h2>
+<p>OS 调度线程，使之执行于物理处理器上，Go 运行时调度
+goroutines，使之执行于逻辑处理器上。每个逻辑处理器则独立地绑定在单个 OS
+线程上。</p>
+<h2 id="goroutines">Goroutines</h2>
+<h2 id="race-condition">Race Condition</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -race</span><br></pre></td></tr></table></figure>
+<h2 id="locking-shared-resources">Locking shared resources</h2>
 
-<h2 id="Locking-shared-resources"><a href="#Locking-shared-resources" class="headerlink" title="Locking shared resources"></a>Locking shared resources</h2>
     </div>
 
     

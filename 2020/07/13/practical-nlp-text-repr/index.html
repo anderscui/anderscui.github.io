@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Text Representation（文本表示）Distributed Representations（分布式表示）前述几种基本表示法有着明显的缺陷，比如：  它们都是离散化表示，即把语言单位（词、ngrams等）视为原子单位，因此不能捕捉到词之间的关系 特征向量是稀疏和高维的表示，维度与词汇表大小一致，从而导致向量的绝大部分元素为0，这一结果不利于学习，也使得计算过程颇为低效 不能有效处理未登">
+    <meta name="description" content="Text Representation（文本表示） Distributed Representations（分布式表示） 前述几种基本表示法有着明显的缺陷，比如：  它们都是离散化表示，即把语言单位（词、ngrams等）视为原子单位，因此不能捕捉到词之间的关系 特征向量是稀疏和高维的表示，维度与词汇表大小一致，从而导致向量的绝大部分元素为0，这一结果不利于学习，也使得计算过程颇为低效 不能有效处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="practical-nlp-text-repr">
 <meta property="og:url" content="https://anderscui.github.io/2020/07/13/practical-nlp-text-repr/index.html">
 <meta property="og:site_name" content="mathacker">
-<meta property="og:description" content="Text Representation（文本表示）Distributed Representations（分布式表示）前述几种基本表示法有着明显的缺陷，比如：  它们都是离散化表示，即把语言单位（词、ngrams等）视为原子单位，因此不能捕捉到词之间的关系 特征向量是稀疏和高维的表示，维度与词汇表大小一致，从而导致向量的绝大部分元素为0，这一结果不利于学习，也使得计算过程颇为低效 不能有效处理未登">
+<meta property="og:description" content="Text Representation（文本表示） Distributed Representations（分布式表示） 前述几种基本表示法有着明显的缺陷，比如：  它们都是离散化表示，即把语言单位（词、ngrams等）视为原子单位，因此不能捕捉到词之间的关系 特征向量是稀疏和高维的表示，维度与词汇表大小一致，从而导致向量的绝大部分元素为0，这一结果不利于学习，也使得计算过程颇为低效 不能有效处理">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-13T06:55:53.000Z">
 <meta property="article:modified_time" content="2025-06-21T23:01:37.752Z">
@@ -65,6 +65,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
 
 
 
@@ -158,7 +164,12 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Text-Representation%EF%BC%88%E6%96%87%E6%9C%AC%E8%A1%A8%E7%A4%BA%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Text Representation（文本表示）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Distributed-Representations%EF%BC%88%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">Distributed Representations（分布式表示）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Distributional-Semantics%EF%BC%88%E5%88%86%E5%B8%83%E8%AF%AD%E4%B9%89%E5%AD%A6%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">Distributional Semantics（分布语义学）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Distributional-Hypothesis"><span class="nav-number">1.2.1.</span> <span class="nav-text">Distributional Hypothesis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Distributional-Similarity%EF%BC%88%E5%88%86%E5%B8%83%E7%9B%B8%E4%BC%BC%E5%BA%A6%EF%BC%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">Distributional Similarity（分布相似度）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Distributional-Representation%EF%BC%88%E5%88%86%E5%B8%83%E8%A1%A8%E7%A4%BA%EF%BC%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">Distributional Representation（分布表示）</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#text-representation%E6%96%87%E6%9C%AC%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">Text
+Representation（文本表示）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distributed-representations%E5%88%86%E5%B8%83%E5%BC%8F%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.1.</span> <span class="nav-text">Distributed
+Representations（分布式表示）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distributional-semantics%E5%88%86%E5%B8%83%E8%AF%AD%E4%B9%89%E5%AD%A6"><span class="nav-number">1.2.</span> <span class="nav-text">Distributional
+Semantics（分布语义学）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#distributional-hypothesis"><span class="nav-number">1.2.1.</span> <span class="nav-text">Distributional Hypothesis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#distributional-similarity%E5%88%86%E5%B8%83%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="nav-number">1.2.2.</span> <span class="nav-text">Distributional
+Similarity（分布相似度）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#distributional-representation%E5%88%86%E5%B8%83%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.2.3.</span> <span class="nav-text">Distributional
+Representation（分布表示）</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -271,19 +282,32 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h1 id="Text-Representation（文本表示）"><a href="#Text-Representation（文本表示）" class="headerlink" title="Text Representation（文本表示）"></a>Text Representation（文本表示）</h1><h2 id="Distributed-Representations（分布式表示）"><a href="#Distributed-Representations（分布式表示）" class="headerlink" title="Distributed Representations（分布式表示）"></a>Distributed Representations（分布式表示）</h2><p>前述几种基本表示法有着明显的缺陷，比如：</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="text-representation文本表示">Text
+Representation（文本表示）</h1>
+<h2 id="distributed-representations分布式表示">Distributed
+Representations（分布式表示）</h2>
+<p>前述几种基本表示法有着明显的缺陷，比如：</p>
 <ul>
 <li>它们都是离散化表示，即把语言单位（词、ngrams等）视为原子单位，因此不能捕捉到词之间的关系</li>
 <li>特征向量是稀疏和高维的表示，维度与词汇表大小一致，从而导致向量的绝大部分元素为0，这一结果不利于学习，也使得计算过程颇为低效</li>
 <li>不能有效处理未登录词</li>
 </ul>
 <p>因此需要能够学习到低维向量表示的新方法，这些方法在过去六七年（2013年开始）中得到了迅速发展。它们使用NN架构创建出稠密（而非稀疏）的、低维（而非高维）的词与文本的表示。了解这些方法之前，需要先了解分布语义学。</p>
-<h2 id="Distributional-Semantics（分布语义学）"><a href="#Distributional-Semantics（分布语义学）" class="headerlink" title="Distributional Semantics（分布语义学）"></a>Distributional Semantics（分布语义学）</h2><p>分布语义学是基于语言项（linguistic items）在大量语言数据上的分布性质，对其相关性进行量化与分类的一系列理论与方法。它的基本思想基于所谓的分布假设：具有相似分布的语言项也具有相似的语义。</p>
-<h3 id="Distributional-Hypothesis"><a href="#Distributional-Hypothesis" class="headerlink" title="Distributional Hypothesis"></a>Distributional Hypothesis</h3><p>分布假设背后的思想是：”a word is characterized by the company it keeps“（Firth 1950s）。分布假设是统计语义学的基础。</p>
+<h2 id="distributional-semantics分布语义学">Distributional
+Semantics（分布语义学）</h2>
+<p>分布语义学是基于语言项（linguistic
+items）在大量语言数据上的分布性质，对其相关性进行量化与分类的一系列理论与方法。它的基本思想基于所谓的分布假设：具有相似分布的语言项也具有相似的语义。</p>
+<h3 id="distributional-hypothesis">Distributional Hypothesis</h3>
+<p>分布假设背后的思想是：”a word is characterized by the company it
+keeps“（Firth 1950s）。分布假设是统计语义学的基础。</p>
 <p>孩子在学习语言时，对于未见过的词，仍然可以正确使用，也是基于此假设（通过已了解词的用法去泛化）。</p>
-<h3 id="Distributional-Similarity（分布相似度）"><a href="#Distributional-Similarity（分布相似度）" class="headerlink" title="Distributional Similarity（分布相似度）"></a>Distributional Similarity（分布相似度）</h3><p>它的要义是：词的语义可通过其上下文来理解。</p>
+<h3 id="distributional-similarity分布相似度">Distributional
+Similarity（分布相似度）</h3>
+<p>它的要义是：词的语义可通过其上下文来理解。</p>
 <p>可以理解为：两个词在分布上越相似，其语义即越相似。</p>
-<h3 id="Distributional-Representation（分布表示）"><a href="#Distributional-Representation（分布表示）" class="headerlink" title="Distributional Representation（分布表示）"></a>Distributional Representation（分布表示）</h3><p>获取一个词在”分布“意义上的向量表示。</p>
+<h3 id="distributional-representation分布表示">Distributional
+Representation（分布表示）</h3>
+<p>获取一个词在”分布“意义上的向量表示。</p>
 
     </div>
 

@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"anderscui.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.23.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="refs:  iText in Action  OverviewDifferent parts of PDF file:  header body cross-reference table trailer  Also, the Carousel Object System. PDFs inside-outfrom a de facto to an ISO standard. why and ho">
+    <meta name="description" content="refs: * iText in Action Overview Different parts of PDF file: * header * body * cross-reference table * trailer Also, the Carousel Object System. PDFs inside-out from a de facto to an ISO standard. wh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Under the hood of PDF">
 <meta property="og:url" content="https://anderscui.github.io/2021/04/30/pdf/index.html">
 <meta property="og:site_name" content="mathacker">
-<meta property="og:description" content="refs:  iText in Action  OverviewDifferent parts of PDF file:  header body cross-reference table trailer  Also, the Carousel Object System. PDFs inside-outfrom a de facto to an ISO standard. why and ho">
+<meta property="og:description" content="refs: * iText in Action Overview Different parts of PDF file: * header * body * cross-reference table * trailer Also, the Carousel Object System. PDFs inside-out from a de facto to an ISO standard. wh">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-30T04:03:29.000Z">
 <meta property="article:modified_time" content="2025-06-22T13:15:18.498Z">
@@ -65,6 +65,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
 
 
 
@@ -158,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PDFs-inside-out"><span class="nav-number">2.</span> <span class="nav-text">PDFs inside-out</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#why-and-how"><span class="nav-number">2.1.</span> <span class="nav-text">why and how?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-history-of-PDF"><span class="nav-number">2.2.</span> <span class="nav-text">The history of PDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic-PDF-Objects"><span class="nav-number">2.2.1.</span> <span class="nav-text">Basic PDF Objects</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-PDF-file-structure"><span class="nav-number">2.3.</span> <span class="nav-text">The PDF file structure</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pdfs-inside-out"><span class="nav-number">2.</span> <span class="nav-text">PDFs inside-out</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#why-and-how"><span class="nav-number">2.1.</span> <span class="nav-text">why and how?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-history-of-pdf"><span class="nav-number">2.2.</span> <span class="nav-text">The history of PDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-pdf-objects"><span class="nav-number">2.2.1.</span> <span class="nav-text">Basic PDF Objects</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-pdf-file-structure"><span class="nav-number">2.3.</span> <span class="nav-text">The PDF file structure</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -275,27 +281,30 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>refs:</p>
-<ul>
-<li>iText in Action</li>
-</ul>
-<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Different parts of PDF file:</p>
-<ul>
-<li>header</li>
-<li>body</li>
-<li>cross-reference table</li>
-<li>trailer</li>
-</ul>
+    <div class="post-body" itemprop="articleBody"><p>refs: * iText in Action</p>
+<h1 id="overview">Overview</h1>
+<p>Different parts of PDF file: * header * body * cross-reference table
+* trailer</p>
 <p>Also, the Carousel Object System.</p>
-<h1 id="PDFs-inside-out"><a href="#PDFs-inside-out" class="headerlink" title="PDFs inside-out"></a>PDFs inside-out</h1><p>from a de facto to an ISO standard.</p>
-<h2 id="why-and-how"><a href="#why-and-how" class="headerlink" title="why and how?"></a>why and how?</h2><p>1985年，Adobe 引入了 PostScript Page Description Language。同年，Adobe 也开发了 Adobe Illustrator。这两款产品引发了桌面 publishing 的革命。但 Adobe 的创建者们感觉还缺少了点什么。</p>
+<h1 id="pdfs-inside-out">PDFs inside-out</h1>
+<p>from a de facto to an ISO standard.</p>
+<h2 id="why-and-how">why and how?</h2>
+<p>1985年，Adobe 引入了 PostScript Page Description
+Language。同年，Adobe 也开发了 Adobe Illustrator。这两款产品引发了桌面
+publishing 的革命。但 Adobe 的创建者们感觉还缺少了点什么。</p>
 <span id="more"></span>
-
 <p>1991年，John Warnock 写了 Carmelot Paper，在其中写道：</p>
 <p>一个特别的问题是，大多数程序可以打印至不同的打印机，但没有一种通用的方式来通信和查看这些打印信息。行业所亟需的是在不同的机器配置、OS、网络之间的通用通信机制。</p>
-<p>作为这个文章的结果，一个新项目启动了，<code>Carousel</code> 是初始代号，之后修改为 <code>Acrobat</code>。新文档格式原称为 IPS，很快就改为 PDF（Potable Document Format）。</p>
-<h2 id="The-history-of-PDF"><a href="#The-history-of-PDF" class="headerlink" title="The history of PDF"></a>The history of PDF</h2><p>尽管 Carousel 只是最初代号，但现在仍用于表示<strong>PDF文件的组成方式</strong>。在最低层次，iText 使用继承自 <code>PdfObject</code> 的对象，在 Carousel 中，有一系列基础的 PDF 对象。</p>
-<h3 id="Basic-PDF-Objects"><a href="#Basic-PDF-Objects" class="headerlink" title="Basic PDF Objects"></a>Basic PDF Objects</h3><p>共有 8 种（ISO-32000-1）。</p>
+<p>作为这个文章的结果，一个新项目启动了，<code>Carousel</code>
+是初始代号，之后修改为 <code>Acrobat</code>。新文档格式原称为
+IPS，很快就改为 PDF（Potable Document Format）。</p>
+<h2 id="the-history-of-pdf">The history of PDF</h2>
+<p>尽管 Carousel
+只是最初代号，但现在仍用于表示<strong>PDF文件的组成方式</strong>。在最低层次，iText
+使用继承自 <code>PdfObject</code> 的对象，在 Carousel 中，有一系列基础的
+PDF 对象。</p>
+<h3 id="basic-pdf-objects">Basic PDF Objects</h3>
+<p>共有 8 种（ISO-32000-1）。</p>
 <ul>
 <li>Boolean</li>
 <li>Numeric</li>
@@ -303,7 +312,8 @@
 <li>Name</li>
 <li>Array</li>
 <li>Dictionary</li>
-<li>Stream: like a string object, a stream is a sequence of bytes, mainly used for large amounts of data</li>
+<li>Stream: like a string object, a stream is a sequence of bytes,
+mainly used for large amounts of data</li>
 <li>Null</li>
 </ul>
 <p>示例：</p>
@@ -313,11 +323,12 @@
 <li>PdfDate 是 PdfString 的子类</li>
 </ul>
 <p>这些类型称为 <code>direct</code>。</p>
-<h2 id="The-PDF-file-structure"><a href="#The-PDF-file-structure" class="headerlink" title="The PDF file structure"></a>The PDF file structure</h2><p>通过文本编辑器打开一个 pdf 文件，可以看到 pdf 文件包含以下部分：</p>
+<h2 id="the-pdf-file-structure">The PDF file structure</h2>
+<p>通过文本编辑器打开一个 pdf 文件，可以看到 pdf 文件包含以下部分：</p>
 <ul>
 <li>header: version、comment</li>
 <li>body：seq of indirect objects: page、outline、annotation</li>
-<li>cross-reference: </li>
+<li>cross-reference:</li>
 <li>trailer: loc of the cross ref table and …</li>
 </ul>
 
